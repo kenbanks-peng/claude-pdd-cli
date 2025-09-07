@@ -1,0 +1,204 @@
+{
+  "name": "Java/Maven/Gradle",
+  "framework": "java",
+  "version": "1.0.0",
+  "description": "Java项目配置模板，支持Maven和Gradle构建工具",
+  
+  "detection": {
+    "files": ["pom.xml", "build.gradle", "build.gradle.kts", "settings.gradle"],
+    "directories": ["src/main/java", "src/test/java", "target", "build"],
+    "build_tools": ["maven", "gradle"]
+  },
+  
+  "test": {
+    "directories": {
+      "maven": ["src/test/java", "src/test/resources", "src/it/java"],
+      "gradle": ["src/test/java", "src/integrationTest/java", "src/testFixtures/java"]
+    },
+    "patterns": {
+      "unit": ["**/*Test.java", "**/*Tests.java", "**/*TestCase.java"],
+      "integration": ["**/*IT.java", "**/*IntegrationTest.java", "**/*IntegrationTests.java"],
+      "e2e": ["**/*E2E.java", "**/*EndToEndTest.java", "**/*SystemTest.java"]
+    },
+    "frameworks": {
+      "unit": ["junit5", "junit4", "testng", "mockito", "assertj"],
+      "integration": ["testcontainers", "wiremock", "spring-boot-test"],
+      "e2e": ["selenium", "rest-assured", "cucumber"]
+    }
+  },
+  
+  "commands": {
+    "maven": {
+      "install": "mvn install",
+      "clean": "mvn clean",
+      "test": {
+        "unit": "mvn test",
+        "integration": "mvn verify",
+        "coverage": "mvn jacoco:report"
+      },
+      "build": "mvn compile",
+      "package": "mvn package",
+      "lint": "mvn checkstyle:check spotbugs:check pmd:check"
+    },
+    "gradle": {
+      "install": "./gradlew build",
+      "clean": "./gradlew clean",
+      "test": {
+        "unit": "./gradlew test",
+        "integration": "./gradlew integrationTest",
+        "coverage": "./gradlew jacocoTestReport"
+      },
+      "build": "./gradlew compileJava",
+      "package": "./gradlew jar",
+      "lint": "./gradlew checkstyleMain spotbugsMain pmdMain"
+    }
+  },
+  
+  "tools": {
+    "testing": {
+      "junit5": {
+        "dependency": "org.junit.jupiter:junit-jupiter",
+        "annotations": ["@Test", "@BeforeEach", "@AfterEach", "@DisplayName"],
+        "assertions": "org.junit.jupiter.api.Assertions"
+      },
+      "mockito": {
+        "dependency": "org.mockito:mockito-core",
+        "annotations": ["@Mock", "@InjectMocks", "@Spy"],
+        "static_methods": "org.mockito.Mockito.*"
+      },
+      "assertj": {
+        "dependency": "org.assertj:assertj-core",
+        "fluent_api": "org.assertj.core.api.Assertions.assertThat"
+      }
+    },
+    "coverage": {
+      "jacoco": {
+        "maven": "org.jacoco:jacoco-maven-plugin",
+        "gradle": "org.gradle.testing.jacoco.plugins.JacocoPlugin",
+        "reports": ["target/site/jacoco/", "build/reports/jacoco/"]
+      }
+    },
+    "quality": {
+      "checkstyle": "代码风格检查",
+      "spotbugs": "静态代码分析",
+      "pmd": "代码质量检查",
+      "sonarqube": "代码质量管理平台"
+    }
+  },
+  
+  "structure": {
+    "maven": {
+      "src/main/java": "主要源代码目录",
+      "src/main/resources": "主要资源文件",
+      "src/test/java": "单元测试代码",
+      "src/test/resources": "测试资源文件",
+      "target": "构建输出目录"
+    },
+    "gradle": {
+      "src/main/java": "主要源代码目录",
+      "src/main/resources": "主要资源文件",
+      "src/test/java": "单元测试代码",
+      "src/test/resources": "测试资源文件",
+      "build": "构建输出目录"
+    },
+    "config": {
+      "pom.xml": "Maven项目配置文件",
+      "build.gradle": "Gradle项目配置文件",
+      "checkstyle.xml": "Checkstyle代码规范配置",
+      "jacoco.xml": "JaCoCo覆盖率配置"
+    }
+  },
+  
+  "tdd": {
+    "red_phase": {
+      "maven": ["mvn test -Dtest=SpecificTest"],
+      "gradle": ["./gradlew test --tests SpecificTest"],
+      "expectations": "测试失败，编译成功，错误信息明确"
+    },
+    "green_phase": {
+      "maven": ["mvn test -Dtest=SpecificTest"],
+      "gradle": ["./gradlew test --tests SpecificTest"],
+      "expectations": "最小实现让测试通过，避免过度工程"
+    },
+    "refactor_phase": {
+      "maven": [
+        "mvn test",
+        "mvn jacoco:report",
+        "mvn checkstyle:check",
+        "mvn verify"
+      ],
+      "gradle": [
+        "./gradlew test",
+        "./gradlew jacocoTestReport",
+        "./gradlew check",
+        "./gradlew integrationTest"
+      ],
+      "expectations": "重构代码，保持测试通过，提升代码质量"
+    }
+  },
+  
+  "quality_gates": {
+    "coverage": {
+      "line": 85,
+      "branch": 80,
+      "instruction": 85,
+      "complexity": 80
+    },
+    "complexity": {
+      "cyclomatic_complexity": 10,
+      "cognitive_complexity": 15
+    },
+    "performance": {
+      "test_timeout": "60s",
+      "max_memory": "1GB"
+    }
+  },
+  
+  "best_practices": {
+    "naming": {
+      "test_classes": "以Test结尾，如UserServiceTest",
+      "test_methods": "以should开头描述预期行为",
+      "given_when_then": "使用Given-When-Then结构"
+    },
+    "structure": {
+      "aaa_pattern": "Arrange-Act-Assert模式",
+      "single_assertion": "每个测试方法单一断言",
+      "isolation": "测试之间完全隔离，无共享状态"
+    },
+    "mocking": {
+      "mock_external": "Mock外部依赖和I/O操作",
+      "verify_interactions": "验证Mock对象的交互",
+      "avoid_over_mocking": "避免过度Mock，保持真实性"
+    }
+  },
+  
+  "common_dependencies": {
+    "testing": {
+      "junit5": "org.junit.jupiter:junit-jupiter:5.10.0",
+      "junit4": "junit:junit:4.13.2",
+      "mockito": "org.mockito:mockito-core:5.5.0",
+      "assertj": "org.assertj:assertj-core:3.24.2",
+      "testcontainers": "org.testcontainers:testcontainers:1.19.0"
+    },
+    "integration": {
+      "spring-boot-test": "org.springframework.boot:spring-boot-starter-test",
+      "wiremock": "com.github.tomakehurst:wiremock:3.0.1",
+      "rest-assured": "io.rest-assured:rest-assured:5.3.0"
+    },
+    "quality": {
+      "jacoco": "org.jacoco:jacoco-maven-plugin:0.8.10",
+      "checkstyle": "org.apache.maven.plugins:maven-checkstyle-plugin:3.3.0",
+      "spotbugs": "com.github.spotbugs:spotbugs-maven-plugin:4.7.3.6"
+    }
+  },
+  
+  "templates": {
+    "unit_test": {
+      "junit5": "import org.junit.jupiter.api.Test;\nimport org.junit.jupiter.api.DisplayName;\nimport static org.assertj.core.api.Assertions.assertThat;\n\nclass UserServiceTest {\n\n    @Test\n    @DisplayName(\"Should create user successfully when valid data provided\")\n    void shouldCreateUserSuccessfullyWhenValidDataProvided() {\n        // Given\n        UserService userService = new UserService();\n        CreateUserRequest request = new CreateUserRequest(\"john@example.com\", \"John Doe\");\n        \n        // When\n        User result = userService.createUser(request);\n        \n        // Then\n        assertThat(result.getEmail()).isEqualTo(\"john@example.com\");\n        assertThat(result.getName()).isEqualTo(\"John Doe\");\n        assertThat(result.getId()).isNotNull();\n    }\n}",
+      "mockito": "import org.junit.jupiter.api.Test;\nimport org.junit.jupiter.api.extension.ExtendWith;\nimport org.mockito.InjectMocks;\nimport org.mockito.Mock;\nimport org.mockito.junit.jupiter.MockitoExtension;\nimport static org.mockito.Mockito.*;\nimport static org.assertj.core.api.Assertions.assertThat;\n\n@ExtendWith(MockitoExtension.class)\nclass UserServiceTest {\n\n    @Mock\n    private UserRepository userRepository;\n    \n    @InjectMocks\n    private UserService userService;\n\n    @Test\n    void shouldCreateUserSuccessfully() {\n        // Given\n        CreateUserRequest request = new CreateUserRequest(\"john@example.com\", \"John Doe\");\n        User savedUser = new User(1L, \"john@example.com\", \"John Doe\");\n        when(userRepository.save(any(User.class))).thenReturn(savedUser);\n        \n        // When\n        User result = userService.createUser(request);\n        \n        // Then\n        assertThat(result.getEmail()).isEqualTo(\"john@example.com\");\n        verify(userRepository).save(any(User.class));\n    }\n}"
+    },
+    "integration_test": {
+      "spring_boot": "@SpringBootTest\n@TestPropertySource(locations = \"classpath:application-test.properties\")\nclass UserControllerIntegrationTest {\n\n    @Autowired\n    private TestRestTemplate restTemplate;\n    \n    @Autowired\n    private UserRepository userRepository;\n\n    @Test\n    void shouldCreateUserViaApi() {\n        // Given\n        CreateUserRequest request = new CreateUserRequest(\"integration@test.com\", \"Test User\");\n        \n        // When\n        ResponseEntity<User> response = restTemplate.postForEntity(\"/api/users\", request, User.class);\n        \n        // Then\n        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);\n        assertThat(response.getBody().getEmail()).isEqualTo(\"integration@test.com\");\n        assertThat(userRepository.findByEmail(\"integration@test.com\")).isPresent();\n    }\n}"
+    }
+  }
+}

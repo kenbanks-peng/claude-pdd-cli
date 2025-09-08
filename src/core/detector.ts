@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import { execSync } from 'child_process';
 import which from 'which';
-import { DetectionResult, FrameworkType, TestFramework, BuildTool, ConflictType, Recommendation } from './types';
+import { DetectionResult, FrameworkType, TestFramework, BuildTool, ConflictType, Recommendation } from './types.js';
 
 /**
  * Environment and project detector

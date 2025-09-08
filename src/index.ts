@@ -3,14 +3,18 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { readFileSync } from 'fs';
-import { join } from 'path';
-import { initCommand } from './commands/init';
-import { doctorCommand } from './commands/doctor';
-import { configCommand } from './commands/config';
-import { statusCommand } from './commands/status';
-import { updateCommand } from './commands/update';
-import { switchFrameworkCommand, migrateCommand } from './commands/switch-framework';
-import { printBanner } from './ui/output';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { initCommand } from './commands/init.js';
+import { doctorCommand } from './commands/doctor.js';
+import { configCommand } from './commands/config.js';
+import { statusCommand } from './commands/status.js';
+import { updateCommand } from './commands/update.js';
+import { switchFrameworkCommand, migrateCommand } from './commands/switch-framework.js';
+import { printBanner } from './ui/output.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // 从 package.json 读取版本号
 function getVersion(): string {

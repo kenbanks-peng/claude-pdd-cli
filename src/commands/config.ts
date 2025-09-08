@@ -2,8 +2,8 @@ import chalk from 'chalk';
 import fs from 'fs-extra';
 import path from 'path';
 import { execSync } from 'child_process';
-import { ConfigOptions } from '../core/types';
-import { printHeader, printSuccess, printError, printListItem, printWarning } from '../ui/output';
+import { ConfigOptions } from '../core/types.js';
+import { printHeader, printSuccess, printError, printListItem, printWarning } from '../ui/output.js';
 
 /**
  * Manage configuration settings

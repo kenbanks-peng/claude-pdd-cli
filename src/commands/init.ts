@@ -1,11 +1,11 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 import ora from 'ora';
-import { EnvironmentDetector } from '../core/detector';
-import { InitOptions, TemplateType } from '../core/types';
-import { printStep, printSuccess, printError, printWarning, printHeader, printSummary } from '../ui/output';
-import { TemplateManager } from '../core/template-manager';
-import { ConfigGenerator } from '../core/config-generator';
+import { EnvironmentDetector } from '../core/detector.js';
+import { InitOptions, TemplateType } from '../core/types.js';
+import { printStep, printSuccess, printError, printWarning, printHeader, printSummary } from '../ui/output.js';
+import { TemplateManager } from '../core/template-manager.js';
+import { ConfigGenerator } from '../core/config-generator.js';
 
 /**
  * Initialize TDD workflow in current project

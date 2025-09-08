@@ -1,7 +1,7 @@
 import chalk from 'chalk';
-import { EnvironmentDetector } from '../core/detector';
-import { DoctorOptions } from '../core/types';
-import { printHeader, printListItem, printSuccess, printError, printWarning, printSummary } from '../ui/output';
+import { EnvironmentDetector } from '../core/detector.js';
+import { DoctorOptions } from '../core/types.js';
+import { printHeader, printListItem, printSuccess, printError, printWarning, printSummary } from '../ui/output.js';
 
 /**
  * Diagnose environment and project status

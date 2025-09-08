@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { TDDConfig } from './types';
+import { TDDConfig } from './types.js';
 
 /**
  * Configuration generator for TDD workflow

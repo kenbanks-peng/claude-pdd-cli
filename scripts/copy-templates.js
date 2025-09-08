@@ -5,8 +5,12 @@
  * 替代 PowerShell 命令，确保在所有平台上都能正常工作
  */
 
-const fs = require('fs-extra');
-const path = require('path');
+import fs from 'fs-extra';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 async function copyTemplates() {
   const sourceDir = path.join(__dirname, '..', 'src', 'templates');
@@ -37,8 +41,8 @@ async function copyTemplates() {
 }
 
 // 如果直接运行此脚本
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   copyTemplates();
 }
 
-module.exports = copyTemplates;
+export default copyTemplates;

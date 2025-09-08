@@ -1,8 +1,8 @@
 import fs from 'fs-extra';
 import path from 'path';
 import chalk from 'chalk';
-import { StatusOptions } from '../core/types';
-import { printHeader, printListItem, printError, printSuccess } from '../ui/output';
+import { StatusOptions } from '../core/types.js';
+import { printHeader, printListItem, printError, printSuccess } from '../ui/output.js';
 
 /**
  * Show current TDD workflow status

@@ -1,6 +1,6 @@
 import chalk from 'chalk';
-import { UpdateOptions } from '../core/types';
-import { printHeader, printSuccess, printError, printInfo, printListItem } from '../ui/output';
+import { UpdateOptions } from '../core/types.js';
+import { printHeader, printSuccess, printError, printInfo, printListItem } from '../ui/output.js';
 
 /**
  * Update configuration templates to latest version

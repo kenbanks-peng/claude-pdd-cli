@@ -4,9 +4,9 @@ import ora from 'ora';
 import fs from 'fs-extra';
 import path from 'path';
 import { execSync } from 'child_process';
-import { EnvironmentDetector } from '../core/detector';
-import { SwitchFrameworkOptions, FrameworkType } from '../core/types';
-import { printStep, printSuccess, printError, printWarning, printHeader, printInfo } from '../ui/output';
+import { EnvironmentDetector } from '../core/detector.js';
+import { SwitchFrameworkOptions, FrameworkType } from '../core/types.js';
+import { printStep, printSuccess, printError, printWarning, printHeader, printInfo } from '../ui/output.js';
 
 /**
  * Switch project framework while preserving other configurations

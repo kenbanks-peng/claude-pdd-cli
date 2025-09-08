@@ -1,6 +1,6 @@
 {
   "name": "claude-tdd-cli",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "CLI tool for initializing and managing Claude TDD Workflow projects",
   "main": "dist/index.js",
   "bin": {

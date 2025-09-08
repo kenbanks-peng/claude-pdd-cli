@@ -81,37 +81,64 @@ jobs:
         NEW_VERSION=$(node -p "require('./package.json').version")
         echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
         
-    - name: Create Release Notes
+    - name: Generate Release Notes
       run: |
-        cat > RELEASE_NOTES.md << 'EOF'
+        # 获取上一个版本标签
+        PREVIOUS_TAG=$(git describe --tags --abbrev=0 --exclude="v${{ env.NEW_VERSION }}" 2>/dev/null || echo "")
+        
+        # 生成提交日志
+        if [ -n "$PREVIOUS_TAG" ]; then
+          COMMIT_LOG=$(git log --oneline --pretty=format:"- %s" "$PREVIOUS_TAG"..HEAD)
+        else
+          COMMIT_LOG=$(git log --oneline --pretty=format:"- %s" -10)
+        fi
+        
+        # 提取不同类型的变更
+        FEATURES=$(echo "$COMMIT_LOG" | grep -i "feat\|feature" || echo "")
+        FIXES=$(echo "$COMMIT_LOG" | grep -i "fix\|bugfix" || echo "")
+        DOCS=$(echo "$COMMIT_LOG" | grep -i "docs\|documentation" || echo "")
+        CHORES=$(echo "$COMMIT_LOG" | grep -i "chore\|refactor\|style" || echo "")
+        
+        cat > RELEASE_NOTES.md << EOF
         ## 🚀 Claude TDD CLI v${{ env.NEW_VERSION }}
         
-        ### ✨ 新功能
-        - 改进的项目检测功能
-        - 优化的用户体验
-        - 更好的错误处理
+        $(if [ -n "$FEATURES" ]; then
+        echo "### ✨ 新功能"
+        echo "$FEATURES"
+        echo ""
+        fi)
         
-        ### 🐛 问题修复
-        - 修复了配置文件处理问题
-        - 改进了模板生成逻辑
+        $(if [ -n "$FIXES" ]; then
+        echo "### 🐛 问题修复"
+        echo "$FIXES"
+        echo ""
+        fi)
         
-        ### 📈 性能优化
-        - 减少了启动时间
-        - 优化了内存使用
+        $(if [ -n "$DOCS" ]; then
+        echo "### 📚 文档更新"
+        echo "$DOCS"
+        echo ""
+        fi)
+        
+        $(if [ -n "$CHORES" ]; then
+        echo "### 🔧 其他改进"
+        echo "$CHORES"
+        echo ""
+        fi)
         
         ### 📦 安装方式
         
-        ```bash
+        \`\`\`bash
         # 全局安装
         npm install -g claude-tdd-cli@${{ env.NEW_VERSION }}
         
         # 或者使用最新版本
         npm install -g claude-tdd-cli@latest
-        ```
+        \`\`\`
         
-        ### 🔧 使用方法
+        ### 🚀 快速开始
         
-        ```bash
+        \`\`\`bash
         # 查看版本
         claude-tdd --version
         
@@ -120,11 +147,20 @@ jobs:
         
         # 诊断环境
         claude-tdd doctor
-        ```
+        
+        # 查看帮助
+        claude-tdd --help
+        \`\`\`
         
         ---
         
-        **完整更新日志**: https://github.com/claude-tdd/claude-tdd-cli/compare/v${{ env.OLD_VERSION }}...v${{ env.NEW_VERSION }}
+        $(if [ -n "$PREVIOUS_TAG" ]; then
+        echo "**完整更新日志**: https://github.com/MuziGeek/claude-tdd-cli/compare/$PREVIOUS_TAG...v${{ env.NEW_VERSION }}"
+        else
+        echo "**项目主页**: https://github.com/MuziGeek/claude-tdd-cli"
+        fi)
+        
+        **文档**: [使用说明](https://github.com/MuziGeek/claude-tdd-cli#readme) | [示例项目](https://github.com/MuziGeek/claude-tdd-cli/tree/main/examples)
         EOF
         
     - name: Create Tag and Push

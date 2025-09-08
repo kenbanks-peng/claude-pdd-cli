@@ -29,36 +29,11 @@ Claude TDD CLI transforms the complex process of setting up a professional Test-
 
 ## 🚀 Quick Start
 
-### 安装方式
+### 安装
 
-#### 从 npm 安装（推荐）
 ```bash
 npm install -g claude-tdd-cli
 ```
-
-#### 从 GitHub Packages 安装
-
-> **包名区别**: GitHub Packages 使用作用域包名 `@MuziGeek/claude-tdd-cli`，而 npm 使用 `claude-tdd-cli`
-
-```bash
-# 配置 GitHub Packages 源（一次性配置）
-npm config set @MuziGeek:registry https://npm.pkg.github.com
-npm config set //npm.pkg.github.com/:_authToken YOUR_GITHUB_TOKEN
-
-# 安装作用域包
-npm install -g @MuziGeek/claude-tdd-cli
-```
-
-#### 临时使用 GitHub Packages 安装
-```bash
-npm install -g @MuziGeek/claude-tdd-cli --registry https://npm.pkg.github.com
-```
-
-> **注意**: 
-> - GitHub Packages 需要 GitHub 个人访问令牌
-> - 包名为作用域包 `@MuziGeek/claude-tdd-cli`
-> - 功能与 npm 版本完全一致
-> - 详见 [GitHub Packages 文档](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-to-github-packages)
 
 ### Initialize TDD Workflow
 

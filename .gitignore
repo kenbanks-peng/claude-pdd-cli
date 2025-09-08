@@ -79,6 +79,7 @@ commit_message.txt
 
 # Wiki content (managed separately)
 wiki-content/
+docs/wiki-sources/
 
 # GitHub Packages configuration
 .npmrc.github

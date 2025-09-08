@@ -72,7 +72,6 @@
   },
   "homepage": "https://github.com/MuziGeek/claude-tdd-cli#readme",
   "publishConfig": {
-    "access": "public",
-    "@MuziGeek:registry": "https://npm.pkg.github.com"
+    "access": "public"
   }
 }

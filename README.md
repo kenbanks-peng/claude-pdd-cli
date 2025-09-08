@@ -3,9 +3,12 @@
 🚀 **Professional CLI tool for initializing and managing Claude TDD Workflow projects**
 
 [![npm version](https://badge.fury.io/js/claude-tdd-cli.svg)](https://badge.fury.io/js/claude-tdd-cli)
+[![npm downloads](https://img.shields.io/npm/dm/claude-tdd-cli.svg)](https://www.npmjs.com/package/claude-tdd-cli)
 [![CI/CD Pipeline](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/ci.yml)
+[![Release](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/release.yml/badge.svg)](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/release.yml)
 [![CodeQL](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/codeql.yml/badge.svg)](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/codeql.yml)
 [![codecov](https://codecov.io/gh/MuziGeek/claude-tdd-cli/branch/main/graph/badge.svg)](https://codecov.io/gh/MuziGeek/claude-tdd-cli)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 🎯 What is Claude TDD CLI?

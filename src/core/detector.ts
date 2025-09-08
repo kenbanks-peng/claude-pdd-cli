@@ -342,7 +342,7 @@ export class EnvironmentDetector {
   private detectConflicts(detection: Omit<DetectionResult, 'conflicts' | 'recommendations'>): ConflictType[] {
     const conflicts: ConflictType[] = [];
 
-    // Check if .claude already exists
+    // Check if project local .claude config already exists
     if (detection.project.hasClaudeConfig) {
       conflicts.push('claude-config-exists');
     }

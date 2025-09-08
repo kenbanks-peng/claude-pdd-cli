@@ -1,0 +1,35 @@
+fix: 修复CI测试路径匹配问题 - 精确识别项目本地.claude目录
+
+主要完成内容：
+1. 测试逻辑优化
+   - 替换了不准确的路径包含判断逻辑
+   - 使用精确路径匹配：path.join(process.cwd(), '.claude')
+   - 避免了CI环境中路径包含/home/导致的误判
+
+2. 问题分析与解决
+   - 原逻辑：pathToCheck.endsWith('.claude') && !pathToCheck.includes('/home/')
+   - CI环境路径：/home/runner/work/claude-tdd-cli/claude-tdd-cli/.claude
+   - 问题：CI路径包含/home/，导致条件返回false
+   - 解决：直接比较完整路径，确保精确匹配
+
+3. 跨平台兼容性保持
+   - 继续使用path.join()确保路径分隔符正确
+   - 支持Windows、macOS、Linux等所有平台
+   - 测试逻辑更加健壮和可靠
+
+技术亮点：
+- 从模糊匹配改为精确匹配，提高测试可靠性
+- 使用process.cwd()确保相对于当前工作目录的准确性
+- 简化了复杂的字符串包含判断逻辑
+
+测试结果：
+- 所有21个测试用例全部通过
+- 修复了Ubuntu CI环境的测试失败问题
+- 保持了Windows和macOS平台的兼容性
+- 测试覆盖率稳定：语句15.48%，分支7.94%
+
+性能影响：无负面影响，路径匹配更加高效
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>

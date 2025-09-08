@@ -3,7 +3,10 @@
 🚀 **Professional CLI tool for initializing and managing Claude TDD Workflow projects**
 
 [![npm version](https://badge.fury.io/js/claude-tdd-cli.svg)](https://badge.fury.io/js/claude-tdd-cli)
-[![Node.js CI](https://github.com/MuziGeek/claude-tdd-cli/workflows/Node.js%20CI/badge.svg)](https://github.com/MuziGeek/claude-tdd-cli/actions)
+[![CI/CD Pipeline](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/codeql.yml/badge.svg)](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/codeql.yml)
+[![codecov](https://codecov.io/gh/MuziGeek/claude-tdd-cli/branch/main/graph/badge.svg)](https://codecov.io/gh/MuziGeek/claude-tdd-cli)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 🎯 What is Claude TDD CLI?
 
@@ -20,6 +23,8 @@ Claude TDD CLI transforms the complex process of setting up a professional Test-
 - 🔄 **Template Management**: Keep your workflow up-to-date with latest best practices
 - 🔀 **Framework Switching**: Seamlessly switch between frameworks while preserving configurations
 - 🛠️ **Configuration Backup**: Automatic backup mechanism for safe configuration changes
+- 🚀 **CI/CD Ready**: Pre-configured GitHub Actions for cross-platform testing and automated releases
+- 📊 **Quality Assurance**: Built-in code coverage, security scanning, and multi-platform testing
 
 ## 🚀 Quick Start
 
@@ -327,15 +332,62 @@ npm run test:watch
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
+## 🔧 CI/CD & Development
+
+### 🚀 Automated Workflows
+
+This project includes comprehensive CI/CD workflows:
+
+- **🔄 Cross-Platform Testing**: Automated testing on Ubuntu, Windows, and macOS
+- **📦 Multi-Version Support**: Tests on Node.js 18.x, 20.x, and 22.x
+- **🔒 Security Scanning**: CodeQL analysis and dependency vulnerability checks
+- **📊 Code Coverage**: Automatic coverage reporting via Codecov
+- **🚀 Automated Releases**: Smart release notes generation and npm publishing
+
+### 📋 Quality Gates
+
+All pull requests must pass:
+- ✅ Unit tests across all platforms
+- ✅ TypeScript compilation checks
+- ✅ Security vulnerability scans
+- ✅ Code coverage requirements
+- ✅ CLI functionality tests
+
+### 🛠️ Development Setup
+
+```bash
+# Clone and setup
+git clone https://github.com/MuziGeek/claude-tdd-cli.git
+cd claude-tdd-cli
+npm install
+
+# Development workflow
+npm run build    # Build TypeScript
+npm test         # Run tests
+npm run dev      # Watch mode
+```
+
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! Our automated CI/CD ensures code quality:
+
+1. **Fork** the repository
+2. **Create** a feature branch
+3. **Make** your changes with tests
+4. **Submit** a pull request
+
+All contributions automatically go through:
+- Multi-platform testing
+- Code quality checks
+- Security scans
+- Automated reviews
 
 ## 💬 Support
 
-- 📖 [Documentation](https://claude-tdd-cli.dev)
-- 💬 [GitHub Issues](https://github.com/MuziGeek/claude-tdd-cli/issues)
-- 🌟 [Claude Code](https://claude.ai/code)
+- 📖 **Documentation**: [Usage Guide](USAGE.md) | [Examples](examples/)
+- 💬 **Issues**: [GitHub Issues](https://github.com/MuziGeek/claude-tdd-cli/issues)
+- 🔍 **CI Status**: [GitHub Actions](https://github.com/MuziGeek/claude-tdd-cli/actions)
+- 🌟 **Claude Code**: [Official Site](https://claude.ai/code)
 
 ---
 

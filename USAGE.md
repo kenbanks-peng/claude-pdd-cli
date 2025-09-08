@@ -135,24 +135,52 @@ claude-tdd status
 
 ```
 your-project/
-├── .claude/                    # TDD工作流配置
-│   ├── settings.json          # 核心设置
-│   ├── tdd-state.json        # TDD状态跟踪
-│   ├── agents/               # 10个专业化AI agents
-│   │   ├── tdd-architect.md      # TDD架构师
-│   │   ├── test-case-generator.md # 测试用例生成器
-│   │   ├── product-manager.md    # 产品经理
-│   │   └── ... (7个更多agents)
-│   ├── commands/             # TDD和PM命令
-│   │   ├── tdd/             # RED, GREEN, REFACTOR命令
-│   │   └── pm/              # 项目管理命令
-│   ├── hooks/               # 质量控制hooks
-│   │   ├── tdd-guard.sh        # 阶段权限控制
-│   │   ├── test-runner.sh      # 自动测试运行
-│   │   └── commit-validator.sh # 提交验证
-│   ├── framework-configs/    # 框架特定配置
-│   └── rules/               # TDD工作流规则
-└── .gitignore               # 更新的Git忽略规则
+├── .claude/                     # TDD工作流配置
+│   ├── project-config.json     # 主项目配置
+│   ├── tdd-state.json          # TDD状态跟踪
+│   ├── example.tasks.json      # 任务示例结构
+│   ├── agents/                 # 10个专业化AI agents
+│   │   ├── tdd-architect.md        # TDD架构师
+│   │   ├── test-case-generator.md  # 测试用例生成器
+│   │   ├── test-strategist.md      # 测试策略师
+│   │   ├── product-manager.md      # 产品经理
+│   │   ├── prd-analyzer.md         # PRD分析师
+│   │   ├── task-decomposer.md      # 任务分解器
+│   │   ├── security-auditor.md     # 安全审计师
+│   │   ├── performance-analyzer.md # 性能分析师
+│   │   ├── code-reviewer.md        # 代码审查师
+│   │   └── parallel-worker.md      # 并行工作器
+│   ├── commands/               # TDD和PM命令
+│   │   ├── tdd/               # RED, GREEN, REFACTOR命令
+│   │   │   ├── red.md             # 编写失败测试
+│   │   │   ├── green.md           # 实现最小代码
+│   │   │   ├── refactor.md        # 重构改进
+│   │   │   └── status.md          # TDD状态查询
+│   │   ├── pm/                # 项目管理命令
+│   │   │   ├── prd-new.md         # 创建新需求
+│   │   │   ├── task-next.md       # 下一个任务
+│   │   │   ├── milestone.md       # 里程碑管理
+│   │   │   └── sync-github.md     # GitHub同步
+│   │   └── commit.md          # 智能提交命令
+│   ├── hooks/                 # 质量控制hooks
+│   │   ├── tdd-guard.sh          # 阶段权限控制
+│   │   ├── test-runner.sh        # 自动测试运行
+│   │   └── commit-validator.sh   # 提交验证
+│   ├── scripts/               # Shell脚本自动化
+│   │   ├── tdd/              # TDD管理脚本
+│   │   │   ├── state-manager.sh     # TDD状态管理
+│   │   │   ├── init.sh             # TDD环境初始化
+│   │   │   └── project-detector.sh # 项目类型检测
+│   │   └── pm/               # 项目管理脚本
+│   │       ├── next-task.sh        # 智能任务推荐
+│   │       ├── sync-to-github.sh   # GitHub Issues同步
+│   │       └── validate-task-decomposition.sh # 任务质量检查
+│   ├── bin/                   # 工具程序
+│   │   └── json-tool.js          # JSON操作工具
+│   ├── framework-configs/      # 框架特定配置
+│   ├── rules/                 # TDD工作流规则
+│   └── schemas/               # JSON验证模式
+└── .gitignore                 # 更新的Git忽略规则
 ```
 
 ## 🧠 专业化Agents
@@ -217,41 +245,215 @@ claude-tdd config list
 
 ## 🩺 故障排除
 
-### 常见问题
+### 常见问题及解决方案
+
+#### 环境配置问题
 
 **1. "Claude Code not found"**
 ```bash
-# 检查Claude Code安装
+# 详细检查Claude Code安装状态
 claude-tdd doctor --check-claude
 
-# 安装Claude Code: https://claude.ai/code
+# 解决方案：
+# - 访问 https://claude.ai/code 下载安装
+# - 确保Claude Code在系统PATH中
+# - 重启终端后再次尝试
 ```
 
-**2. TDD工作流未配置**
+**2. "Node.js version not supported"**
 ```bash
-# 运行初始化
-claude-tdd init
+# 检查Node.js版本（需要>=14.0.0）
+node --version
 
-# 或强制重新初始化
-claude-tdd init --force
+# 解决方案：
+# - 升级Node.js: https://nodejs.org/
+# - 使用nvm管理版本: nvm install 18
 ```
 
-**3. 权限错误**
+**3. TDD工作流未正确配置**
 ```bash
-# 修复hooks权限
+# 检查配置完整性
+claude-tdd status
+
+# 解决方案：
+claude-tdd init --force  # 强制重新初始化
+claude-tdd config show   # 检查配置是否正确
+```
+
+#### 权限和文件问题
+
+**4. 权限错误（Linux/macOS）**
+```bash
+# 问题：hooks脚本没有执行权限
+# 解决方案：
 chmod +x .claude/hooks/*.sh
+chmod +x .claude/scripts/**/*.sh
+
+# 检查权限是否正确
+ls -la .claude/hooks/
 ```
 
-### 调试命令
+**5. 配置文件损坏**
 ```bash
-# 详细诊断
+# 症状：JSON解析错误或格式错误
+# 解决方案：
+claude-tdd doctor --verbose  # 找出具体问题
+claude-tdd init --force      # 重新生成配置
+
+# 或手动修复：
+# 检查 .claude/*.json 文件的JSON格式
+```
+
+**6. 模板文件缺失**
+```bash
+# 症状：初始化后某些文件或目录缺失
+# 解决方案：
+claude-tdd update --force    # 更新到最新模板
+claude-tdd init --template full --force  # 重新完整初始化
+```
+
+#### 框架特定问题
+
+**7. 测试框架未检测到**
+```bash
+# 症状：claude-tdd doctor显示"No testing framework detected"
+# Node.js解决方案：
+npm install --save-dev jest  # 或其他测试框架
+
+# Java解决方案：
+# 确保pom.xml或build.gradle包含测试依赖
+
+# Python解决方案：  
+pip install pytest  # 或使用poetry/pipenv
+
+# 重新检测：
+claude-tdd doctor --verbose
+```
+
+**8. 框架切换失败**
+```bash
+# 症状：switch-framework命令报错
+# 解决方案：
+claude-tdd doctor             # 检查当前环境
+claude-tdd config show        # 查看当前配置
+claude-tdd switch-framework python --yes  # 强制切换
+
+# 如果仍然失败：
+claude-tdd migrate --from nodejs --to python --interactive
+```
+
+#### Claude Code集成问题
+
+**9. 命令在Claude Code中不可用**
+```bash
+# 症状：输入/tdd:status等命令无响应
+# 检查.claude/commands/目录结构：
+ls -la .claude/commands/
+
+# 解决方案：
+claude-tdd init --force       # 重新生成命令文件
+claude-tdd status            # 验证CLI工具正常工作
+```
+
+**10. Agent调用失败**
+```bash
+# 症状：@agent-name 无响应或报错
+# 检查agents目录：
+ls -la .claude/agents/
+
+# 解决方案：
+claude-tdd init --template full --force  # 重新生成所有agents
+claude-tdd config set default.template full --apply
+```
+
+#### 性能问题
+
+**11. 初始化速度慢**
+```bash
+# 可能原因：网络问题或磁盘IO慢
+# 解决方案：
+claude-tdd init --quick       # 使用快速模式
+claude-tdd update --check     # 检查是否有更新
+```
+
+**12. Git操作失败**
+```bash
+# 症状：GitHub同步或Git hooks失败
+# 解决方案：
+git status                    # 检查仓库状态
+chmod +x .claude/hooks/*.sh   # 修复hook权限
+claude-tdd config set github.integration false  # 临时禁用GitHub集成
+```
+
+### 高级调试
+
+#### 详细诊断信息
+```bash
+# 获取完整环境信息
 claude-tdd doctor --verbose
 
-# JSON格式状态（便于脚本处理）
+# 导出诊断报告
+claude-tdd status --json > debug-info.json
+
+# 检查模板更新
+claude-tdd update --check
+
+# 验证配置文件
+claude-tdd config show
+```
+
+#### 日志和调试
+```bash
+# 启用详细日志（如果支持）
+export DEBUG=claude-tdd:*
+claude-tdd init
+
+# 检查系统环境
+echo $PATH
+which node
+which git
+which claude-code
+```
+
+#### 手动修复步骤
+```bash
+# 1. 备份现有配置
+cp -r .claude .claude.backup
+
+# 2. 清理并重新初始化
+rm -rf .claude
+claude-tdd init --template full
+
+# 3. 验证配置
+claude-tdd doctor
+claude-tdd status
+
+# 4. 测试命令
+# 在Claude Code中测试: /tdd:status
+```
+
+### 获取帮助
+
+#### 社区支持
+- **GitHub Issues**: [提交问题](https://github.com/MuziGeek/claude-tdd-cli/issues)
+- **文档**: [在线文档](https://github.com/MuziGeek/claude-tdd-cli#readme)
+
+#### 诊断信息收集
+提交问题时，请包含以下信息：
+```bash
+# 基本环境信息
+claude-tdd doctor --verbose
+node --version
+npm --version
+git --version
+
+# 配置信息
+claude-tdd config show
 claude-tdd status --json
 
-# 检查可用更新
-claude-tdd update --check
+# 系统信息
+uname -a  # Linux/macOS
+# 或在Windows中: systeminfo
 ```
 
 ## 📈 最佳实践
@@ -295,16 +497,150 @@ claude-tdd update --force
 claude-tdd config show | jq '.project.framework'
 ```
 
+## 🎨 Claude Code 集成使用
+
+初始化完成后，在 Claude Code 中使用专业化命令：
+
+### TDD 核心工作流
+```bash
+# 查看当前TDD状态和下一步建议
+/tdd:status
+
+# 🔴 RED 阶段：编写失败测试
+/tdd:red
+
+# 🟢 GREEN 阶段：实现最小代码使测试通过
+/tdd:green
+
+# 🔵 REFACTOR 阶段：重构改进代码质量
+/tdd:refactor
+```
+
+### 项目管理命令
+```bash
+# 创建新的产品需求文档
+/pm:prd-new
+
+# 获取下一个应该工作的任务
+/pm:task-next
+
+# 管理项目里程碑
+/pm:milestone
+
+# 同步任务到GitHub Issues
+/pm:sync-github
+
+# 智能提交代码
+/commit
+```
+
+### 使用专业化Agent
+每个agent都有特定用途，可以通过 `@agent-name` 调用：
+```bash
+# 调用TDD架构师设计测试结构
+@tdd-architect 帮我设计用户认证模块的测试架构
+
+# 使用测试用例生成器创建具体测试
+@test-case-generator 为用户登录功能生成边界测试用例
+
+# 产品经理协助需求分析
+@product-manager 分析这个功能的用户故事和验收条件
+
+# 安全审计师检查代码安全性
+@security-auditor 审查这个API接口的安全实现
+
+# 性能分析师优化代码性能
+@performance-analyzer 分析这个查询函数的性能瓶颈
+```
+
+### 完整TDD工作流示例
+
+#### 1. 项目启动阶段
+```bash
+# 步骤1：检查环境和配置
+claude-tdd doctor
+
+# 步骤2：查看TDD状态
+/tdd:status
+
+# 步骤3：创建产品需求
+/pm:prd-new
+# 然后调用: @product-manager 帮我编写用户认证系统的PRD
+
+# 步骤4：任务分解
+@task-decomposer 将用户认证系统分解为可测试的小任务
+```
+
+#### 2. TDD开发循环
+```bash
+# 🔴 RED 阶段
+/tdd:red
+# 然后调用: @tdd-architect 设计用户注册功能的测试结构
+# 再调用: @test-case-generator 生成用户注册的具体测试用例
+
+# 🟢 GREEN 阶段  
+/tdd:green
+# 实现最小可工作代码，确保测试通过
+
+# 🔵 REFACTOR 阶段
+/tdd:refactor
+# 然后调用: @code-reviewer 审查代码质量
+# 再调用: @performance-analyzer 检查性能优化机会
+```
+
+#### 3. 质量保证阶段
+```bash
+# 安全审查
+@security-auditor 审查整个认证流程的安全性
+
+# 代码审查
+@code-reviewer 进行最终代码质量检查
+
+# 智能提交
+/commit
+# 自动生成详细的提交信息并提交代码
+```
+
+#### 4. 项目管理集成
+```bash
+# 更新任务状态
+/pm:task-next
+
+# 同步到GitHub
+/pm:sync-github
+
+# 里程碑管理
+/pm:milestone
+```
+
+### Agent协作模式
+
+不同agent可以协同工作，形成完整的开发流程：
+
+```bash
+# 需求 → 设计 → 实现 → 测试 → 审查
+@product-manager → @tdd-architect → @test-case-generator → @code-reviewer → @security-auditor
+
+# 性能优化流程  
+@performance-analyzer → @code-reviewer → /tdd:refactor
+
+# 并行开发协调
+@parallel-worker 协调多个开发任务的依赖关系
+```
+
 ## 🚀 下一步
 
 初始化完成后：
 
 1. 运行 `/tdd:status` 检查工作流状态
-2. 使用 `/pm:prd-new` 创建第一个任务
+2. 使用 `/pm:prd-new` 创建第一个任务  
 3. 开始TDD开发循环：`/tdd:red` → `/tdd:green` → `/tdd:refactor`
+4. 利用专业化agents提高开发效率
 
 ## 💡 提示
 
 - 使用 `claude-tdd --help` 获取命令帮助
 - 对于特定命令帮助：`claude-tdd init --help`
 - 支持短命令别名：`ctdd` = `claude-tdd`
+- 在Claude Code中，输入 `/` 可看到所有可用命令
+- 输入 `@` 可看到所有可用的专业化agents

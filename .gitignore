@@ -71,7 +71,14 @@ test-projects/
 
 # Local documentation files (not for version control)
 docs/BRANCH_MANAGEMENT.md
-RELEASE.md
+docs/RELEASE.md
+
+# Temporary files
+commit_message.txt
+*.tmp
+
+# Wiki content (managed separately)
+wiki-content/
 
 # GitHub Packages configuration
 .npmrc.github

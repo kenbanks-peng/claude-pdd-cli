@@ -418,7 +418,7 @@ All contributions automatically go through:
 ### 📋 Main Documentation
 - **🚀 Quick Start**: Right here in README
 - **🤝 Contributing**: [Contributing Guide](CONTRIBUTING.md)
-- **📝 Usage Guide**: [Usage Examples](USAGE.md)
+- **📝 Usage Guide**: [Usage Examples](docs/USAGE.md)
 - **💼 Examples**: [Example Projects](examples/)
 
 ### 📚 Detailed Documentation (GitHub Wiki)
@@ -432,7 +432,7 @@ For comprehensive documentation, visit our [**GitHub Wiki**](https://github.com/
 
 ## 💬 Support
 
-- **📖 Documentation**: [GitHub Wiki](https://github.com/MuziGeek/claude-tdd-cli/wiki) | [Usage Guide](USAGE.md) | [Examples](examples/)
+- **📖 Documentation**: [GitHub Wiki](https://github.com/MuziGeek/claude-tdd-cli/wiki) | [Usage Guide](docs/USAGE.md) | [Examples](examples/)
 - **💬 Issues**: [GitHub Issues](https://github.com/MuziGeek/claude-tdd-cli/issues)
 - **🚀 Discussions**: [GitHub Discussions](https://github.com/MuziGeek/claude-tdd-cli/discussions)  
 - **🔍 CI Status**: [GitHub Actions](https://github.com/MuziGeek/claude-tdd-cli/actions)

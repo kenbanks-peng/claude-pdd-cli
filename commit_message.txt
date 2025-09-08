@@ -1,37 +1,38 @@
-docs: 完善文档管理策略 - 创建 CONTRIBUTING.md 和 Wiki 内容结构
+refactor: 优化文档管理结构 - 整理 docs 目录和清理项目文件
 
 主要完成内容：
-1. 文档管理优化
-   - 调整 .gitignore 配置，移除 CHANGELOG.md（用户需要）
-   - 保留 RELEASE.md 和本地文档的忽略配置
-   - 确保文档策略符合开源项目最佳实践
+1. 文档目录结构优化
+   - 将 USAGE.md 移动到 docs/USAGE.md
+   - 将 RELEASE.md 移动到 docs/RELEASE.md
+   - 保持根目录简洁，仅保留用户直接需要的文档
 
-2. 贡献指南建设
-   - 创建完整的 CONTRIBUTING.md 贡献指南
-   - 包含开发环境设置、代码规范、测试要求
-   - 提供清晰的 PR 流程和社区参与指导
-   - 添加问题报告和功能请求模板
+2. 项目文件清理
+   - 删除临时文件 commit_message.txt
+   - 清理 wiki-content 目录（内容已迁移到 GitHub Wiki）
+   - 移除不必要的本地文件
 
-3. GitHub Wiki 内容准备
-   - 创建 Home.md Wiki 主页，提供清晰导航结构
-   - 准备 Architecture.md 系统架构文档
-   - 创建 Development-Guide.md 详细开发指南
-   - 准备 Troubleshooting.md 故障排除文档
-   - 迁移分支管理和发布流程文档到 Wiki 结构
+3. .gitignore 配置优化
+   - 更新忽略规则，将 RELEASE.md 路径改为 docs/RELEASE.md
+   - 添加临时文件忽略规则 (commit_message.txt, *.tmp)
+   - 添加 wiki-content 目录忽略规则
+   - 保持 GitHub Packages 配置忽略
 
-4. README.md 文档链接优化
-   - 重构文档章节，分为主要文档和详细文档
-   - 添加 GitHub Wiki 专门章节和完整链接
-   - 完善支持渠道信息，包含 Discussions 和邮箱
-   - 提供结构化的文档导航体验
+4. README.md 链接更新
+   - 更新 Usage Guide 链接为 docs/USAGE.md
+   - 保持其他文档链接的正确性
+   - 维护 GitHub Wiki 导航链接
 
 技术亮点：
-- 实现文档分层管理：代码仓库保留用户必需文档，详细文档迁移到 Wiki
-- 建立完整的贡献者指导体系，降低新贡献者参与门槛
-- 优化文档可发现性和可访问性
+- 实现文档分层管理：用户文档(根目录) + 详细文档(docs) + 开发文档(Wiki)
+- 建立清晰的文档访问路径和权限控制
+- 优化项目结构，提升可维护性
 
-文档覆盖率：100%（所有必要文档类型已创建）
-用户体验影响：显著提升新用户和贡献者的文档获取体验
+文档组织结构：
+- 根目录：README.md, CONTRIBUTING.md, CHANGELOG.md (用户直接需要)
+- docs/：USAGE.md, RELEASE.md, BRANCH_MANAGEMENT.md (详细说明)
+- GitHub Wiki：Architecture, Development-Guide, Troubleshooting (开发文档)
+
+用户体验影响：清晰的文档层次结构，更好的可发现性
 
 🎉 Generated with [Claude Code](https://claude.ai/code)
 

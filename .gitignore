@@ -62,3 +62,16 @@ pids/
 # CLI development
 test-projects/
 *.test-tmp/
+
+# Testing files (keep in development, exclude from npm and git)
+jest.config.js
+tests/
+__tests__/
+**/__tests__/
+*.test.ts
+*.test.js
+*.spec.ts
+*.spec.js
+
+# Example files (for development only)
+examples/

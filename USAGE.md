@@ -30,9 +30,12 @@ claude-tdd init --quick --framework nodejs
 | `claude-tdd status` | 工作流状态 | `claude-tdd status --json` |
 | `claude-tdd config` | 配置管理 | `claude-tdd config show` |
 | `claude-tdd update` | 更新模板 | `claude-tdd update --check` |
+| `claude-tdd switch-framework` | 切换项目框架 | `claude-tdd switch-framework python` |
+| `claude-tdd migrate` | 高级框架迁移 | `claude-tdd migrate --from java --to rust` |
 
-### Init 命令选项
+### 命令详细选项
 
+#### Init 命令选项
 ```bash
 claude-tdd init [options]
 
@@ -41,6 +44,41 @@ Options:
   -q, --quick             快速设置，使用默认配置
   --force                 强制覆盖现有配置
   --template <type>       使用特定模板 (full/minimal/custom)
+```
+
+#### Switch-Framework 命令选项
+```bash
+claude-tdd switch-framework [framework] [options]
+
+Arguments:
+  framework               目标框架 (nodejs/java/python/go/rust)
+
+Options:
+  --yes                   跳过确认提示
+  --skip-backup          跳过配置备份
+```
+
+#### Migrate 命令选项
+```bash
+claude-tdd migrate [options]
+
+Options:
+  --from <type>          源框架类型
+  --to <type>            目标框架类型
+  --interactive          交互式迁移指导
+```
+
+#### Config 命令选项
+```bash
+claude-tdd config <action> [key] [value] [options]
+
+Actions:
+  show                    显示当前配置
+  set <key> <value>       设置配置项
+  list                    列出可用模板
+
+Options:
+  --apply                立即应用配置更改
 ```
 
 ### 使用场景示例
@@ -73,6 +111,22 @@ claude-tdd doctor --verbose
 
 # 强制初始化（覆盖现有配置）
 claude-tdd init --force --template full
+```
+
+#### 4. 框架切换场景
+```bash
+# 从Node.js切换到Python
+claude-tdd switch-framework python
+
+# 快速切换到Java（跳过确认）
+claude-tdd switch-framework java --yes
+
+# 从Go迁移到Rust（高级迁移）
+claude-tdd migrate --from go --to rust --interactive
+
+# 检查切换后的配置
+claude-tdd config show
+claude-tdd status
 ```
 
 ## 🎯 生成的项目结构
@@ -135,6 +189,9 @@ claude-tdd config show
 ```bash
 # 设置默认框架
 claude-tdd config set default.framework nodejs
+
+# 设置项目框架（立即应用）
+claude-tdd config set project.framework python --apply
 
 # 启用GitHub集成
 claude-tdd config set github.integration true
@@ -219,13 +276,23 @@ claude-tdd status
 - 定期运行 `claude-tdd update` 保持模板最新
 - 使用 `claude-tdd doctor` 诊断环境问题
 
-### 3. CI/CD集成
+### 3. 框架切换最佳实践
+- 在切换前运行 `claude-tdd doctor` 确保环境健康
+- 使用默认配置备份（不使用 `--skip-backup`）
+- 切换后运行 `claude-tdd status` 验证配置
+- 对于复杂项目，优先使用 `migrate` 而非 `switch-framework`
+- 切换后重新配置项目特定的测试和构建命令
+
+### 4. CI/CD集成
 ```bash
 # 在CI脚本中检查TDD配置
 claude-tdd status --json | jq '.configured' 
 
 # 自动更新模板
 claude-tdd update --force
+
+# 自动验证框架配置
+claude-tdd config show | jq '.project.framework'
 ```
 
 ## 🚀 下一步

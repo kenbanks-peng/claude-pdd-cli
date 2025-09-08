@@ -18,6 +18,8 @@ Claude TDD CLI transforms the complex process of setting up a professional Test-
 - 🛡️ **Quality Gates**: Automated testing, hooks, and validation
 - 📦 **Multi-Framework**: Support for Node.js, Java, Python, Go, and Rust
 - 🔄 **Template Management**: Keep your workflow up-to-date with latest best practices
+- 🔀 **Framework Switching**: Seamlessly switch between frameworks while preserving configurations
+- 🛠️ **Configuration Backup**: Automatic backup mechanism for safe configuration changes
 
 ## 🚀 Quick Start
 
@@ -62,8 +64,10 @@ claude-tdd status
 | `claude-tdd init` | Initialize TDD workflow | `--quick`, `--force`, `--framework <type>`, `--template <type>` |
 | `claude-tdd doctor` | Diagnose environment | `--verbose`, `--check-project`, `--check-claude` |
 | `claude-tdd status` | Show workflow status | `--json` |
-| `claude-tdd config` | Manage configuration | `show`, `set <key> <value>`, `list` |
+| `claude-tdd config` | Manage configuration | `show`, `set <key> <value>`, `list`, `--apply` |
 | `claude-tdd update` | Update templates | `--check`, `--force` |
+| `claude-tdd switch-framework` | Switch project framework | `[framework]`, `--yes`, `--skip-backup` |
+| `claude-tdd migrate` | Advanced framework migration | `--from <type>`, `--to <type>`, `--interactive` |
 
 ### Examples
 
@@ -82,6 +86,18 @@ claude-tdd doctor --verbose
 
 # Show status in JSON format for scripts
 claude-tdd status --json
+
+# Switch project from Node.js to Python
+claude-tdd switch-framework python
+
+# Quick framework switch without confirmation
+claude-tdd switch-framework java --yes
+
+# Advanced migration from Java to Rust
+claude-tdd migrate --from java --to rust
+
+# Set project framework configuration
+claude-tdd config set project.framework nodejs --apply
 ```
 
 ## 🛠️ Supported Frameworks
@@ -202,6 +218,25 @@ claude-tdd init --framework python --template minimal
 
 # Rust project with full features
 claude-tdd init --framework rust --template full
+```
+
+### Framework Switching
+
+```bash
+# Switch existing project from Node.js to Python
+claude-tdd switch-framework python
+
+# Quick switch without confirmation prompts
+claude-tdd switch-framework java --yes
+
+# Skip configuration backup during switch
+claude-tdd switch-framework go --skip-backup
+
+# Advanced migration with guidance
+claude-tdd migrate --from nodejs --to rust --interactive
+
+# Update framework configuration
+claude-tdd config set project.framework python --apply
 ```
 
 ### Update Management

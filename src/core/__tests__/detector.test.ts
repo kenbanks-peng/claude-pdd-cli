@@ -267,11 +267,12 @@ describe('EnvironmentDetector', () => {
       // 以及全局配置目录不存在（用于detectClaudeCode）
       fsExtra.pathExists.mockImplementation((pathToCheck: string) => {
         if (typeof pathToCheck === 'string') {
-          // 项目本地的.claude目录存在（触发冲突）
-          if (pathToCheck.endsWith('.claude') && !pathToCheck.includes(path.sep + 'Users' + path.sep) && !pathToCheck.includes('/home/')) {
+          // 精确匹配项目本地的.claude目录
+          const projectClaudePath = path.join(process.cwd(), '.claude');
+          if (pathToCheck === projectClaudePath) {
             return Promise.resolve(true);
           }
-          // 其他路径（如全局配置、package.json等）不存在
+          // 其他路径不存在
           return Promise.resolve(false);
         }
         return Promise.resolve(false);

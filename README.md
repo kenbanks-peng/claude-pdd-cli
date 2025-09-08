@@ -3,9 +3,7 @@
 🚀 **Professional CLI tool for initializing and managing Claude TDD Workflow projects**
 
 [![npm version](https://badge.fury.io/js/claude-tdd-cli.svg)](https://badge.fury.io/js/claude-tdd-cli)
-[![npm downloads](https://img.shields.io/npm/dm/claude-tdd-cli.svg)](https://www.npmjs.com/package/claude-tdd-cli)
 [![CI/CD Pipeline](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/ci.yml)
-[![Release](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/release.yml/badge.svg)](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/release.yml)
 [![CodeQL](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/codeql.yml/badge.svg)](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/codeql.yml)
 [![codecov](https://codecov.io/gh/MuziGeek/claude-tdd-cli/branch/main/graph/badge.svg)](https://codecov.io/gh/MuziGeek/claude-tdd-cli)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
@@ -31,11 +29,36 @@ Claude TDD CLI transforms the complex process of setting up a professional Test-
 
 ## 🚀 Quick Start
 
-### Installation
+### 安装方式
 
+#### 从 npm 安装（推荐）
 ```bash
 npm install -g claude-tdd-cli
 ```
+
+#### 从 GitHub Packages 安装
+
+> **包名区别**: GitHub Packages 使用作用域包名 `@MuziGeek/claude-tdd-cli`，而 npm 使用 `claude-tdd-cli`
+
+```bash
+# 配置 GitHub Packages 源（一次性配置）
+npm config set @MuziGeek:registry https://npm.pkg.github.com
+npm config set //npm.pkg.github.com/:_authToken YOUR_GITHUB_TOKEN
+
+# 安装作用域包
+npm install -g @MuziGeek/claude-tdd-cli
+```
+
+#### 临时使用 GitHub Packages 安装
+```bash
+npm install -g @MuziGeek/claude-tdd-cli --registry https://npm.pkg.github.com
+```
+
+> **注意**: 
+> - GitHub Packages 需要 GitHub 个人访问令牌
+> - 包名为作用域包 `@MuziGeek/claude-tdd-cli`
+> - 功能与 npm 版本完全一致
+> - 详见 [GitHub Packages 文档](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-to-github-packages)
 
 ### Initialize TDD Workflow
 
@@ -372,8 +395,13 @@ npm run dev      # Watch mode
 
 ## 🤝 Contributing
 
-We welcome contributions! Our automated CI/CD ensures code quality:
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for detailed information on:
+- Development environment setup
+- Code standards and conventions  
+- Testing requirements
+- Pull request process
 
+Our automated CI/CD ensures code quality:
 1. **Fork** the repository
 2. **Create** a feature branch
 3. **Make** your changes with tests
@@ -385,12 +413,31 @@ All contributions automatically go through:
 - Security scans
 - Automated reviews
 
+## 📖 Documentation
+
+### 📋 Main Documentation
+- **🚀 Quick Start**: Right here in README
+- **🤝 Contributing**: [Contributing Guide](CONTRIBUTING.md)
+- **📝 Usage Guide**: [Usage Examples](USAGE.md)
+- **💼 Examples**: [Example Projects](examples/)
+
+### 📚 Detailed Documentation (GitHub Wiki)
+For comprehensive documentation, visit our [**GitHub Wiki**](https://github.com/MuziGeek/claude-tdd-cli/wiki):
+
+- **🏗️ [System Architecture](https://github.com/MuziGeek/claude-tdd-cli/wiki/Architecture)** - Technical architecture and design principles
+- **🛠️ [Development Guide](https://github.com/MuziGeek/claude-tdd-cli/wiki/Development-Guide)** - Complete development environment setup
+- **🌿 [Branch Management](https://github.com/MuziGeek/claude-tdd-cli/wiki/Branch-Management)** - Git workflow and version control
+- **📦 [Release Process](https://github.com/MuziGeek/claude-tdd-cli/wiki/Release-Process)** - Automated release and publishing
+- **🔧 [Troubleshooting](https://github.com/MuziGeek/claude-tdd-cli/wiki/Troubleshooting)** - Common issues and solutions
+
 ## 💬 Support
 
-- 📖 **Documentation**: [Usage Guide](USAGE.md) | [Examples](examples/)
-- 💬 **Issues**: [GitHub Issues](https://github.com/MuziGeek/claude-tdd-cli/issues)
-- 🔍 **CI Status**: [GitHub Actions](https://github.com/MuziGeek/claude-tdd-cli/actions)
-- 🌟 **Claude Code**: [Official Site](https://claude.ai/code)
+- **📖 Documentation**: [GitHub Wiki](https://github.com/MuziGeek/claude-tdd-cli/wiki) | [Usage Guide](USAGE.md) | [Examples](examples/)
+- **💬 Issues**: [GitHub Issues](https://github.com/MuziGeek/claude-tdd-cli/issues)
+- **🚀 Discussions**: [GitHub Discussions](https://github.com/MuziGeek/claude-tdd-cli/discussions)  
+- **🔍 CI Status**: [GitHub Actions](https://github.com/MuziGeek/claude-tdd-cli/actions)
+- **🌟 Claude Code**: [Official Site](https://claude.ai/code)
+- **✉️ Email**: mz@easymuzi.cn
 
 ---
 

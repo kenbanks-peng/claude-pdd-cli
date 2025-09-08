@@ -50,6 +50,9 @@ pids/
 # Optional npm cache directory
 .npm
 
+# NPM configuration files with sensitive tokens
+.npmrc
+
 # Optional eslint cache
 .eslintcache
 
@@ -65,3 +68,10 @@ test-projects/
 
 # Testing files (specific test files are excluded via .npmignore)
 # Keep configuration and test directories for development
+
+# Local documentation files (not for version control)
+docs/BRANCH_MANAGEMENT.md
+RELEASE.md
+
+# GitHub Packages configuration
+.npmrc.github

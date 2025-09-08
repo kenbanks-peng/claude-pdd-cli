@@ -1,6 +1,6 @@
 {
   "name": "claude-tdd-cli",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "CLI tool for initializing and managing Claude TDD Workflow projects",
   "main": "dist/index.js",
   "bin": {
@@ -63,10 +63,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/claude-tdd/claude-tdd-cli.git"
+    "url": "https://github.com/MuziGeek/claude-tdd-cli.git"
   },
   "bugs": {
-    "url": "https://github.com/claude-tdd/claude-tdd-cli/issues"
+    "url": "https://github.com/MuziGeek/claude-tdd-cli/issues"
   },
-  "homepage": "https://github.com/claude-tdd/claude-tdd-cli#readme"
+  "homepage": "https://github.com/MuziGeek/claude-tdd-cli#readme"
 }

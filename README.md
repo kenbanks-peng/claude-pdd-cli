@@ -3,7 +3,7 @@
 🚀 **Professional CLI tool for initializing and managing Claude TDD Workflow projects**
 
 [![npm version](https://badge.fury.io/js/claude-tdd-cli.svg)](https://badge.fury.io/js/claude-tdd-cli)
-[![Node.js CI](https://github.com/claude-tdd/claude-tdd-cli/workflows/Node.js%20CI/badge.svg)](https://github.com/claude-tdd/claude-tdd-cli/actions)
+[![Node.js CI](https://github.com/MuziGeek/claude-tdd-cli/workflows/Node.js%20CI/badge.svg)](https://github.com/MuziGeek/claude-tdd-cli/actions)
 
 ## 🎯 What is Claude TDD CLI?
 
@@ -126,8 +126,9 @@ When you run `claude-tdd init`, the CLI creates a complete TDD workflow:
 ```
 your-project/
 ├── .claude/                     # TDD workflow configuration
-│   ├── settings.json           # Core settings and hooks
-│   ├── tdd-state.json         # TDD phase tracking
+│   ├── project-config.json    # Main project configuration
+│   ├── tdd-state.json         # TDD phase tracking state
+│   ├── example.tasks.json     # Example task structure
 │   ├── agents/                # 10 specialized AI agents
 │   │   ├── tdd-architect.md       # Test design & architecture
 │   │   ├── test-case-generator.md # Concrete test creation
@@ -136,13 +137,26 @@ your-project/
 │   │   └── ... (6 more agents)
 │   ├── commands/              # TDD and PM commands
 │   │   ├── tdd/              # RED, GREEN, REFACTOR commands
-│   │   └── pm/               # Project management commands
+│   │   ├── pm/               # Project management commands
+│   │   └── commit.md         # Smart commit command
 │   ├── hooks/                # Quality control hooks
 │   │   ├── tdd-guard.sh         # Phase permission enforcement
 │   │   ├── test-runner.sh       # Automatic test execution
 │   │   └── commit-validator.sh  # Commit validation
+│   ├── scripts/              # Shell scripts for automation
+│   │   ├── tdd/             # TDD management scripts
+│   │   │   ├── state-manager.sh   # TDD state management
+│   │   │   ├── init.sh           # TDD environment setup
+│   │   │   └── project-detector.sh # Project type detection
+│   │   └── pm/              # Project management scripts
+│   │       ├── next-task.sh      # Smart task recommendation
+│   │       ├── sync-to-github.sh # GitHub Issues sync
+│   │       └── validate-task-decomposition.sh # Task quality check
+│   ├── bin/                  # Utility tools
+│   │   └── json-tool.js         # JSON manipulation utility
 │   ├── framework-configs/     # Language-specific configurations
-│   └── rules/                # TDD workflow rules
+│   ├── rules/                # TDD workflow rules
+│   └── schemas/              # JSON validation schemas
 └── .gitignore                # Updated with TDD entries
 ```
 
@@ -295,7 +309,7 @@ claude-tdd doctor --help
 ### Building from Source
 
 ```bash
-git clone https://github.com/claude-tdd/claude-tdd-cli.git
+git clone https://github.com/MuziGeek/claude-tdd-cli.git
 cd claude-tdd-cli
 npm install
 npm run build
@@ -320,7 +334,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 ## 💬 Support
 
 - 📖 [Documentation](https://claude-tdd-cli.dev)
-- 💬 [GitHub Issues](https://github.com/claude-tdd/claude-tdd-cli/issues)
+- 💬 [GitHub Issues](https://github.com/MuziGeek/claude-tdd-cli/issues)
 - 🌟 [Claude Code](https://claude.ai/code)
 
 ---

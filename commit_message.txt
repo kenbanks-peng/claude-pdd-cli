@@ -1,41 +1,50 @@
-docs: 完善文档和清理项目结构
+fix: 修复模板复制缺失和文档准确性问题
 
-主要更新：
-1. 📚 文档完善
-   - README.md：添加框架切换功能说明
-   - USAGE.md：添加详细的命令选项和使用场景
-   - 新增框架切换最佳实践指南
-   - 更新命令列表表格
+主要修复：
+1. 📂 修复TemplateManager模板复制缺失
+   - 添加 copyScripts() 方法：复制 scripts/ 目录到 .claude/scripts/
+   - 添加 copyConfigs() 方法：复制配置模板到 .claude/
+   - 更新 setup() 方法调用新的复制方法
+   - 确保所有shell脚本具有可执行权限
 
-2. 🧹 项目清理
-   - 从Git移除测试文件（jest.config.js, tests/, src/**/__tests__/）
-   - 从Git移除examples文件夹
-   - 更新.gitignore排除测试文件和examples
-   - 更新.npmignore确保测试文件不发布到npm
+2. 🔗 修正GitHub仓库地址
+   - README.md：更新所有GitHub链接和badges
+   - package.json：更新 repository、bugs、homepage URLs
+   - 从 claude-tdd/claude-tdd-cli 修正为 MuziGeek/claude-tdd-cli
 
-3. 📖 文档内容增强
-   新增命令说明：
-   - switch-framework：切换项目框架
-   - migrate：高级框架迁移
-   - config --apply：立即应用配置更改
+3. 📋 更新项目结构文档
+   实际创建的完整结构：
+   ```
+   .claude/
+   ├── project-config.json    # 主项目配置
+   ├── tdd-state.json        # TDD状态跟踪
+   ├── example.tasks.json    # 任务结构示例
+   ├── agents/               # AI agents (10个)
+   ├── commands/             # TDD和PM命令
+   ├── hooks/                # 质量控制hooks
+   ├── scripts/              # 自动化Shell脚本
+   │   ├── tdd/             # TDD管理脚本
+   │   └── pm/              # 项目管理脚本
+   ├── bin/                  # JSON工具
+   ├── framework-configs/    # 框架配置
+   ├── rules/                # 工作流规则
+   └── schemas/              # JSON验证schemas
+   ```
 
-   新增使用示例：
-   - 框架切换场景演示
-   - 配置管理最佳实践
-   - CI/CD集成建议
+4. 🔧 技术改进
+   - 增强初始化后的项目完整性
+   - 确保用户能使用所有TDD和PM脚本功能
+   - 提供准确的文档和链接地址
+   - 改进代码可维护性
 
-4. 🎯 改进用户体验
-   - 详细的命令选项说明
-   - 实际使用场景演示
-   - 框架切换最佳实践
-   - 故障排除指导
+影响：
+- 新安装用户将获得完整项目结构
+- 修复scripts目录缺失问题
+- 文档与实际功能完全一致
+- GitHub链接正确可访问
 
-技术改进：
-- 清理npm包大小，移除不必要的测试文件
-- 保持开发环境测试功能完整
-- 确保文档与代码功能同步
-- 提供完整的框架切换工作流指导
+版本更新：0.2.1 → 0.2.2
 
-🎉 Generated with [Claude Code](https://claude.ai/code)
+🔧 Generated with [Claude Code](https://claude.ai/code)
 
 Co-Authored-By: Claude <noreply@anthropic.com>

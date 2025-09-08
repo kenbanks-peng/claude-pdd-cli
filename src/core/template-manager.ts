@@ -30,6 +30,12 @@ export class TemplateManager {
     // Copy bin directory (JSON tools)
     await this.copyBin(config, claudeDir);
     
+    // Copy scripts directory (TDD and PM shell scripts)
+    await this.copyScripts(config, claudeDir);
+    
+    // Copy configuration templates
+    await this.copyConfigs(config, claudeDir);
+    
     // Copy framework-specific configurations
     await this.copyFrameworkConfigs(config, claudeDir);
     
@@ -549,6 +555,69 @@ echo "✅ Commit validation passed for ${config.framework}"`
       console.log('✅ JSON tools copied to .claude/bin/');
     } else {
       console.warn('⚠️  No bin templates found, skipping bin directory setup');
+    }
+  }
+
+  /**
+   * Copy scripts directory with TDD and PM shell scripts
+   */
+  private async copyScripts(config: any, claudeDir: string): Promise<void> {
+    const scriptsDir = path.join(claudeDir, 'scripts');
+    const templateScriptsDir = path.join(this.templateDir, 'scripts');
+    
+    if (await fs.pathExists(templateScriptsDir)) {
+      // Copy scripts with variable replacement
+      await this.copyDirectoryWithVariableReplacement(templateScriptsDir, scriptsDir, config);
+      
+      // Make all shell scripts executable
+      const tddScriptsDir = path.join(scriptsDir, 'tdd');
+      const pmScriptsDir = path.join(scriptsDir, 'pm');
+      
+      for (const subDir of [tddScriptsDir, pmScriptsDir]) {
+        if (await fs.pathExists(subDir)) {
+          const scriptFiles = await fs.readdir(subDir);
+          for (const file of scriptFiles) {
+            if (file.endsWith('.sh')) {
+              await fs.chmod(path.join(subDir, file), '755');
+            }
+          }
+        }
+      }
+      
+      console.log('✅ Shell scripts copied to .claude/scripts/');
+    } else {
+      console.warn('⚠️  No script templates found, skipping scripts directory setup');
+    }
+  }
+
+  /**
+   * Copy configuration templates
+   */
+  private async copyConfigs(config: any, claudeDir: string): Promise<void> {
+    const templateConfigsDir = path.join(this.templateDir, 'configs');
+    
+    if (await fs.pathExists(templateConfigsDir)) {
+      // Copy configuration files directly to .claude directory
+      const configFiles = await fs.readdir(templateConfigsDir);
+      
+      for (const file of configFiles) {
+        const templatePath = path.join(templateConfigsDir, file);
+        const targetPath = path.join(claudeDir, file);
+        
+        if (file.endsWith('.json')) {
+          // Copy JSON files with variable replacement
+          let content = await fs.readFile(templatePath, 'utf8');
+          content = this.replaceTemplateVariables(content, config);
+          await fs.writeFile(targetPath, content);
+        } else {
+          // Copy other files as-is
+          await fs.copy(templatePath, targetPath);
+        }
+      }
+      
+      console.log('✅ Configuration templates copied to .claude/');
+    } else {
+      console.warn('⚠️  No config templates found, skipping config setup');
     }
   }
 }

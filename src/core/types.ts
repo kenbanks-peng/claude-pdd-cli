@@ -97,6 +97,7 @@ export interface DoctorOptions {
 
 export interface ConfigOptions {
   global?: boolean;
+  apply?: boolean;
 }
 
 export interface StatusOptions {
@@ -106,6 +107,11 @@ export interface StatusOptions {
 export interface UpdateOptions {
   check?: boolean;
   force?: boolean;
+}
+
+export interface SwitchFrameworkOptions {
+  yes?: boolean;
+  skipBackup?: boolean;
 }
 
 /**

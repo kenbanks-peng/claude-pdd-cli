@@ -2,12 +2,27 @@
 
 import { Command } from 'commander';
 import chalk from 'chalk';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 import { initCommand } from './commands/init';
 import { doctorCommand } from './commands/doctor';
 import { configCommand } from './commands/config';
 import { statusCommand } from './commands/status';
 import { updateCommand } from './commands/update';
+import { switchFrameworkCommand, migrateCommand } from './commands/switch-framework';
 import { printBanner } from './ui/output';
+
+// 从 package.json 读取版本号
+function getVersion(): string {
+  try {
+    const packageJsonPath = join(__dirname, '../package.json');
+    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
+    return packageJson.version;
+  } catch (error) {
+    console.warn('Warning: Could not read version from package.json');
+    return '1.0.0'; // 降级到默认版本
+  }
+}
 
 const program = new Command();
 
@@ -17,7 +32,7 @@ async function main() {
   program
     .name('claude-tdd')
     .description('CLI tool for initializing and managing Claude TDD Workflow projects')
-    .version('1.0.0', '-v, --version', 'output the current version')
+    .version(getVersion(), '-v, --version', 'output the current version')
     .helpOption('-h, --help', 'display help for command');
 
   // Init command
@@ -47,6 +62,7 @@ async function main() {
     .argument('[key]', 'configuration key')
     .argument('[value]', 'configuration value')
     .option('--global', 'apply to global configuration')
+    .option('--apply', 'immediately apply project-level changes (for framework switching)')
     .action(configCommand);
 
   // Status command
@@ -63,6 +79,23 @@ async function main() {
     .option('--check', 'only check for updates without applying')
     .option('--force', 'force update even if version is current')
     .action(updateCommand);
+
+  // Switch Framework command
+  program
+    .command('switch-framework [framework]')
+    .description('Switch project framework while preserving other configurations')
+    .option('-y, --yes', 'skip confirmation prompts')
+    .option('--skip-backup', 'skip configuration backup')
+    .action(switchFrameworkCommand);
+
+  // Migrate command
+  program
+    .command('migrate')
+    .description('Migrate project between frameworks (advanced)')
+    .option('--from <framework>', 'source framework')
+    .option('--to <framework>', 'target framework')
+    .option('--interactive', 'run interactive migration wizard')
+    .action(migrateCommand);
 
   // Parse command line arguments
   await program.parseAsync(process.argv);

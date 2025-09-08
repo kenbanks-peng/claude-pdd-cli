@@ -1,0 +1,77 @@
+# Source files
+src/
+tests/
+__tests__/
+*.test.ts
+*.spec.ts
+
+# Development files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build configuration
+tsconfig.json
+jest.config.js
+.eslintrc*
+.prettierrc*
+
+# Git files
+.git/
+.gitignore
+.gitattributes
+
+# CI/CD files
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+
+# Documentation (keep only README.md)
+docs/
+CONTRIBUTING.md
+CHANGELOG.md
+
+# Development dependencies and cache
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+*.tgz
+
+# Test artifacts
+coverage/
+.nyc_output
+.jest/
+
+# Environment files
+.env*
+!.env.example
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# CLI development and testing
+test-projects/
+*.test-tmp/
+examples/
+
+# Build artifacts (keep dist/ for distribution)
+.tsbuildinfo
+*.log

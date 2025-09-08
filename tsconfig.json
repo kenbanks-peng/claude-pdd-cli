@@ -30,6 +30,10 @@
   "exclude": [
     "node_modules",
     "dist",
-    "tests"
+    "tests",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/__tests__/**/*",
+    "coverage"
   ]
 }

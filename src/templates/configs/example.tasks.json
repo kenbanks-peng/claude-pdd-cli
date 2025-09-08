@@ -1,0 +1,236 @@
+{
+  "metadata": {
+    "name": "示例功能任务分解",
+    "feature": "example-feature", 
+    "version": "1.0.0",
+    "created": "{{CREATED_DATE}}",
+    "lastModified": "{{LAST_MODIFIED}}",
+    "author": "Claude TDD CLI",
+    "description": "这是一个示例任务文件，展示了完整的任务分解结构"
+  },
+  "config": {
+    "tddPhases": ["red", "green", "refactor"],
+    "qualityGates": {
+      "minCoverage": 80,
+      "maxComplexity": 10
+    },
+    "estimationUnit": "hours"
+  },
+  "tasks": [
+    {
+      "id": "T001",
+      "title": "设计用户认证接口",
+      "description": "设计RESTful API接口用于用户登录和注册",
+      "type": "design",
+      "status": "pending",
+      "priority": "high",
+      "complexity": 3,
+      "estimation": "2h",
+      "feature": "user-auth",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "API接口设计文档完成",
+        "包含登录、注册、登出接口",
+        "定义请求响应格式",
+        "包含错误处理规范"
+      ],
+      "technicalRequirements": [
+        "使用RESTful设计原则",
+        "支持JWT认证",
+        "包含输入验证"
+      ],
+      "testStrategy": "单元测试 + 集成测试",
+      "tags": ["api", "auth", "design"],
+      "assignee": null,
+      "createdAt": "{{CREATED_DATE}}",
+      "updatedAt": "{{LAST_MODIFIED}}"
+    },
+    {
+      "id": "T002", 
+      "title": "实现用户注册功能",
+      "description": "实现用户注册的完整流程，包括验证和数据存储",
+      "type": "development",
+      "status": "pending", 
+      "priority": "high",
+      "complexity": 5,
+      "estimation": "4h",
+      "feature": "user-auth",
+      "dependencies": ["T001"],
+      "acceptanceCriteria": [
+        "用户可以通过邮箱和密码注册",
+        "密码必须符合安全要求",
+        "邮箱验证功能正常",
+        "重复注册时返回适当错误"
+      ],
+      "technicalRequirements": [
+        "密码加密存储",
+        "邮箱格式验证",
+        "防止重复注册",
+        "数据库事务处理"
+      ],
+      "testStrategy": "TDD开发，先写测试再实现",
+      "tags": ["development", "auth", "backend"],
+      "assignee": null,
+      "createdAt": "{{CREATED_DATE}}",
+      "updatedAt": "{{LAST_MODIFIED}}"
+    },
+    {
+      "id": "T003",
+      "title": "实现用户登录功能", 
+      "description": "实现用户登录验证和JWT令牌生成",
+      "type": "development",
+      "status": "pending",
+      "priority": "high", 
+      "complexity": 4,
+      "estimation": "3h",
+      "feature": "user-auth",
+      "dependencies": ["T002"],
+      "acceptanceCriteria": [
+        "用户可以使用邮箱和密码登录",
+        "登录成功返回JWT令牌",
+        "登录失败返回错误信息",
+        "支持记住登录状态"
+      ],
+      "technicalRequirements": [
+        "JWT令牌生成和验证",
+        "密码验证",
+        "登录状态管理",
+        "安全性考虑"
+      ],
+      "testStrategy": "单元测试覆盖所有场景",
+      "tags": ["development", "auth", "jwt"],
+      "assignee": null,
+      "createdAt": "{{CREATED_DATE}}",
+      "updatedAt": "{{LAST_MODIFIED}}"
+    },
+    {
+      "id": "T004",
+      "title": "添加登录状态验证中间件",
+      "description": "实现中间件验证用户登录状态和权限",
+      "type": "development", 
+      "status": "pending",
+      "priority": "medium",
+      "complexity": 3,
+      "estimation": "2h",
+      "feature": "user-auth",
+      "dependencies": ["T003"],
+      "acceptanceCriteria": [
+        "中间件可以验证JWT令牌",
+        "无效令牌时返回401错误",
+        "过期令牌时返回403错误",
+        "支持权限级别验证"
+      ],
+      "technicalRequirements": [
+        "JWT令牌解析",
+        "令牌有效性验证",
+        "权限检查逻辑",
+        "错误处理"
+      ],
+      "testStrategy": "中间件单元测试",
+      "tags": ["middleware", "auth", "security"],
+      "assignee": null,
+      "createdAt": "{{CREATED_DATE}}",
+      "updatedAt": "{{LAST_MODIFIED}}"
+    },
+    {
+      "id": "T005",
+      "title": "用户认证集成测试",
+      "description": "编写完整的用户认证流程集成测试",
+      "type": "test",
+      "status": "pending",
+      "priority": "high",
+      "complexity": 4,
+      "estimation": "3h", 
+      "feature": "user-auth",
+      "dependencies": ["T002", "T003", "T004"],
+      "acceptanceCriteria": [
+        "注册-登录完整流程测试",
+        "权限验证集成测试",
+        "错误场景覆盖测试",
+        "性能测试基准"
+      ],
+      "technicalRequirements": [
+        "集成测试框架",
+        "测试数据准备",
+        "Mock外部服务",
+        "测试报告生成"
+      ],
+      "testStrategy": "端到端集成测试",
+      "tags": ["test", "integration", "e2e"],
+      "assignee": null,
+      "createdAt": "{{CREATED_DATE}}",
+      "updatedAt": "{{LAST_MODIFIED}}"
+    },
+    {
+      "id": "T006",
+      "title": "用户认证文档编写",
+      "description": "编写用户认证功能的API文档和使用说明",
+      "type": "documentation",
+      "status": "pending",
+      "priority": "low",
+      "complexity": 2,
+      "estimation": "1.5h",
+      "feature": "user-auth", 
+      "dependencies": ["T005"],
+      "acceptanceCriteria": [
+        "API接口文档完整",
+        "使用示例清晰",
+        "错误代码说明",
+        "安全注意事项"
+      ],
+      "technicalRequirements": [
+        "OpenAPI规范",
+        "代码示例",
+        "部署说明",
+        "故障排查指南"
+      ],
+      "testStrategy": "文档审查",
+      "tags": ["documentation", "api", "guide"],
+      "assignee": null,
+      "createdAt": "{{CREATED_DATE}}",
+      "updatedAt": "{{LAST_MODIFIED}}"
+    }
+  ],
+  "milestones": [
+    {
+      "id": "M001",
+      "name": "用户认证MVP",
+      "description": "基本的用户注册登录功能",
+      "tasks": ["T001", "T002", "T003"],
+      "dueDate": null,
+      "status": "pending"
+    },
+    {
+      "id": "M002", 
+      "name": "用户认证完整版",
+      "description": "包含权限验证的完整认证系统",
+      "tasks": ["T004", "T005", "T006"],
+      "dueDate": null,
+      "status": "pending"
+    }
+  ],
+  "summary": {
+    "totalTasks": 6,
+    "totalEstimation": "15.5h",
+    "avgComplexity": 3.5,
+    "statusDistribution": {
+      "pending": 6,
+      "in_progress": 0,
+      "completed": 0,
+      "blocked": 0,
+      "cancelled": 0
+    },
+    "priorityDistribution": {
+      "critical": 0,
+      "high": 3,
+      "medium": 1, 
+      "low": 2
+    },
+    "typeDistribution": {
+      "design": 1,
+      "development": 3,
+      "test": 1,
+      "documentation": 1
+    }
+  }
+}

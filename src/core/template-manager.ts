@@ -27,6 +27,9 @@ export class TemplateManager {
     // Copy hooks
     await this.copyHooks(config, claudeDir);
     
+    // Copy bin directory (JSON tools)
+    await this.copyBin(config, claudeDir);
+    
     // Copy framework-specific configurations
     await this.copyFrameworkConfigs(config, claudeDir);
     
@@ -518,6 +521,34 @@ echo "✅ Commit validation passed for ${config.framework}"`
       case 'nodejs': return config.buildTool === 'yarn' ? 'yarn lint' : 'npm run lint';
       case 'python': return 'flake8 . && black --check .';
       default: return 'echo "Lint for ' + config.framework + '"';
+    }
+  }
+
+  /**
+   * Copy bin directory with JSON tools
+   */
+  private async copyBin(config: any, claudeDir: string): Promise<void> {
+    const binDir = path.join(claudeDir, 'bin');
+    const templateBinDir = path.join(this.templateDir, 'bin');
+    
+    if (await fs.pathExists(templateBinDir)) {
+      // Copy existing bin templates
+      await fs.ensureDir(binDir);
+      await fs.copy(templateBinDir, binDir);
+      
+      // Make all executable files executable
+      const binFiles = await fs.readdir(binDir);
+      for (const file of binFiles) {
+        const filePath = path.join(binDir, file);
+        const stat = await fs.stat(filePath);
+        if (stat.isFile() && (file.endsWith('.js') || file.endsWith('.sh'))) {
+          await fs.chmod(filePath, '755');
+        }
+      }
+      
+      console.log('✅ JSON tools copied to .claude/bin/');
+    } else {
+      console.warn('⚠️  No bin templates found, skipping bin directory setup');
     }
   }
 }

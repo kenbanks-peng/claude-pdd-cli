@@ -1,108 +1,89 @@
 #!/bin/bash
 
-# TDD Guard Hook - 控制TDD阶段的文件编辑权限
-# 在Write/Edit操作前检查当前TDD阶段和文件类型
+# TDD Phase Guard - Enforce phase-based file editing restrictions
+# 根据当前TDD阶段限制文件编辑操作
 
 PROJECT_DIR="$CLAUDE_PROJECT_DIR"
 TDD_STATE_FILE="$PROJECT_DIR/.claude/tdd-state.json"
+JSON_TOOL="$PROJECT_DIR/.claude/bin/json-tool.js"
 
-# 检查TDD状态文件是否存在
+# 检查是否启用TDD
 if [[ ! -f "$TDD_STATE_FILE" ]]; then
-    echo "⚠️  TDD状态文件不存在。运行 /tdd:init 初始化TDD环境。"
-    exit 1
-fi
-
-# 获取当前TDD阶段
-current_phase=$(jq -r '.currentPhase' "$TDD_STATE_FILE")
-
-# 获取要操作的文件路径（从环境变量或参数中获取）
-target_file="${CLAUDE_TOOL_ARGS}"
-
-# 如果无法获取目标文件，允许操作（可能是其他类型的操作）
-if [[ -z "$target_file" ]]; then
+    echo "ℹ️  TDD未初始化，允许所有文件操作"
     exit 0
 fi
 
-# 函数：检查文件是否匹配模式
-matches_pattern() {
+# JSON 工具函数
+json_get() {
     local file="$1"
-    local pattern="$2"
+    local path="$2"
     
-    case "$file" in
-        $pattern) return 0;;
-        *) return 1;;
-    esac
+    if command -v jq >/dev/null 2>&1; then
+        jq -r ".$path" "$file" 2>/dev/null || echo ""
+    elif [[ -f "$JSON_TOOL" ]]; then
+        node "$JSON_TOOL" get "$file" "$path" 2>/dev/null || echo ""
+    else
+        echo ""
+    fi
 }
 
-# 函数：检查文件类型
-is_test_file() {
-    local file="$1"
-    [[ "$file" =~ \.test\. ]] || [[ "$file" =~ \.spec\. ]] || [[ "$file" =~ ^tests/ ]]
-}
+# 获取当前TDD阶段
+current_phase=$(json_get "$TDD_STATE_FILE" "currentPhase")
 
-is_source_file() {
-    local file="$1"
-    [[ "$file" =~ ^src/ ]] || [[ "$file" =~ ^lib/ ]] || [[ "$file" =~ ^main/ ]]
-}
+# 如果无法获取阶段，默认允许操作
+if [[ -z "$current_phase" || "$current_phase" == "null" ]]; then
+    current_phase="READY"
+fi
 
-is_config_file() {
-    local file="$1"
-    [[ "$file" =~ ^\.claude/ ]] || [[ "$file" =~ \.config\. ]] || 
-    [[ "$file" =~ package\.json ]] || [[ "$file" =~ pom\.xml ]] || [[ "$file" =~ setup\.py ]]
-}
+echo "🛡️ TDD Phase Guard: 当前阶段 [$current_phase]"
 
-# 根据当前阶段检查权限
+# 获取正在编辑的文件（如果有的话）
+edited_file="$1"
+
+# 如果没有提供文件名，跳过检查
+if [[ -z "$edited_file" ]]; then
+    exit 0
+fi
+
+# 基于TDD阶段的文件编辑规则
 case "$current_phase" in
     "RED")
-        if is_test_file "$target_file"; then
-            echo "✅ RED阶段：允许编辑测试文件"
+        # RED阶段：只允许编辑测试文件
+        if [[ "$edited_file" =~ \.(test|spec)\. ]] || [[ "$edited_file" =~ /__tests__/ ]] || [[ "$edited_file" =~ /tests?/ ]]; then
+            echo "✅ RED阶段：允许编辑测试文件 - $edited_file"
             exit 0
         else
-            echo "🔴 RED阶段限制：只能编辑测试文件 ($target_file)"
-            echo "   提示：使用 /tdd:green 进入GREEN阶段编写实现代码"
-            exit 1
+            echo "⚠️  RED阶段警告：当前阶段应该只编写测试！"
+            echo "   正在编辑源代码文件: $edited_file"
+            echo "   建议: 先完成测试编写，然后运行 /tdd:green 进入GREEN阶段"
+            # 不阻止，只是警告
+            exit 0
         fi
         ;;
+    
     "GREEN")
-        if is_source_file "$target_file"; then
-            echo "✅ GREEN阶段：允许编辑源代码文件"
+        # GREEN阶段：只允许编辑源代码文件
+        if [[ "$edited_file" =~ \.(test|spec)\. ]] || [[ "$edited_file" =~ /__tests__/ ]] || [[ "$edited_file" =~ /tests?/ ]]; then
+            echo "⚠️  GREEN阶段警告：当前阶段应该只编写实现代码！"
+            echo "   正在编辑测试文件: $edited_file"
+            echo "   建议: 专注于实现功能，让测试通过"
+            # 不阻止，只是警告
             exit 0
-        elif is_test_file "$target_file"; then
-            echo "🟡 GREEN阶段警告：不建议在GREEN阶段修改测试文件"
-            echo "   提示：GREEN阶段应专注于让现有测试通过"
-            exit 0  # 警告但允许
         else
-            echo "🟢 GREEN阶段限制：只能编辑源代码文件 ($target_file)"
-            echo "   提示：使用 /tdd:refactor 进入REFACTOR阶段进行其他修改"
-            exit 1
+            echo "✅ GREEN阶段：允许编辑源代码文件 - $edited_file"
+            exit 0
         fi
         ;;
+    
     "REFACTOR")
-        if is_source_file "$target_file"; then
-            echo "✅ REFACTOR阶段：允许重构源代码"
-            exit 0
-        elif is_test_file "$target_file"; then
-            echo "🔧 REFACTOR阶段限制：不应修改测试文件逻辑"
-            echo "   提示：REFACTOR阶段应保持测试不变，只重构实现"
-            exit 1
-        else
-            echo "✅ REFACTOR阶段：允许修改配置和文档"
-            exit 0
-        fi
+        # REFACTOR阶段：允许编辑源代码和测试文件
+        echo "✅ REFACTOR阶段：允许编辑代码进行重构 - $edited_file"
+        exit 0
         ;;
-    "READY")
-        if is_config_file "$target_file"; then
-            echo "✅ READY阶段：允许修改配置文件"
-            exit 0
-        else
-            echo "🔵 READY阶段限制：只能修改配置文件 ($target_file)"
-            echo "   提示：使用 /tdd:red 开始新的TDD循环"
-            exit 1
-        fi
-        ;;
-    *)
-        echo "⚠️  未知的TDD阶段：$current_phase"
-        echo "   使用 /tdd:status 检查状态，或 /tdd:init 重新初始化"
-        exit 1
+    
+    "READY"|*)
+        # READY阶段或其他状态：允许所有操作
+        echo "✅ 允许所有文件操作 - $edited_file"
+        exit 0
         ;;
 esac

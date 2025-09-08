@@ -1,6 +1,9 @@
 import chalk from 'chalk';
+import fs from 'fs-extra';
+import path from 'path';
+import { execSync } from 'child_process';
 import { ConfigOptions } from '../core/types';
-import { printHeader, printSuccess, printError, printListItem } from '../ui/output';
+import { printHeader, printSuccess, printError, printListItem, printWarning } from '../ui/output';
 
 /**
  * Manage configuration settings
@@ -70,13 +73,13 @@ async function showConfig(options: ConfigOptions): Promise<void> {
  * Set configuration value
  */
 async function setConfig(key: string, value: string, options: ConfigOptions): Promise<void> {
-  // This would actually update config files
   console.log(chalk.gray(`Setting ${key} = ${value} ${options.global ? '(global)' : '(project)'}`));
   
   // Validate key
   const validKeys = [
     'default.framework',
     'default.template', 
+    'project.framework',
     'github.token',
     'github.integration',
     'tdd.strictMode',
@@ -98,15 +101,103 @@ async function setConfig(key: string, value: string, options: ConfigOptions): Pr
     }
   }
   
-  if (key === 'default.framework') {
+  if (key === 'default.framework' || key === 'project.framework') {
     const validFrameworks = ['nodejs', 'java', 'python', 'go', 'rust'];
     if (!validFrameworks.includes(value)) {
       printError(`Invalid framework. Must be one of: ${validFrameworks.join(', ')}`);
       return;
     }
   }
+
+  // Handle project-level configuration
+  if (key === 'project.framework' && !options.global) {
+    await setProjectFramework(value, options);
+    return;
+  }
   
-  printSuccess(`Configuration updated: ${key} = ${value}`);
+  // Handle global configuration (placeholder implementation)
+  if (options.global || key.startsWith('default.')) {
+    // This would update global config file
+    printSuccess(`Global configuration updated: ${key} = ${value}`);
+  } else {
+    // This would update project config file
+    printSuccess(`Project configuration updated: ${key} = ${value}`);
+  }
+}
+
+/**
+ * Set project framework and optionally apply changes
+ */
+async function setProjectFramework(framework: string, options: ConfigOptions): Promise<void> {
+  const projectConfigPath = path.join(process.cwd(), '.claude', 'project-config.json');
+  
+  if (!await fs.pathExists(projectConfigPath)) {
+    printError('No project configuration found. Please run "ctdd init" first.');
+    return;
+  }
+
+  try {
+    // Read current config
+    const config = await fs.readJson(projectConfigPath);
+    const currentFramework = config.project?.type || 'unknown';
+
+    if (currentFramework === framework) {
+      printWarning(`Project is already using ${framework} framework.`);
+      return;
+    }
+
+    // Update framework in config
+    config.project.type = framework;
+    config.project.language = framework === 'nodejs' ? 'javascript' : framework;
+    config.project.lastModified = new Date().toISOString();
+
+    await fs.writeJson(projectConfigPath, config, { spaces: 2 });
+    printSuccess(`Project framework updated: ${currentFramework} → ${framework}`);
+
+    // Apply changes if requested
+    if (options.apply) {
+      console.log(chalk.cyan('\nApplying framework changes...'));
+      await applyFrameworkChanges(framework);
+    } else {
+      console.log(chalk.yellow('\n💡 Tip: Use --apply flag to immediately update project configuration'));
+      console.log(chalk.gray('   Or run: ctdd switch-framework ' + framework));
+    }
+
+  } catch (error) {
+    printError(`Failed to update project configuration: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
+/**
+ * Apply framework changes using project detector
+ */
+async function applyFrameworkChanges(framework: string): Promise<void> {
+  const projectDetectorPath = path.join(process.cwd(), '.claude', 'scripts', 'tdd', 'project-detector.sh');
+  
+  if (await fs.pathExists(projectDetectorPath)) {
+    try {
+      // Set environment variable for the project detector
+      const env = { 
+        ...process.env, 
+        CLAUDE_PROJECT_DIR: process.cwd(),
+        FORCE_FRAMEWORK: framework 
+      };
+      
+      execSync(`bash "${projectDetectorPath}" config`, { 
+        cwd: process.cwd(),
+        env,
+        stdio: 'pipe'
+      });
+      
+      printSuccess('Project configuration applied successfully');
+      console.log(chalk.cyan('Run "ctdd status" to verify the changes'));
+    } catch (error) {
+      printWarning('Automatic project detection failed. Manual configuration may be needed.');
+      console.log(chalk.gray('You can run: bash .claude/scripts/tdd/project-detector.sh config'));
+    }
+  } else {
+    printWarning('Project detector script not found. Some configurations may need manual update.');
+  }
 }
 
 /**

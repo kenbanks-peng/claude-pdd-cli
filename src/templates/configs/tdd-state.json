@@ -1,0 +1,100 @@
+{
+  "currentPhase": "INIT",
+  "currentFeature": null,
+  "currentTask": null,
+  "lastUpdate": "{{LAST_UPDATE}}",
+  "sessionStart": null,
+  "phaseStart": null,
+  "testHistory": [],
+  "phaseHistory": [],
+  "currentCycle": {
+    "id": null,
+    "feature": null,
+    "startTime": null,
+    "phases": {
+      "red": {
+        "startTime": null,
+        "endTime": null,
+        "duration": 0,
+        "testCount": 0,
+        "failedTests": []
+      },
+      "green": {
+        "startTime": null,
+        "endTime": null,
+        "duration": 0,
+        "testCount": 0,
+        "passedTests": []
+      },
+      "refactor": {
+        "startTime": null,
+        "endTime": null,
+        "duration": 0,
+        "changes": []
+      }
+    }
+  },
+  "statistics": {
+    "redPhases": 0,
+    "greenPhases": 0,
+    "refactorPhases": 0,
+    "totalCycles": 0,
+    "totalTests": 0,
+    "failedTests": 0,
+    "passedTests": 0,
+    "totalTime": 0,
+    "averageCycleTime": 0,
+    "successRate": 0,
+    "lastCalculated": null
+  },
+  "metrics": {
+    "productivity": {
+      "testsPerHour": 0,
+      "cyclesPerDay": 0,
+      "averagePhaseTime": {
+        "red": 0,
+        "green": 0,
+        "refactor": 0
+      }
+    },
+    "quality": {
+      "testCoverage": 0,
+      "codeComplexity": 0,
+      "technicalDebt": 0,
+      "refactoringFrequency": 0
+    },
+    "trends": {
+      "dailyStats": [],
+      "weeklyStats": [],
+      "monthlyStats": []
+    }
+  },
+  "alerts": {
+    "phaseTimeout": false,
+    "qualityGate": false,
+    "testFailure": false,
+    "buildFailure": false
+  },
+  "workspace": {
+    "activeFiles": [],
+    "changedFiles": [],
+    "testFiles": [],
+    "unstaged": [],
+    "staged": []
+  },
+  "config": {
+    "autoSave": true,
+    "autoCommit": false,
+    "notifyOnPhaseChange": true,
+    "trackFileChanges": true,
+    "enableMetrics": true
+  },
+  "backup": {
+    "enabled": true,
+    "frequency": "daily",
+    "retention": 30,
+    "lastBackup": null
+  },
+  "version": "1.0.0",
+  "schema": "https://claude-tdd-cli.schema.json"
+}

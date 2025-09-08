@@ -5,6 +5,7 @@
 
 PROJECT_DIR="$CLAUDE_PROJECT_DIR"
 TDD_STATE_FILE="$PROJECT_DIR/.claude/tdd-state.json"
+JSON_TOOL="$PROJECT_DIR/.claude/bin/json-tool.js"
 
 # 检查是否启用TDD
 if [[ ! -f "$TDD_STATE_FILE" ]]; then
@@ -12,8 +13,36 @@ if [[ ! -f "$TDD_STATE_FILE" ]]; then
     exit 0
 fi
 
+# JSON 工具函数 - 优先使用 jq，回退到 Node.js 工具
+json_get() {
+    local file="$1"
+    local path="$2"
+    
+    if command -v jq >/dev/null 2>&1; then
+        jq -r ".$path" "$file" 2>/dev/null || echo ""
+    elif [[ -f "$JSON_TOOL" ]]; then
+        node "$JSON_TOOL" get "$file" "$path" 2>/dev/null || echo ""
+    else
+        echo ""
+    fi
+}
+
+json_update() {
+    local file="$1"
+    local updates="$2"
+    
+    if command -v jq >/dev/null 2>&1; then
+        local temp_file="${file}.tmp"
+        echo "$updates" | jq -s '.[0] * .[1]' "$file" - > "$temp_file" && mv "$temp_file" "$file"
+    elif [[ -f "$JSON_TOOL" ]]; then
+        node "$JSON_TOOL" update "$file" "$updates"
+    else
+        echo "⚠️  无法更新 TDD 状态：缺少 JSON 处理工具"
+    fi
+}
+
 # 获取当前TDD阶段
-current_phase=$(jq -r '.currentPhase' "$TDD_STATE_FILE")
+current_phase=$(json_get "$TDD_STATE_FILE" "currentPhase")
 
 # 如果是READY阶段，不运行测试
 if [[ "$current_phase" == "READY" ]]; then
@@ -36,7 +65,19 @@ detect_and_run_tests() {
     
     # Node.js项目检测
     elif [[ -f "package.json" ]]; then
-        if [[ $(jq -r '.scripts.test' package.json 2>/dev/null) != "null" ]]; then
+        # 检查是否有 test 脚本
+        local has_test_script="false"
+        if command -v jq >/dev/null 2>&1; then
+            has_test_script=$(jq -r '.scripts.test != null' package.json 2>/dev/null || echo "false")
+        elif [[ -f "$JSON_TOOL" ]]; then
+            local test_script=$(node "$JSON_TOOL" get package.json "scripts.test" 2>/dev/null)
+            [[ -n "$test_script" && "$test_script" != "" ]] && has_test_script="true"
+        else
+            # 简单的 grep 检查
+            grep -q '"test"' package.json && has_test_script="true"
+        fi
+        
+        if [[ "$has_test_script" == "true" ]]; then
             test_cmd="npm test"
         else
             test_cmd="npx jest --passWithNoTests"
@@ -86,8 +127,9 @@ detect_and_run_tests() {
         fi
         
         # 更新状态文件
-        jq ".testsPassing = $tests_passing | .timestamp = \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"" "$TDD_STATE_FILE" > "$TDD_STATE_FILE.tmp"
-        mv "$TDD_STATE_FILE.tmp" "$TDD_STATE_FILE"
+        local timestamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+        local updates="{\"testsPassing\": $tests_passing, \"timestamp\": \"$timestamp\"}"
+        json_update "$TDD_STATE_FILE" "$updates"
         
         # 根据TDD阶段和测试结果给出建议
         case "$current_phase" in

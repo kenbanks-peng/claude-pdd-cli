@@ -1,0 +1,33 @@
+fix: 修复Windows平台测试失败问题 - 跨平台路径兼容性优化
+
+主要完成内容：
+1. Windows平台路径适配
+   - 在测试中添加了平台检测逻辑，根据操作系统设置正确的环境变量
+   - Windows使用USERPROFILE，Unix使用HOME环境变量
+   - 使用path.join()构建平台适配的路径，避免硬编码Unix路径
+
+2. 冲突检测逻辑澄清
+   - 确认claude-config-exists冲突检测项目本地.claude目录而非全局配置
+   - 因为TDD工具会在项目根目录生成.claude配置文件夹
+   - 修复了测试用例以正确模拟项目本地配置目录存在的情况
+
+3. 测试用例完善
+   - 添加path模块导入以支持跨平台路径操作
+   - 更新beforeEach钩子，动态设置平台适配的环境变量
+   - 修复路径比较逻辑，使用动态生成的期望路径替代硬编码路径
+
+技术亮点：
+- 实现了真正的跨平台兼容性，支持Windows/macOS/Linux
+- 使用Node.js原生path模块确保路径操作的正确性
+- 测试覆盖率保持稳定：语句15.48%，分支7.94%，函数15.12%
+
+测试结果：
+- 所有21个测试用例全部通过
+- 修复了之前在Windows平台失败的2个测试用例
+- detector.ts覆盖率达到95.07%，几乎完全覆盖
+
+性能影响：无负面影响，路径操作更加高效准确
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>

@@ -2,6 +2,7 @@ import { EnvironmentDetector } from '../detector.js';
 import { promises as fs } from 'fs';
 import { execSync } from 'child_process';
 import which from 'which';
+import path from 'path';
 
 // Mock external dependencies
 jest.mock('fs', () => ({
@@ -42,9 +43,17 @@ describe('EnvironmentDetector', () => {
     detector = new EnvironmentDetector();
     jest.clearAllMocks();
     
-    // Set default environment
-    process.env.HOME = '/home/test';
-    delete process.env.USERPROFILE;
+    // Set platform-appropriate environment variables
+    const isWindows = process.platform === 'win32';
+    const homeDir = isWindows ? 'C:\\Users\\test' : '/home/test';
+    
+    if (isWindows) {
+      process.env.USERPROFILE = homeDir;
+      delete process.env.HOME;
+    } else {
+      process.env.HOME = homeDir;
+      delete process.env.USERPROFILE;
+    }
   });
 
   describe('detectClaudeCode', () => {
@@ -55,9 +64,13 @@ describe('EnvironmentDetector', () => {
       // 模拟版本命令成功
       mockExecSync.mockReturnValue('claude 1.0.0');
       
+      // 构建平台适配的路径
+      const homeDir = process.env.HOME || process.env.USERPROFILE;
+      const expectedConfigPath = path.join(homeDir!, '.claude');
+      
       // 模拟全局配置目录存在
-      fsExtra.pathExists.mockImplementation((path: string) => {
-        return Promise.resolve(path === '/home/test/.claude');
+      fsExtra.pathExists.mockImplementation((pathToCheck: string) => {
+        return Promise.resolve(pathToCheck === expectedConfigPath);
       });
 
       const result = await detector.detect();
@@ -65,7 +78,7 @@ describe('EnvironmentDetector', () => {
       expect(result.claudeCode.installed).toBe(true);
       expect(result.claudeCode.version).toBe('1.0.0');
       expect(result.claudeCode.globalConfigExists).toBe(true);
-      expect(result.claudeCode.configPath).toBe('/home/test/.claude');
+      expect(result.claudeCode.configPath).toBe(expectedConfigPath);
     });
 
     it('应该处理Claude Code未安装的情况', async () => {
@@ -249,11 +262,17 @@ describe('EnvironmentDetector', () => {
   describe('detectConflicts', () => {
     it('应该检测现有的.claude配置冲突', async () => {
       mockWhich.mockResolvedValue('/usr/local/bin/claude');
-      fsExtra.pathExists.mockImplementation((path: string) => {
-        if (typeof path === 'string') {
-          return Promise.resolve(
-            path.includes('/.claude') && !path.includes('package.json')
-          );
+      
+      // 模拟项目本地的.claude目录存在（用于detectProject）
+      // 以及全局配置目录不存在（用于detectClaudeCode）
+      fsExtra.pathExists.mockImplementation((pathToCheck: string) => {
+        if (typeof pathToCheck === 'string') {
+          // 项目本地的.claude目录存在（触发冲突）
+          if (pathToCheck.endsWith('.claude') && !pathToCheck.includes(path.sep + 'Users' + path.sep) && !pathToCheck.includes('/home/')) {
+            return Promise.resolve(true);
+          }
+          // 其他路径（如全局配置、package.json等）不存在
+          return Promise.resolve(false);
         }
         return Promise.resolve(false);
       });

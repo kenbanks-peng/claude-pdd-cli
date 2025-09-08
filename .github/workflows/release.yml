@@ -22,6 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
     
+    permissions:
+      contents: read   # 读取代码
+      packages: write  # 发布包权限
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -51,6 +55,10 @@ jobs:
     name: Create GitHub Release
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch'
+    
+    permissions:
+      contents: write  # 允许写入内容（创建标签、推送代码）
+      packages: write  # 允许发布包
     
     steps:
     - name: Checkout code
@@ -187,6 +195,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: create-github-release
     if: github.event_name == 'workflow_dispatch'
+    
+    permissions:
+      contents: read   # 读取代码
+      packages: write  # 发布包权限
     
     steps:
     - name: Checkout code

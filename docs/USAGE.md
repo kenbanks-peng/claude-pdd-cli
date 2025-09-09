@@ -346,7 +346,7 @@ claude-tdd migrate --from nodejs --to python --interactive
 
 **9. 命令在Claude Code中不可用**
 ```bash
-# 症状：输入/tdd:status等命令无响应
+# 症状：输入/tdd等命令无响应
 # 检查.claude/commands/目录结构：
 ls -la .claude/commands/
 
@@ -429,7 +429,7 @@ claude-tdd doctor
 claude-tdd status
 
 # 4. 测试命令
-# 在Claude Code中测试: /tdd:status
+# 在Claude Code中测试: /tdd
 ```
 
 ### 获取帮助
@@ -504,31 +504,31 @@ claude-tdd config show | jq '.project.framework'
 ### TDD 核心工作流
 ```bash
 # 查看当前TDD状态和下一步建议
-/tdd:status
+/tdd
 
 # 🔴 RED 阶段：编写失败测试
-/tdd:red
+/red
 
 # 🟢 GREEN 阶段：实现最小代码使测试通过
-/tdd:green
+/green
 
 # 🔵 REFACTOR 阶段：重构改进代码质量
-/tdd:refactor
+/refactor
 ```
 
 ### 项目管理命令
 ```bash
 # 创建新的产品需求文档
-/pm:prd-new
+/prd
 
 # 获取下一个应该工作的任务
-/pm:task-next
+/tasks --next
 
 # 管理项目里程碑
-/pm:milestone
+/status --milestone
 
 # 同步任务到GitHub Issues
-/pm:sync-github
+/update --sync-github
 
 # 智能提交代码
 /commit
@@ -561,10 +561,10 @@ claude-tdd config show | jq '.project.framework'
 claude-tdd doctor
 
 # 步骤2：查看TDD状态
-/tdd:status
+/tdd
 
 # 步骤3：创建产品需求
-/pm:prd-new
+/prd
 # 然后调用: @product-manager 帮我编写用户认证系统的PRD
 
 # 步骤4：任务分解
@@ -574,16 +574,16 @@ claude-tdd doctor
 #### 2. TDD开发循环
 ```bash
 # 🔴 RED 阶段
-/tdd:red
+/red
 # 然后调用: @tdd-architect 设计用户注册功能的测试结构
 # 再调用: @test-case-generator 生成用户注册的具体测试用例
 
 # 🟢 GREEN 阶段  
-/tdd:green
+/green
 # 实现最小可工作代码，确保测试通过
 
 # 🔵 REFACTOR 阶段
-/tdd:refactor
+/refactor
 # 然后调用: @code-reviewer 审查代码质量
 # 再调用: @performance-analyzer 检查性能优化机会
 ```
@@ -604,13 +604,13 @@ claude-tdd doctor
 #### 4. 项目管理集成
 ```bash
 # 更新任务状态
-/pm:task-next
+/tasks --next
 
 # 同步到GitHub
-/pm:sync-github
+/update --sync-github
 
 # 里程碑管理
-/pm:milestone
+/status --milestone
 ```
 
 ### Agent协作模式
@@ -622,7 +622,7 @@ claude-tdd doctor
 @product-manager → @tdd-architect → @test-case-generator → @code-reviewer → @security-auditor
 
 # 性能优化流程  
-@performance-analyzer → @code-reviewer → /tdd:refactor
+@performance-analyzer → @code-reviewer → /refactor
 
 # 并行开发协调
 @parallel-worker 协调多个开发任务的依赖关系
@@ -632,9 +632,9 @@ claude-tdd doctor
 
 初始化完成后：
 
-1. 运行 `/tdd:status` 检查工作流状态
-2. 使用 `/pm:prd-new` 创建第一个任务  
-3. 开始TDD开发循环：`/tdd:red` → `/tdd:green` → `/tdd:refactor`
+1. 运行 `/tdd` 检查工作流状态
+2. 使用 `/prd` 创建第一个任务  
+3. 开始TDD开发循环：`/red` → `/green` → `/refactor`
 4. 利用专业化agents提高开发效率
 
 ## 💡 提示

@@ -51,9 +51,9 @@ claude-tdd init --quick
 claude-tdd init --force
 ```
 
-> **重要说明**: `claude-tdd init` 与 Claude Code 中的 `/tdd:reset` 命令不同：
+> **重要说明**: `claude-tdd init` 与 Claude Code 中的TDD命令不同：
 > - `claude-tdd init` - CLI 工具，用于首次初始化完整的 TDD 环境
-> - `/tdd:reset` - Claude Code 命令，用于重置 TDD 状态（需要先运行 `claude-tdd init`）
+> - `/red`, `/green`, `/refactor`, `/tdd` - Claude Code 中的极简TDD命令
 
 ### Check Your Setup
 

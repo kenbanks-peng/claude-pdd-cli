@@ -11,7 +11,7 @@ const path = require('path');
 class JsonTool {
   constructor() {
     this.usage = `
-用法: node json-tool.js <操作> [参数...]
+用法: node json-tool.cjs <操作> [参数...]
 
 操作:
   get <file> <path>           - 获取 JSON 字段值 (等效于 jq -r '.path')
@@ -21,10 +21,10 @@ class JsonTool {
   raw <file> <path>           - 获取原始值不转义 (等效于 jq '.path')
 
 示例:
-  node json-tool.js get config.json currentPhase
-  node json-tool.js set config.json testsPassing true
-  node json-tool.js update config.json '{"testsPassing": true, "timestamp": "2023-01-01"}'
-  node json-tool.js has config.json currentPhase
+  node json-tool.cjs get config.json currentPhase
+  node json-tool.cjs set config.json testsPassing true
+  node json-tool.cjs update config.json '{"testsPassing": true, "timestamp": "2023-01-01"}'
+  node json-tool.cjs has config.json currentPhase
 `;
   }
 

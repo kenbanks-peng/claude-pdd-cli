@@ -5,7 +5,7 @@
 
 PROJECT_DIR="$CLAUDE_PROJECT_DIR"
 TDD_STATE_FILE="$PROJECT_DIR/.claude/tdd-state.json"
-JSON_TOOL="$PROJECT_DIR/.claude/bin/json-tool.js"
+JSON_TOOL="$PROJECT_DIR/.claude/bin/json-tool.cjs"
 
 # 检查是否启用TDD
 if [[ ! -f "$TDD_STATE_FILE" ]]; then

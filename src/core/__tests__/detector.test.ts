@@ -1,4 +1,4 @@
-import { EnvironmentDetector } from '../detector.js';
+import { EnvironmentDetector } from '../detector';
 import { promises as fs } from 'fs';
 import { execSync } from 'child_process';
 import which from 'which';

@@ -25,10 +25,20 @@ module.exports = {
   // 显示详细输出
   verbose: true,
   
-  // 模拟文件扩展名
+  // 模块解析扩展名
   moduleFileExtensions: [
     'ts',
     'js',
     'json'
+  ],
+  
+  // 模块解析
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1'
+  },
+  
+  // 转换忽略模式
+  transformIgnorePatterns: [
+    'node_modules/(?!(.*\\.mjs$))'
   ]
 };

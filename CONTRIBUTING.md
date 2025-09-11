@@ -13,7 +13,7 @@
 3. **包含环境信息**：
    - Node.js 版本
    - 操作系统
-   - claude-tdd-cli 版本
+   - claude-pdd-cli 版本
    - 错误堆栈信息
 
 ### 提交代码
@@ -22,8 +22,8 @@
 
 ```bash
 # 1. Fork 项目并克隆
-git clone https://github.com/你的用户名/claude-tdd-cli.git
-cd claude-tdd-cli
+git clone https://github.com/你的用户名/claude-pdd-cli.git
+cd claude-pdd-cli
 
 # 2. 安装依赖
 npm install
@@ -308,4 +308,4 @@ test(detector): 添加框架检测单元测试
 
 ---
 
-再次感谢您的贡献！每个贡献都让 Claude TDD CLI 变得更好。🚀
+再次感谢您的贡献！每个贡献都让 Claude PDD CLI 变得更好。🚀

@@ -71,7 +71,18 @@ cpdd init --mode=pm --online --github=owner/repo
 cpdd status
 ```
 
-## 📖 Usage
+## 📖 Documentation
+
+### 📋 Complete Usage Guide
+**👉 [查看完整使用指南 (COMPLETE-USAGE-GUIDE.md)](COMPLETE-USAGE-GUIDE.md)**
+
+包含：
+- 🎯 **39个项目管理命令详解** - PRD、Epic、Issue完整生命周期
+- 🧪 **5个TDD命令工作流** - Red-Green-Refactor完整循环
+- 🌳 **Git Worktree并行开发** - 多代理协同工作模式
+- 📊 **最佳实践和故障排除** - 团队协作优化指南
+
+### Quick Usage
 
 After initialization, all functionality is accessed through Claude Code commands:
 

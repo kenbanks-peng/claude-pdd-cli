@@ -1,10 +1,10 @@
-# Claude TDD CLI 使用指南
+# Claude PDD CLI 使用指南
 
 ## 🚀 快速上手
 
 ### 安装
 ```bash
-npm install -g claude-tdd-cli
+npm install -g claude-pdd-cli
 ```
 
 ### 初始化新项目
@@ -251,7 +251,7 @@ cpdd init --offline --force
 **开始你的高效开发之旅！**
 
 ```bash
-npm install -g claude-tdd-cli
+npm install -g claude-pdd-cli
 cpdd init --mode=pdd --online
 ```
 

@@ -37,7 +37,7 @@
     "online-offline",
     "intelligent-setup"
   ],
-  "author": "Claude TDD Team",
+  "author": "Claude PDD Team",
   "license": "MIT",
   "engines": {
     "node": ">=14.0.0"

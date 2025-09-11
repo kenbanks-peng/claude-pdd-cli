@@ -16,7 +16,7 @@ export type BuildTool = 'npm' | 'yarn' | 'pnpm' | 'maven' | 'gradle' | 'pip' | '
 /**
  * TDD template types
  */
-export type TemplateType = 'full' | 'minimal' | 'custom';
+export type TemplateType = 'pdd' | 'minimal' | 'custom';
 
 /**
  * Environment detection result
@@ -87,6 +87,10 @@ export interface InitOptions {
   quick?: boolean;
   force?: boolean;
   template?: TemplateType;
+  withPm?: boolean;
+  github?: string;
+  mode?: 'pdd' | 'pm' | 'tdd';
+  offline?: boolean;
 }
 
 export interface DoctorOptions {
@@ -112,6 +116,52 @@ export interface UpdateOptions {
 export interface SwitchFrameworkOptions {
   yes?: boolean;
   skipBackup?: boolean;
+}
+
+/**
+ * PM command options
+ */
+export interface PmOptions {
+  action?: string;
+  withPm?: boolean;
+  github?: string;
+  workflow?: PMWorkflowType;
+}
+
+/**
+ * PM workflow types
+ */
+export type PMWorkflowType = 'spec-driven' | 'issue-driven' | 'epic-driven';
+
+/**
+ * PM configuration structure
+ */
+export interface PMConfig {
+  enabled: boolean;
+  github: {
+    repo?: string;
+    owner?: string;
+    useIssues: boolean;
+    syncTests: boolean;
+    labelPrefix: string;
+    templates: {
+      epic: string;
+      task: string;
+      bug: string;
+    };
+  };
+  workflow: {
+    type: PMWorkflowType;
+    autoSync: boolean;
+    parallelAgents: boolean;
+    maxAgents: number;
+  };
+  rules: {
+    noVibeCode: boolean;
+    specRequired: boolean;
+    testFirst: boolean;
+    traceability: boolean;
+  };
 }
 
 /**

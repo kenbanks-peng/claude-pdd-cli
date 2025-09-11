@@ -161,12 +161,12 @@ jobs:
         ---
         
         $(if [ -n "$PREVIOUS_TAG" ]; then
-        echo "**完整更新日志**: https://github.com/MuziGeek/claude-tdd-cli/compare/$PREVIOUS_TAG...v${{ env.NEW_VERSION }}"
+        echo "**完整更新日志**: https://github.com/MuziGeek/claude-pdd-cli/compare/$PREVIOUS_TAG...v${{ env.NEW_VERSION }}"
         else
-        echo "**项目主页**: https://github.com/MuziGeek/claude-tdd-cli"
+        echo "**项目主页**: https://github.com/MuziGeek/claude-pdd-cli"
         fi)
         
-        **文档**: [使用说明](https://github.com/MuziGeek/claude-tdd-cli#readme) | [示例项目](https://github.com/MuziGeek/claude-tdd-cli/tree/main/examples)
+        **文档**: [使用说明](https://github.com/MuziGeek/claude-pdd-cli#readme)
         EOF
         
     - name: Create Tag and Push

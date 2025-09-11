@@ -1,6 +1,6 @@
 # 🤝 贡献指南
 
-感谢您对 Claude TDD CLI 项目的兴趣！我们欢迎各种形式的贡献。
+感谢您对 Claude PDD CLI 项目的兴趣！我们欢迎各种形式的贡献。
 
 ## 🌟 如何贡献
 
@@ -31,9 +31,6 @@ npm install
 # 3. 构建项目
 npm run build
 
-# 4. 运行测试
-npm test
-
 # 5. 链接到本地（用于测试）
 npm link
 ```
@@ -57,10 +54,7 @@ npm link
 
 3. **确保代码质量**
    ```bash
-   # 运行测试
-   npm test
-   
-   # 类型检查
+   # 代码检查和格式化
    npm run lint
    
    # 构建验证
@@ -161,7 +155,7 @@ describe('FrameworkDetector', () => {
 - `hotfix/*`：紧急修复
 - `release/*`：版本发布准备
 
-详细的分支管理策略请参考 [Wiki - 分支管理](https://github.com/MuziGeek/claude-tdd-cli/wiki/Branch-Management)。
+详细的分支管理策略请参考 [Wiki - 分支管理](https://github.com/MuziGeek/claude-pdd-cli/wiki/Branch-Management)。
 
 ## 📝 提交信息规范
 
@@ -201,13 +195,12 @@ test(detector): 添加框架检测单元测试
 在提交 PR 前，请确认：
 
 ### 代码质量
-- [ ] 所有测试通过 (`npm test`)
-- [ ] 类型检查通过 (`npm run lint`)
+- [ ] 代码检查通过 (`npm run lint`)
 - [ ] 构建成功 (`npm run build`)
-- [ ] 代码覆盖率满足要求
+- [ ] 功能实现完整
 
 ### 功能完整性
-- [ ] 新功能有对应的测试
+- [ ] 新功能文档完整
 - [ ] 更新了相关文档
 - [ ] 命令行帮助信息正确
 - [ ] 错误处理适当
@@ -284,8 +277,8 @@ test(detector): 添加框架检测单元测试
 感谢所有为项目做出贡献的人！
 
 <!-- 这里将自动显示贡献者头像 -->
-<a href="https://github.com/MuziGeek/claude-tdd-cli/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=MuziGeek/claude-tdd-cli" />
+<a href="https://github.com/MuziGeek/claude-pdd-cli/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=MuziGeek/claude-pdd-cli" />
 </a>
 
 ## 📄 行为准则

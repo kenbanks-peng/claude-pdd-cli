@@ -5,6 +5,9 @@ __tests__/
 *.test.ts
 *.spec.ts
 
+# Test and temp directories
+.claude/
+
 # Development files
 .vscode/
 .idea/
@@ -72,7 +75,6 @@ test-projects/
 *.test-tmp/
 
 # Testing files (exclude from npm package)
-jest.config.js
 tests/
 __tests__/
 **/__tests__/
@@ -85,8 +87,6 @@ src/**/*.test.js
 src/**/*.spec.ts
 src/**/*.spec.js
 
-# Example files (exclude from npm package)
-examples/
 
 # Build artifacts (keep dist/ for distribution)
 .tsbuildinfo

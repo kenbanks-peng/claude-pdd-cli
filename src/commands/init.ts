@@ -1,67 +1,102 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
-import ora from 'ora';
-import { EnvironmentDetector } from '../core/detector.js';
-import { InitOptions, TemplateType } from '../core/types.js';
-import { printStep, printSuccess, printError, printWarning, printHeader, printSummary } from '../ui/output.js';
-import { TemplateManager } from '../core/template-manager.js';
-import { ConfigGenerator } from '../core/config-generator.js';
+import { TemplateInstaller } from '../core/template-installer.js';
+import { CCPMInstaller } from '../core/ccpm-installer.js';
+import { FrameworkDetector } from '../core/framework-detector.js';
+import { InitOptions } from '../core/types.js';
+import { printStep, printSuccess, printError, printHeader, printSummary } from '../ui/output.js';
 
 /**
- * Initialize TDD workflow in current project
+ * Initialize CCPM + TDD system in current project
  */
 export async function initCommand(options: InitOptions): Promise<void> {
-  printHeader('🎯 Initializing Claude TDD Workflow');
+  printHeader('🚀 Initializing CCPM + TDD System');
 
   try {
-    // Step 1: Environment Detection
-    printStep(1, 'Detecting environment and project configuration...');
-    const spinner = ora('Analyzing project structure...').start();
+    // Step 1: Check for existing installation
+    const ccpmInstaller = new CCPMInstaller();
+    const status = await ccpmInstaller.getInstallationStatus();
     
-    const detector = new EnvironmentDetector();
+    if (status.installed && !options.force) {
+      console.log(chalk.yellow('⚠️  CCPM + TDD system already installed'));
+      console.log(`TDD Enhanced: ${status.tdd_enhanced ? 'Yes' : 'No'}`);
+      console.log(`Install Method: ${status.install_method || 'unknown'}`);
+      console.log('\nUse --force to reinstall or run update command');
+      return;
+    }
+
+    // Step 2: Framework Detection
+    printStep(1, 'Detecting project framework and configuration...');
+    const detector = new FrameworkDetector();
     const detection = await detector.detect();
     
-    spinner.succeed('Environment detection completed');
-
-    // Step 2: Handle conflicts and prerequisites  
-    await handlePrerequisites(detection, options);
+    console.log(chalk.dim(`  Framework: ${detection.framework}`));
+    console.log(chalk.dim(`  Test Framework: ${detection.testFramework}`));
+    console.log(chalk.dim(`  Package Manager: ${detection.packageManager}`));
 
     // Step 3: Interactive configuration (if not quick mode)
     let config;
     if (options.quick) {
       printStep(2, 'Using quick setup with detected defaults...');
-      config = await generateDefaultConfig(detection, options);
+      config = generateQuickConfig(detection, options);
     } else {
       printStep(2, 'Interactive configuration...');
       config = await interactiveConfiguration(detection, options);
     }
 
-    // Step 4: Generate TDD configuration
-    printStep(3, 'Generating TDD configuration...');
-    const configGenerator = new ConfigGenerator();
-    await configGenerator.generate(config, process.cwd());
+    // Step 4: Dynamic CCPM + TDD installation
+    printStep(3, `Installing ${config.mode.toUpperCase()} system...`);
     
-    // Step 5: Setup templates and files
-    printStep(4, 'Setting up workflow templates...');
-    const templateManager = new TemplateManager();
-    await templateManager.setup(config, process.cwd());
+    let installResult;
+    if (config.mode === 'tdd') {
+      // TDD-only mode: use traditional installer
+      const templateInstaller = new TemplateInstaller();
+      await templateInstaller.install({
+        mode: 'tdd',
+        force: options.force,
+        framework: detection.framework,
+        githubRepo: config.githubRepo
+      });
+      installResult = { success: true, source: 'builtin', version: 'tdd-only' };
+    } else {
+      // Full or CCPM mode: use dynamic CCPM installer
+      installResult = await ccpmInstaller.install({
+        online: !options.offline,
+        timeout: 60000
+      });
+      
+      if (!installResult.success) {
+        throw new Error(`CCPM installation failed: ${installResult.error}`);
+      }
+    }
+    
+    // Step 5: Validate installation
+    printStep(4, 'Validating installation...');
+    const finalStatus = await ccpmInstaller.getInstallationStatus();
+    if (!finalStatus.installed) {
+      throw new Error('Installation validation failed');
+    }
 
     // Step 6: Success summary
-    printSuccess('TDD workflow initialized successfully!');
+    const modeDisplay = config.mode.toUpperCase();
+    const sourceDisplay = installResult.source === 'online' ? '(Latest from CCPM)' : '(Built-in Templates)';
+    printSuccess(`${modeDisplay} system initialized successfully! ${sourceDisplay}`);
     
     const summary = [
-      `Framework: ${config.framework}`,
-      `Template: ${config.template}`,
-      `Test patterns: ${config.testPatterns.join(', ')}`,
-      `GitHub integration: ${config.githubIntegration ? 'Enabled' : 'Disabled'}`
+      `Mode: ${config.mode}`,
+      `Framework: ${detection.framework}`,
+      `Test Framework: ${detection.testFramework}`,
+      `GitHub Integration: ${config.githubRepo ? 'Enabled' : 'Disabled'}`,
+      `Install Source: ${installResult.source}`,
+      `CCPM Version: ${installResult.version || 'builtin'}`,
+      `TDD Enhanced: ${finalStatus.tdd_enhanced ? 'Yes' : 'No'}`,
+      `Components: ${getComponentsList(config.mode, finalStatus.tdd_enhanced)}`
     ];
     
-    printSummary('🎉 Configuration Summary', summary);
+    printSummary('🎉 Installation Summary', summary);
     
-    console.log('\n' + chalk.cyan('📖 Next steps:'));
-    console.log('  1. Run', chalk.yellow('/tdd:status'), 'to check workflow status');
-    console.log('  2. Create your first task with', chalk.yellow('/pm:prd-new'));
-    console.log('  3. Start TDD development with', chalk.yellow('/tdd:red'));
+    // Display next steps based on mode
+    printNextSteps(config.mode, installResult.source);
 
   } catch (error) {
     printError(`Initialization failed: ${error instanceof Error ? error.message : String(error)}`);
@@ -70,226 +105,136 @@ export async function initCommand(options: InitOptions): Promise<void> {
 }
 
 /**
- * Handle prerequisites and conflicts
+ * Generate quick configuration with detected defaults
  */
-async function handlePrerequisites(detection: any, options: InitOptions): Promise<void> {
-  // Check Claude Code installation
-  if (!detection.claudeCode.installed) {
-    printError('Claude Code is not installed or not accessible');
-    console.log('\n' + chalk.yellow('Please install Claude Code first:'));
-    console.log('  Visit: https://claude.ai/code');
-    process.exit(1);
-  }
-
-  // Handle existing .claude directory
-  if (detection.project.hasClaudeConfig && !options.force) {
-    printWarning('Existing .claude configuration found');
-    
-    const { overwrite } = await inquirer.prompt([{
-      type: 'confirm',
-      name: 'overwrite',
-      message: 'Overwrite existing configuration?',
-      default: false
-    }]);
-    
-    if (!overwrite) {
-      printError('Initialization cancelled by user');
-      process.exit(0);
-    }
-  }
-
-  // Check Git repository
-  if (!detection.git.initialized) {
-    const { initGit } = await inquirer.prompt([{
-      type: 'confirm',
-      name: 'initGit',
-      message: 'Initialize Git repository?',
-      default: true
-    }]);
-    
-    if (initGit) {
-      const { execSync } = require('child_process');
-      execSync('git init', { cwd: process.cwd() });
-      printSuccess('Git repository initialized');
-    }
-  }
-}
-
-/**
- * Generate default configuration for quick mode
- */
-async function generateDefaultConfig(detection: any, options: InitOptions) {
+function generateQuickConfig(detection: any, options: InitOptions): any {
   return {
-    framework: options.framework || detection.project.framework || 'nodejs',
-    template: (options.template as TemplateType) || 'full',
-    testFramework: detection.project.testFramework || 'jest',
-    buildTool: detection.project.buildTool || 'npm',
-    testPatterns: detection.project.testDirectories.length > 0 
-      ? detection.project.testDirectories.map((dir: string) => `${dir}/**/*`)
-      : ['**/*.test.*', '**/*.spec.*'],
-    sourcePatterns: detection.project.sourceDirectories.length > 0
-      ? detection.project.sourceDirectories.map((dir: string) => `${dir}/**/*`)
-      : ['src/**/*'],
-    githubIntegration: detection.git.hasRemote,
-    strictMode: true,
-    parallelSupport: false
+    mode: options.mode || (options.withPm !== false ? 'pdd' : 'tdd'),
+    framework: detection.framework,
+    testFramework: detection.testFramework,
+    githubRepo: options.github || '',
+    enableGithub: !!options.github
   };
 }
 
 /**
- * Interactive configuration wizard
+ * Interactive configuration setup
  */
-async function interactiveConfiguration(detection: any, options: InitOptions) {
-  console.log('\n' + chalk.bold('🎛️ Configuration Wizard'));
-  console.log(chalk.gray('Answer a few questions to customize your TDD workflow:\n'));
-
-  // Framework selection
-  let framework = options.framework;
-  if (!framework) {
-    if (detection.project.framework !== 'unknown') {
-      const { useDetected } = await inquirer.prompt([{
-        type: 'confirm',
-        name: 'useDetected',
-        message: `Use detected framework: ${chalk.cyan(detection.project.framework)}?`,
-        default: true
-      }]);
-      
-      if (useDetected) {
-        framework = detection.project.framework;
-      }
-    }
+async function interactiveConfiguration(detection: any, options: InitOptions): Promise<any> {
+  console.log('\n' + chalk.cyan('🔧 Configuration Setup'));
+  
+  const modeAnswer = await inquirer.prompt([{
+    type: 'list',
+    name: 'mode',
+    message: 'What would you like to install?',
+    choices: [
+      'PDD - Project-Driven Development (CCPM + TDD) - Recommended',
+      'PM - Project Management Only',
+      'TDD - Test-Driven Development Only'
+    ],
+    default: 0
+  }]);
+  
+  const mode = modeAnswer.mode.includes('PDD') ? 'pdd' : 
+               modeAnswer.mode.includes('PM') ? 'pm' : 'tdd';
+  
+  let enableGithub = false;
+  let githubRepo = '';
+  
+  if (mode !== 'tdd') {
+    const githubAnswer = await inquirer.prompt([{
+      type: 'confirm',
+      name: 'enableGithub',
+      message: 'Enable GitHub Issues integration?',
+      default: true
+    }]);
+    enableGithub = githubAnswer.enableGithub;
     
-    if (!framework) {
-      const { selectedFramework } = await inquirer.prompt([{
-        type: 'list',
-        name: 'selectedFramework',
-        message: 'Select project framework:',
-        choices: [
-          { name: '🟨 Node.js/TypeScript', value: 'nodejs' },
-          { name: '☕ Java (Maven/Gradle)', value: 'java' },
-          { name: '🐍 Python', value: 'python' },
-          { name: '🐹 Go', value: 'go' },
-          { name: '🦀 Rust', value: 'rust' }
-        ]
+    if (enableGithub) {
+      const repoAnswer = await inquirer.prompt([{
+        type: 'input',
+        name: 'githubRepo',
+        message: 'GitHub repository (owner/repo):'
       }]);
-      framework = selectedFramework;
+      githubRepo = repoAnswer.githubRepo?.trim() || '';
     }
   }
-
-  // Template selection
-  const { template } = await inquirer.prompt([{
-    type: 'list',
-    name: 'template',
-    message: 'Choose TDD template:',
-    choices: [
-      { 
-        name: '🚀 Full - Complete TDD workflow with all agents', 
-        value: 'full' 
-      },
-      { 
-        name: '⚡ Minimal - Essential TDD features only', 
-        value: 'minimal' 
-      },
-      { 
-        name: '🎨 Custom - Select specific components', 
-        value: 'custom' 
-      }
-    ],
-    default: 'full'
-  }]);
-
-  // GitHub integration
-  const { githubIntegration } = await inquirer.prompt([{
+  
+  const frameworkAnswer = await inquirer.prompt([{
     type: 'confirm',
-    name: 'githubIntegration',
-    message: 'Enable GitHub integration?',
-    default: detection.git.hasRemote
-  }]);
-
-  // TDD settings
-  const { strictMode } = await inquirer.prompt([{
-    type: 'confirm',
-    name: 'strictMode',
-    message: 'Enable strict TDD mode? (Enforces RED-GREEN-REFACTOR cycle)',
+    name: 'confirmFramework',
+    message: `Detected framework: ${detection.framework}. Is this correct?`,
     default: true
   }]);
 
-  const { parallelSupport } = await inquirer.prompt([{
-    type: 'confirm',
-    name: 'parallelSupport',
-    message: 'Enable parallel development support? (Git worktrees)',
-    default: false
-  }]);
-
   return {
-    framework,
-    template,
-    testFramework: detection.project.testFramework || getDefaultTestFramework(framework || 'nodejs'),
-    buildTool: detection.project.buildTool || getDefaultBuildTool(framework || 'nodejs'),
-    testPatterns: detection.project.testDirectories.length > 0 
-      ? detection.project.testDirectories.map((dir: string) => `${dir}/**/*`)
-      : getDefaultTestPatterns(framework || 'nodejs'),
-    sourcePatterns: detection.project.sourceDirectories.length > 0
-      ? detection.project.sourceDirectories.map((dir: string) => `${dir}/**/*`)
-      : getDefaultSourcePatterns(framework || 'nodejs'),
-    githubIntegration,
-    strictMode,
-    parallelSupport
+    mode,
+    framework: frameworkAnswer.confirmFramework ? detection.framework : 'nodejs',
+    testFramework: detection.testFramework,
+    githubRepo,
+    enableGithub
   };
 }
 
 /**
- * Get default test framework for language
+ * Get components list based on installation mode
  */
-function getDefaultTestFramework(framework: string): string {
-  const defaults: Record<string, string> = {
-    nodejs: 'jest',
-    java: 'junit',
-    python: 'pytest',
-    go: 'go-test',
-    rust: 'cargo-test'
+function getComponentsList(mode: string, tddEnhanced: boolean = false): string {
+  const components: { [key: string]: string } = {
+    pdd: tddEnhanced 
+      ? 'PM Commands (39), TDD Commands (5), Agents (8), Workflows (4)' 
+      : 'PM Commands (39), TDD Commands (5), Agents (6), Workflows (2)',
+    pm: tddEnhanced
+      ? 'PM Commands (39), TDD Commands (5), Context Commands, Testing Commands'
+      : 'PM Commands (39), Context Commands, Testing Commands',
+    tdd: 'TDD Commands (5), Test Generator, Basic Workflows'
   };
-  return defaults[framework] || 'unknown';
+  
+  return components[mode] || 'Unknown';
 }
 
 /**
- * Get default build tool for language
+ * Print next steps based on installation mode
  */
-function getDefaultBuildTool(framework: string): string {
-  const defaults: Record<string, string> = {
-    nodejs: 'npm',
-    java: 'maven',
-    python: 'pip',
-    go: 'go-mod',
-    rust: 'cargo'
-  };
-  return defaults[framework] || 'unknown';
-}
-
-/**
- * Get default test patterns for framework
- */
-function getDefaultTestPatterns(framework: string): string[] {
-  const patterns: Record<string, string[]> = {
-    nodejs: ['**/*.test.*', '**/*.spec.*', 'tests/**/*'],
-    java: ['src/test/**/*', 'test/**/*'],
-    python: ['tests/**/*', 'test/**/*', '**/*_test.py'],
-    go: ['**/*_test.go'],
-    rust: ['tests/**/*', 'src/**/*.rs']
-  };
-  return patterns[framework] || ['tests/**/*'];
-}
-
-/**
- * Get default source patterns for framework
- */
-function getDefaultSourcePatterns(framework: string): string[] {
-  const patterns: Record<string, string[]> = {
-    nodejs: ['src/**/*', 'lib/**/*'],
-    java: ['src/main/**/*'],
-    python: ['src/**/*', '*.py'],
-    go: ['**/*.go', '!**/*_test.go'],
-    rust: ['src/**/*', '!src/**/*.rs.test']
-  };
-  return patterns[framework] || ['src/**/*'];
+function printNextSteps(mode: string, source: string = 'builtin'): void {
+  console.log('\n' + chalk.cyan('📖 Next Steps:'));
+  
+  switch (mode) {
+    case 'pdd':
+      console.log('  1. Open this project in Claude Code');
+      console.log('  2. Create your first PRD:', chalk.yellow('/pm:prd-new my-feature'));
+      console.log('  3. Parse PRD to Epic:', chalk.yellow('/pm:prd-parse my-feature'));
+      console.log('  4. Start TDD development:', chalk.yellow('/pm:issue-start 123'));
+      console.log('  5. Execute TDD cycle:', chalk.yellow('/tdd:cycle'));
+      if (source === 'online') {
+        console.log('\n' + chalk.green('✨ Latest CCPM features available from online installation!'));
+      }
+      break;
+      
+    case 'pm':
+      console.log('  1. Open this project in Claude Code');
+      console.log('  2. Initialize context:', chalk.yellow('/context:prime'));
+      console.log('  3. Create PRD:', chalk.yellow('/pm:prd-new my-feature'));
+      console.log('  4. Start Epic:', chalk.yellow('/pm:epic-start my-feature'));
+      console.log('  5. Manage issues:', chalk.yellow('/pm:issue-start 123'));
+      if (source === 'online') {
+        console.log('\n' + chalk.green('✨ Latest CCPM features available from online installation!'));
+      }
+      break;
+      
+    case 'tdd':
+      console.log('  1. Open this project in Claude Code');
+      console.log('  2. Configure testing:', chalk.yellow('/testing:prime'));
+      console.log('  3. Start TDD cycle:', chalk.yellow('/tdd:red'));
+      console.log('  4. Or run full cycle:', chalk.yellow('/tdd:cycle'));
+      console.log('  5. Check test status:', chalk.yellow('/testing:run'));
+      break;
+  }
+  
+  console.log('\n' + chalk.dim('💡 All commands are executed within Claude Code, not in terminal'));
+  console.log(chalk.dim('📚 See .claude/CLAUDE.md for complete command reference'));
+  
+  if (source === 'offline') {
+    console.log('\n' + chalk.yellow('ℹ️  Installed in offline mode. Run with --online to get latest CCPM features.'));
+  }
 }

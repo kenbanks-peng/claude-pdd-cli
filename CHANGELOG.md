@@ -7,6 +7,162 @@
 
 ## [未发布]
 
+### 💫 敬请期待下个版本的精彩更新...
+
+## [1.0.0] - 2025-09-11 🎉 Claude PDD CLI 首个正式版本
+
+### 🎯 全新的项目驱动开发平台
+- **项目理念**: Project-Driven Development (PDD) - 项目需求优先，灵活集成多种开发方法论
+- **核心命令**: `cpdd` - 简洁易记的CLI工具
+- **多方法论支持**: 灵活支持PDD、PMD、TDD等多种开发方式
+
+### ✨ 三种灵活的开发模式
+- **PDD模式** - Project-Driven Development: 完整项目驱动开发，灵活支持多种方法论
+- **PM模式** - Project Management Driven: 专注项目管理和团队协作  
+- **TDD模式** - Test-Driven Development: 传统测试驱动开发
+
+### 📋 安装模式重新定义
+
+#### PDD模式 (推荐) 
+```bash
+cpdd init --mode=pdd
+```
+- **方法论**: Project-Driven Development - 项目需求优先，灵活集成多种开发方法
+- **包含**: CCPM完整系统(39个PM命令) + TDD工具(5个命令) + 支持PDD/BDD/TDD混合开发
+- **适用**: 完整项目开发流程，从需求到交付
+
+#### PM模式
+```bash
+cpdd init --mode=pm
+```
+- **方法论**: Project Management Driven - 专注项目管理和团队协作
+- **包含**: CCPM项目管理功能(39个PM命令) + GitHub集成 + 团队协作工作流
+- **适用**: 项目经理、团队协作、需求管理
+
+#### TDD模式
+```bash
+cpdd init --mode=tdd
+```
+- **方法论**: Test-Driven Development - 传统TDD红绿重构循环
+- **包含**: TDD开发命令(5个) + 智能测试生成 + Red-Green-Refactor循环
+- **适用**: 技术驱动开发，单元测试优先
+
+### 🔄 完全重写的用户体验
+- **新项目定位**: "灵活的项目驱动开发平台" 而非单纯的TDD工具
+- **核心理念**: "先有规划，再写代码" (Plan First, Code Later)
+- **方法论无关**: 支持PDD、PMD、TDD等多种开发方法论
+- **目标驱动**: "方法论灵活，目标驱动" (Methodology Agnostic, Goal Driven)
+
+### 💔 破坏性变更
+- **命令完全改变**: 所有`ctdd`命令改为`cpdd`，无别名支持
+- **包名更改**: NPM包从`claude-tdd-cli`改为`claude-pdd-cli`
+- **模式名称变更**: `--mode=full` → `--mode=pdd`, `--mode=ccpm` → `--mode=pm`
+- **项目仓库**: GitHub仓库从`claude-tdd-cli`改为`claude-pdd-cli`
+- **默认模式**: 从`full`改为`pdd`
+
+### 📚 文档全面更新
+- **README重写**: 突出PDD理念和三种模式的方法论说明
+- **USAGE文档**: 更新所有命令和模式说明
+- **API文档**: 更新类型定义和接口
+- **贡献指南**: 更新开发流程和规范
+
+### 🛠️ 技术改进
+- **类型系统更新**: 所有TypeScript类型定义更新为新模式名称
+- **配置逻辑重构**: 模式判断和处理逻辑完全重写
+- **交互式安装**: 更新选项文本和用户引导
+- **错误处理**: 更新所有错误消息和帮助信息
+
+### 🧹 项目优化 (延续自1.x)
+- **移除examples目录** - 简化项目结构，集中文档内容到README
+- **完善分层架构** - 完全分离templates（CCPM备份）和tdd-enhancements（TDD增强层）
+- **清理重复文件** - 移除templates中的TDD相关文件，避免与tdd-enhancements重复
+- **文档集中化** - 将使用示例直接集成到README，提高文档维护效率
+
+### 💡 架构完善 (延续自1.x)
+- **纯CCPM备份** - templates目录只保留39个PM命令和CCPM核心功能
+- **独立TDD增强** - tdd-enhancements作为完全独立的功能层
+- **智能动态集成** - 在线/离线模式都通过叠加tdd-enhancements实现完整功能
+
+### 🚀 快速开始
+```bash
+# 安装 Claude PDD CLI
+npm install -g claude-pdd-cli
+
+# 初始化项目（推荐PDD模式）
+cpdd init --mode=pdd
+
+# 其他模式选择
+cpdd init --mode=pm   # 项目管理模式
+cpdd init --mode=tdd  # 传统TDD模式
+```
+
+## [历史版本记录]
+
+*以下为开发历史记录，仅供参考*
+
+## [0.3.0] - 2025-09-10 🎉 重大版本更新
+
+### 🚀 重大架构重构
+- **动态 CCPM 集成** - 革命性的在线/离线安装模式
+- **智能安装系统** - 自动检测网络并从 CCPM GitHub 仓库获取最新内容
+- **TDD 增强层** - 在 CCPM 基础上叠加 5 个专业 TDD 命令
+- **跨平台执行** - 支持 Windows PowerShell 和 Unix Bash 安装
+
+### ✨ 新增功能
+- **CCPMInstaller 类** - 动态 CCPM 安装和管理
+- **TDD 增强模板系统** - 独立的 TDD 功能层
+- **智能降级策略** - 在线安装失败自动切换到离线模式
+- **网络状态检测** - 自动检测并选择最佳安装方式
+- **版本跟踪机制** - 记录 CCPM 版本和安装方式
+
+### 🎯 核心 TDD 命令
+- `/tdd:cycle` - 完整 Red-Green-Refactor 循环
+- `/tdd:red` - 红灯阶段（编写失败测试）
+- `/tdd:green` - 绿灯阶段（最小实现）
+- `/tdd:refactor` - 重构阶段（质量提升）
+- `/tdd:spec-to-test` - 规格转测试用例
+
+### 🤖 AI Agents 系统
+- **TDD Agent** - TDD 工作流协调器
+- **Test Generator** - 智能测试用例生成器
+- **Spec-driven TDD 工作流** - 完整的规格驱动开发流程
+- **Issue-to-Test 工作流** - GitHub Issue 到测试的转换
+
+### 🔧 CLI 增强
+- `--online` / `--offline` 选项控制安装模式
+- 智能安装状态显示和进度追踪
+- 详细的安装摘要和下一步指导
+- 跨平台命令执行和错误处理
+
+### 💔 破坏性变更
+- 移除了原有的静态模板系统
+- 删除了旧的测试框架配置
+- 重构了整个安装和配置流程
+- 更改了内部 API 结构
+
+### 🏗️ 架构优化
+- **分层设计** - CCPM 基础 + TDD 增强
+- **解耦架构** - 各组件独立演进
+- **智能合并** - 自动处理文件冲突和更新
+- **维护简化** - 自动同步上游 CCPM 更新
+
+### 🐛 修复
+- 修复 ES 模块中 `__dirname` 未定义问题
+- 修复跨平台路径兼容性问题
+- 修复安装验证和状态检测逻辑
+- 修复模板文件复制和权限问题
+
+### 📦 依赖更新
+- 新增 `axios` - HTTP 请求和 GitHub API
+- 移除 `jest`、`@types/jest`、`ts-jest` - 简化测试依赖
+- 保持核心依赖最新版本
+
+### 🎨 用户体验改进
+- **安装体验重新设计** - 更直观的进度显示
+- **智能提示系统** - 根据安装方式提供相应建议
+- **错误处理优化** - 更友好的错误信息和恢复建议
+- **文档和示例更新** - 反映新的工作流程
+
 ## [0.2.4] - 2025-09-08
 
 ### 新增
@@ -143,6 +299,6 @@
 
 ---
 
-**安装最新版本**: `npm install -g claude-tdd-cli@latest`
+**安装最新版本**: `npm install -g claude-pdd-cli@latest`
 
-**项目主页**: https://github.com/MuziGeek/claude-tdd-cli
+**项目主页**: https://github.com/MuziGeek/claude-pdd-cli

@@ -6,11 +6,6 @@ import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { initCommand } from './commands/init.js';
-import { doctorCommand } from './commands/doctor.js';
-import { configCommand } from './commands/config.js';
-import { statusCommand } from './commands/status.js';
-import { updateCommand } from './commands/update.js';
-import { switchFrameworkCommand, migrateCommand } from './commands/switch-framework.js';
 import { printBanner } from './ui/output.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -34,73 +29,67 @@ async function main() {
   printBanner();
 
   program
-    .name('claude-tdd')
-    .description('CLI tool for initializing and managing Claude TDD Workflow projects')
+    .name('claude-pdd')
+    .description('Claude PDD - Project-Driven Development Platform with flexible methodology support')
     .version(getVersion(), '-v, --version', 'output the current version')
     .helpOption('-h, --help', 'display help for command');
 
-  // Init command
+  // Init command - The only command needed
   program
     .command('init')
-    .description('Initialize TDD workflow in current project')
+    .description('Initialize CCPM + TDD system in current project')
     .option('-f, --framework <type>', 'specify framework type (nodejs/java/python/go/rust)')
-    .option('-q, --quick', 'quick setup with defaults')
-    .option('--force', 'overwrite existing configuration')
-    .option('--template <type>', 'use specific template (full/minimal/custom)')
+    .option('-q, --quick', 'quick setup with detected defaults')
+    .option('--force', 'overwrite existing installation')
+    .option('--with-pm', 'include project management features (default: true)')
+    .option('--github <repo>', 'GitHub repository (owner/repo) for integration')
+    .option('--mode <mode>', 'installation mode (pdd/pm/tdd)', 'pdd')
+    .option('--offline', 'use offline installation (built-in templates only)')
     .action(initCommand);
 
-  // Doctor command
-  program
-    .command('doctor')
-    .description('Diagnose environment and project status')
-    .option('-v, --verbose', 'detailed diagnostic output')
-    .option('--check-project', 'only check project configuration')
-    .option('--check-claude', 'only check Claude Code environment')
-    .action(doctorCommand);
-
-  // Config command
-  program
-    .command('config')
-    .description('Manage configuration settings')
-    .argument('[action]', 'action to perform (show/set/list)')
-    .argument('[key]', 'configuration key')
-    .argument('[value]', 'configuration value')
-    .option('--global', 'apply to global configuration')
-    .option('--apply', 'immediately apply project-level changes (for framework switching)')
-    .action(configCommand);
-
-  // Status command
+  // Status command for checking installation
   program
     .command('status')
-    .description('Show current TDD workflow status')
-    .option('--json', 'output in JSON format')
-    .action(statusCommand);
+    .description('Show installation status')
+    .action(async () => {
+      const { TemplateInstaller } = await import('./core/template-installer.js');
+      const installer = new TemplateInstaller();
+      const status = await installer.getStatus();
+      
+      if (status.installed) {
+        console.log(chalk.green('✅ CCPM + TDD system is installed'));
+        console.log(`Mode: ${status.mode}`);
+        console.log(`Version: ${status.version}`);
+        console.log(`Components: ${status.components.join(', ')}`);
+      } else {
+        console.log(chalk.yellow('⚠️  System not installed'));
+        console.log('Run', chalk.cyan('cpdd init'), 'to install');
+      }
+    });
 
   // Update command
   program
     .command('update')
-    .description('Update configuration templates to latest version')
-    .option('--check', 'only check for updates without applying')
-    .option('--force', 'force update even if version is current')
-    .action(updateCommand);
+    .description('Update existing installation')
+    .option('--force', 'force reinstallation')
+    .action(async (options) => {
+      const { TemplateInstaller } = await import('./core/template-installer.js');
+      const installer = new TemplateInstaller();
+      
+      try {
+        await installer.update(options);
+        console.log(chalk.green('✅ System updated successfully'));
+      } catch (error) {
+        console.error(chalk.red('❌ Update failed:'), error);
+        process.exit(1);
+      }
+    });
 
-  // Switch Framework command
-  program
-    .command('switch-framework [framework]')
-    .description('Switch project framework while preserving other configurations')
-    .option('-y, --yes', 'skip confirmation prompts')
-    .option('--skip-backup', 'skip configuration backup')
-    .action(switchFrameworkCommand);
-
-  // Migrate command
-  program
-    .command('migrate')
-    .description('Migrate project between frameworks (advanced)')
-    .option('--from <framework>', 'source framework')
-    .option('--to <framework>', 'target framework')
-    .option('--interactive', 'run interactive migration wizard')
-    .action(migrateCommand);
-
+  // Show help if no command provided
+  if (process.argv.length <= 2) {
+    program.help();
+  }
+  
   // Parse command line arguments
   await program.parseAsync(process.argv);
 }

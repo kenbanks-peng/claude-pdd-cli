@@ -1,425 +1,351 @@
-# Claude TDD CLI
+# Claude PDD CLI - Project-Driven Development Platform
 
-🚀 **Professional CLI tool for initializing and managing Claude TDD Workflow projects**
-
-[![npm version](https://badge.fury.io/js/claude-tdd-cli.svg)](https://badge.fury.io/js/claude-tdd-cli)
-[![CI/CD Pipeline](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/codeql.yml/badge.svg)](https://github.com/MuziGeek/claude-tdd-cli/actions/workflows/codeql.yml)
-[![codecov](https://codecov.io/gh/MuziGeek/claude-tdd-cli/branch/main/graph/badge.svg)](https://codecov.io/gh/MuziGeek/claude-tdd-cli)
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
+[![npm version](https://badge.fury.io/js/claude-pdd-cli.svg)](https://badge.fury.io/js/claude-pdd-cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 🎯 What is Claude TDD CLI?
+**Claude PDD - Flexible Project-Driven Development Platform with PDD/PMD/TDD methodology support**
 
-Claude TDD CLI transforms the complex process of setting up a professional Test-Driven Development workflow into a single command. Instead of manually copying configuration files and setting up agents, hooks, and templates, you can now initialize a complete TDD environment with intelligent framework detection and interactive configuration.
+Transform your development workflow with the revolutionary Project-Driven Development approach! This platform supports multiple methodologies (PDD/PMD/TDD) with intelligent CCPM integration, dynamic online/offline installation, and flexible development workflows tailored to your project needs.
 
-## ✨ Key Features
+## 🌟 Features
 
-- 🔍 **Smart Detection**: Automatically detects your project's language, framework, and testing setup
-- 🎛️ **Interactive Setup**: Guided configuration wizard for customized workflow
-- 🚀 **One-Command Init**: Complete TDD environment in seconds
-- 🧠 **10 Specialized Agents**: Pre-configured AI assistants for every aspect of TDD
-- 🛡️ **Quality Gates**: Automated testing, hooks, and validation
-- 📦 **Multi-Framework**: Support for Node.js, Java, Python, Go, and Rust
-- 🔄 **Template Management**: Keep your workflow up-to-date with latest best practices
-- 🔀 **Framework Switching**: Seamlessly switch between frameworks while preserving configurations
-- 🛠️ **Configuration Backup**: Automatic backup mechanism for safe configuration changes
-- 🚀 **CI/CD Ready**: Pre-configured GitHub Actions for cross-platform testing and automated releases
-- 📊 **Quality Assurance**: Built-in code coverage, security scanning, and multi-platform testing
+### 🎯 Complete CCPM System
+- **39 Project Management Commands** - Full PRD to deployment workflow
+- **Epic & Task Management** - Break down features into manageable tasks
+- **GitHub Issues Integration** - Seamless sync with GitHub project boards
+- **"No Vibe Coding"** - Every line of code traces to a specification
+- **Parallel Development** - Team coordination and conflict prevention
+
+### 🧪 Advanced TDD Integration
+- **5 TDD Commands** - Complete Red-Green-Refactor cycle automation
+- **Spec-to-Test Generation** - Convert requirements into comprehensive test suites
+- **Multi-Framework Support** - Node.js, Java, Python, Go, Rust
+- **Test Coverage Tracking** - Integrated with GitHub Issue updates
+- **Quality Gates** - Automated validation at each TDD phase
+
+### 🌐 Revolutionary Dynamic Installation
+- **Online Mode** - Automatically fetches latest CCPM from GitHub
+- **Offline Mode** - Falls back to built-in templates when needed
+- **Intelligent Fallback** - Seamless online-to-offline switching
+- **Zero Maintenance** - Always get the latest CCPM features
+- **Cross-Platform** - Windows PowerShell + Unix Bash support
+
+### 🤖 AI Agents & Workflows
+- **8 Specialized Agents** - TDD, test generation, parallel coordination
+- **4 Complete Workflows** - Spec-driven TDD and Issue-to-test flows
+- **Context Management** - Persistent project context across sessions
+- **Automated Reporting** - Progress tracking and team visibility
 
 ## 🚀 Quick Start
 
-### 安装
-
+### Installation
 ```bash
-npm install -g claude-tdd-cli
+npm install -g claude-pdd-cli
 ```
 
-### Initialize TDD Workflow
-
+### Initialize Your Project
 ```bash
-# Navigate to your project
-cd my-project
+# Full system (CCPM + TDD) - Recommended
+cpdd init
 
-# Initialize with intelligent detection and interactive setup
-claude-tdd init
+# Quick setup with defaults
+cpdd init --quick
 
-# Or use quick mode with defaults
-claude-tdd init --quick
+# Specific modes
+cpdd init --mode=pm      # Project management only
+cpdd init --mode=tdd     # TDD tools only
 
-# Force initialization in existing projects
-claude-tdd init --force
+# Control installation method
+cpdd init --online       # Force online mode (fetch latest CCPM from GitHub)
+cpdd init --offline      # Force offline mode (use built-in templates)
+
+# With GitHub integration
+cpdd init --github=owner/repo
+
+# Combined options
+cpdd init --mode=pm --online --github=owner/repo
 ```
 
-> **重要说明**: `claude-tdd init` 与 Claude Code 中的TDD命令不同：
-> - `claude-tdd init` - CLI 工具，用于首次初始化完整的 TDD 环境
-> - `/red`, `/green`, `/refactor`, `/tdd` - Claude Code 中的极简TDD命令
-
-### Check Your Setup
-
+### Check Status
 ```bash
-# Diagnose environment and configuration
-claude-tdd doctor
-
-# Show current TDD status
-claude-tdd status
+cpdd status
 ```
 
-## 📋 Commands
+## 📖 Usage
 
-### Core Commands
+After initialization, all functionality is accessed through Claude Code commands:
 
-| Command | Description | Options |
-|---------|-------------|---------|
-| `claude-tdd init` | Initialize TDD workflow | `--quick`, `--force`, `--framework <type>`, `--template <type>` |
-| `claude-tdd doctor` | Diagnose environment | `--verbose`, `--check-project`, `--check-claude` |
-| `claude-tdd status` | Show workflow status | `--json` |
-| `claude-tdd config` | Manage configuration | `show`, `set <key> <value>`, `list`, `--apply` |
-| `claude-tdd update` | Update templates | `--check`, `--force` |
-| `claude-tdd switch-framework` | Switch project framework | `[framework]`, `--yes`, `--skip-backup` |
-| `claude-tdd migrate` | Advanced framework migration | `--from <type>`, `--to <type>`, `--interactive` |
+### Complete Feature Development Workflow
 
-### Examples
-
+#### 1. Start with Requirements
 ```bash
-# Quick setup for Node.js project
-claude-tdd init --quick --framework nodejs
-
-# Interactive setup with full template
-claude-tdd init --template full
-
-# Check what updates are available
-claude-tdd update --check
-
-# Diagnose issues with verbose output
-claude-tdd doctor --verbose
-
-# Show status in JSON format for scripts
-claude-tdd status --json
-
-# Switch project from Node.js to Python
-claude-tdd switch-framework python
-
-# Quick framework switch without confirmation
-claude-tdd switch-framework java --yes
-
-# Advanced migration from Java to Rust
-claude-tdd migrate --from java --to rust
-
-# Set project framework configuration
-claude-tdd config set project.framework nodejs --apply
+# In Claude Code:
+/pm:prd-new user-authentication
+# → Interactive PRD creation
+# → Comprehensive requirements gathering
 ```
+
+#### 2. Create Epic & Tasks  
+```bash
+/pm:prd-parse user-authentication
+# → Breaks PRD into Epic with tasks
+# → Creates GitHub Issues automatically
+
+/pm:epic-sync
+# → Syncs to GitHub project board
+# → Sets up milestones and labels
+```
+
+#### 3. TDD Development
+```bash
+/pm:issue-start 123
+# → Loads specific task requirements
+# → Sets up development context
+
+/tdd:spec-to-test
+# → Converts requirements to test cases
+# → Creates comprehensive test suite
+
+/tdd:cycle
+# → Complete Red-Green-Refactor cycle
+# → Updates GitHub Issue with progress
+```
+
+#### 4. Quality & Completion
+```bash
+/pm:issue-close 123
+# → Validates completion criteria
+# → Updates Epic progress
+
+/pm:next
+# → Recommends next task
+# → Handles dependencies automatically
+```
+
+## 🌐 Intelligent Installation System
+
+The CLI uses a revolutionary dynamic installation approach:
+
+### How It Works
+1. **Network Detection** - Automatically checks internet connectivity
+2. **GitHub Fetch** - Downloads latest CCPM from [automazeio/ccpm](https://github.com/automazeio/ccpm) repository
+3. **Smart Execution** - Runs CCPM's install script with cross-platform support
+4. **TDD Enhancement** - Overlays custom TDD functionality on top of CCPM
+5. **Automatic Fallback** - Switches to offline mode if network fails
+
+### Installation Process
+```bash
+# Automatic mode (recommended)
+cpdd init
+# → Detects network → Fetches latest CCPM → Adds TDD enhancements
+
+# Force specific behavior
+cpdd init --online   # Always try GitHub (fail if no network)
+cpdd init --offline  # Use built-in templates (faster, no network needed)
+```
+
+### What Gets Downloaded
+- **CCPM Commands** - Complete project management system (39 commands)
+- **GitHub Integration** - Issue sync, project boards, automation
+- **AI Agents** - Project coordination and workflow management
+- **Templates** - PRD, Epic, and task management templates
+
+### Offline Fallback
+If online installation fails, the system automatically provides:
+- Core TDD workflow commands
+- Basic project structure
+- Essential development patterns
+- Framework-specific configurations
+
+## 🎯 Installation Modes
+
+### PDD Mode - Project-Driven Development (Recommended)
+```bash
+cpdd init --mode=pdd
+```
+**Includes:** All CCPM commands, TDD tools, GitHub integration, complete workflows
+
+**Perfect for:** Teams wanting complete project management + development workflow
+
+### PM Mode - Project Management Driven
+```bash
+cpdd init --mode=pm
+```
+**Includes:** Project management, Epic/Issue handling, GitHub sync, context management
+
+**Perfect for:** Project managers, teams focused on requirement management
+
+### TDD Mode - Test-Driven Development
+```bash
+cpdd init --mode=tdd
+```
+**Includes:** TDD cycle commands, test generation, basic testing workflows
+
+**Perfect for:** Developers wanting pure TDD workflow without project management
 
 ## 🛠️ Supported Frameworks
 
-### Languages & Frameworks
+| Framework | Test Framework | Package Manager | Status |
+|-----------|----------------|-----------------|---------|
+| Node.js/TypeScript | Jest, Vitest, Mocha | npm, yarn, pnpm | ✅ Full Support |
+| Java | JUnit 5, TestNG | Maven, Gradle | ✅ Full Support |
+| Python | pytest, unittest | pip, poetry | ✅ Full Support |
+| Go | go test | go modules | ✅ Full Support |
+| Rust | cargo test | cargo | ✅ Full Support |
+| C# | xUnit, NUnit | dotnet | 🚧 Coming Soon |
+| PHP | PHPUnit | composer | 🚧 Coming Soon |
 
-| Language | Frameworks | Test Frameworks | Build Tools |
-|----------|------------|-----------------|-------------|
-| **Node.js/TypeScript** | React, Vue, Express | Jest, Mocha, Cypress | npm, yarn, pnpm |
-| **Java** | Spring Boot, Maven, Gradle | JUnit 5, TestNG, Mockito | Maven, Gradle |
-| **Python** | FastAPI, Django, Flask | pytest, unittest | pip, poetry |
-| **Go** | Gin, Echo, Standard Library | testing, testify | go mod |
-| **Rust** | Axum, Actix, Standard Library | built-in testing | Cargo |
+## 📁 What Gets Installed
 
-### Auto-Detection Features
-
-- **Smart Framework Recognition**: Analyzes `package.json`, `pom.xml`, `setup.py`, etc.
-- **Test Directory Discovery**: Finds existing test folders and patterns
-- **Build Tool Detection**: Identifies npm/yarn, Maven/Gradle, etc.
-- **Git Integration**: Detects repository status and remote configuration
-
-## 🎯 What Gets Created
-
-When you run `claude-tdd init`, the CLI creates a complete TDD workflow:
+The CLI creates a `.claude/` directory with:
 
 ```
-your-project/
-├── .claude/                     # TDD workflow configuration
-│   ├── project-config.json    # Main project configuration
-│   ├── tdd-state.json         # TDD phase tracking state
-│   ├── example.tasks.json     # Example task structure
-│   ├── agents/                # 10 specialized AI agents
-│   │   ├── tdd-architect.md       # Test design & architecture
-│   │   ├── test-case-generator.md # Concrete test creation
-│   │   ├── product-manager.md     # Requirements management
-│   │   ├── security-auditor.md    # Security assessment
-│   │   └── ... (6 more agents)
-│   ├── commands/              # TDD and PM commands
-│   │   ├── tdd/              # RED, GREEN, REFACTOR commands
-│   │   ├── pm/               # Project management commands
-│   │   └── commit.md         # Smart commit command
-│   ├── hooks/                # Quality control hooks
-│   │   ├── tdd-guard.sh         # Phase permission enforcement
-│   │   ├── test-runner.sh       # Automatic test execution
-│   │   └── commit-validator.sh  # Commit validation
-│   ├── scripts/              # Shell scripts for automation
-│   │   ├── tdd/             # TDD management scripts
-│   │   │   ├── state-manager.sh   # TDD state management
-│   │   │   ├── init.sh           # TDD environment setup
-│   │   │   └── project-detector.sh # Project type detection
-│   │   └── pm/              # Project management scripts
-│   │       ├── next-task.sh      # Smart task recommendation
-│   │       ├── sync-to-github.sh # GitHub Issues sync
-│   │       └── validate-task-decomposition.sh # Task quality check
-│   ├── bin/                  # Utility tools
-│   │   └── json-tool.js         # JSON manipulation utility
-│   ├── framework-configs/     # Language-specific configurations
-│   ├── rules/                # TDD workflow rules
-│   └── schemas/              # JSON validation schemas
-└── .gitignore                # Updated with TDD entries
+.claude/
+├── CLAUDE.md              # Unified rules and command reference
+├── config.json            # System configuration
+├── agents/                # AI agents (6 total)
+│   ├── tdd-agent.md       # TDD workflow coordinator
+│   ├── test-generator.md  # Test case generator
+│   ├── parallel-worker.md # Team coordination
+│   └── ...
+├── commands/              # All available commands
+│   ├── pm/               # Project management (39 commands)
+│   ├── tdd/              # TDD workflow (5 commands)
+│   ├── testing/          # Test execution
+│   └── context/          # Context management
+├── workflows/            # Complete workflows (2 total)
+│   ├── spec-driven-tdd.md
+│   └── issue-to-test.md
+├── rules/                # Development rules and patterns
+├── epics/                # Epic templates and storage
+└── prds/                 # PRD templates and storage
 ```
 
-## 🎛️ Configuration Templates
+## 🔄 Example Workflows
 
-### Template Types
-
-**🚀 Full Template** (Recommended)
-- All 10 specialized agents
-- Complete project management integration
-- GitHub Issues synchronization
-- Parallel development support
-- Comprehensive quality gates
-
-**⚡ Minimal Template**
-- Essential TDD agents only
-- Core RED-GREEN-REFACTOR workflow
-- Basic testing automation
-- Lighter footprint
-
-**🎨 Custom Template**
-- Interactive component selection
-- Tailored to specific needs
-- Flexible agent configuration
-
-## 🧠 10 Specialized Agents
-
-The CLI sets up 10 AI agents, each specialized for different aspects of TDD:
-
-### Core Development
-- **🏗️ TDD Architect**: Test design and code architecture
-- **🧪 Test Case Generator**: Concrete test case creation  
-- **📊 Test Strategist**: Testing strategy and frameworks
-
-### Project Management
-- **📋 Product Manager**: Requirements and PRD creation
-- **🎯 PRD Analyzer**: Technical requirement analysis
-- **✂️ Task Decomposer**: Smart task breakdown
-
-### Quality Assurance
-- **🛡️ Security Auditor**: Security assessment and compliance
-- **⚡ Performance Analyzer**: Performance optimization
-- **👁️ Code Reviewer**: Code quality and best practices
-
-### Team Collaboration
-- **🔄 Parallel Worker**: Multi-developer coordination
-
-## 🔧 Advanced Usage
-
-### Environment Configuration
-
+### Bug Fix Workflow
 ```bash
-# Set global defaults
-claude-tdd config set default.framework nodejs
-claude-tdd config set default.template full
-claude-tdd config set github.integration true
-
-# Show current configuration
-claude-tdd config show
-
-# List available templates
-claude-tdd config list
+# In Claude Code:
+/pm:issue-start 456        # Load bug report
+/tdd:spec-to-test          # Create reproduction tests
+/tdd:red                   # Ensure tests fail (confirming bug)
+/tdd:green                 # Fix the bug
+/tdd:refactor              # Improve code quality
+/pm:issue-close 456        # Mark as resolved
 ```
 
-### Framework-Specific Setup
-
+### New Feature Workflow
 ```bash
-# Java project with Maven
-claude-tdd init --framework java --quick
-
-# Python project with pytest
-claude-tdd init --framework python --template minimal
-
-# Rust project with full features
-claude-tdd init --framework rust --template full
+# Complete spec-driven development:
+/pm:prd-new feature-name   # Create requirements
+/pm:prd-parse feature-name # Break into tasks
+/pm:epic-sync              # Sync to GitHub
+/pm:issue-start 789        # Start first task
+/tdd:cycle                 # Implement with TDD
+/pm:next                   # Move to next task
 ```
 
-### Framework Switching
+## 📊 Benefits
 
+### For Development Teams
+- **100% Requirement Traceability** - Every test and code line links back to specifications
+- **Reduced Context Switching** - Persistent context across development sessions
+- **Parallel Development** - Multiple developers work without conflicts
+- **Quality Assurance** - Automated validation at every step
+
+### For Project Managers
+- **Real-time Visibility** - GitHub Issues show actual development progress
+- **Specification-Driven** - No implementation without requirements
+- **Team Coordination** - Built-in conflict resolution and task assignment
+- **Audit Trail** - Complete history from requirement to deployment
+
+### For Stakeholders
+- **Transparency** - Clear progress tracking in familiar GitHub interface
+- **Quality Metrics** - Test coverage and completion rates visible
+- **Predictability** - Consistent development velocity and timelines
+- **Risk Reduction** - Early detection of scope creep and blockers
+
+## 🔧 Configuration
+
+### GitHub Integration Setup
 ```bash
-# Switch existing project from Node.js to Python
-claude-tdd switch-framework python
-
-# Quick switch without confirmation prompts
-claude-tdd switch-framework java --yes
-
-# Skip configuration backup during switch
-claude-tdd switch-framework go --skip-backup
-
-# Advanced migration with guidance
-claude-tdd migrate --from nodejs --to rust --interactive
-
-# Update framework configuration
-claude-tdd config set project.framework python --apply
+cpdd init --github=owner/repo
 ```
 
-### Update Management
+Then configure your GitHub token in Claude Code settings for full automation.
 
+### Framework-Specific Configuration
+
+The system auto-detects your framework and configures appropriate:
+- Test patterns and file locations
+- Build and test commands  
+- Coverage reporting
+- CI/CD integration points
+
+### Custom Configuration
+
+Edit `.claude/config.json` to customize:
+- Test coverage thresholds
+- GitHub label prefixes
+- Workflow preferences
+- Team coordination settings
+
+## 📚 Command Reference
+
+### CLI Commands (Terminal)
+- `cpdd init` - Install/configure system
+- `cpdd status` - Check installation status  
+- `cpdd update` - Update to latest version
+
+### Claude Code Commands (44 Total)
+
+#### Project Management (39 commands)
+- `/pm:prd-*` - PRD management (5 commands)
+- `/pm:epic-*` - Epic handling (12 commands)
+- `/pm:issue-*` - Issue management (8 commands)
+- `/pm:*` - Workflow and coordination (14 commands)
+
+#### TDD Development (5 commands)
+- `/tdd:cycle` - Complete TDD cycle
+- `/tdd:red` - Red phase (failing tests)
+- `/tdd:green` - Green phase (implementation)
+- `/tdd:refactor` - Refactor phase (quality)
+- `/tdd:spec-to-test` - Requirements to tests
+
+See `.claude/CLAUDE.md` for complete reference.
+
+## 🤝 Contributing
+
+We welcome contributions! This project combines:
+- **CCPM** - Originally from [automazeio/ccpm](https://github.com/automazeio/ccpm)  
+- **TDD Tools** - Custom-built for Claude Code integration
+
+### Development Setup
 ```bash
-# Check for template updates
-claude-tdd update --check
-
-# Apply all available updates
-claude-tdd update
-
-# Force update even if current
-claude-tdd update --force
-```
-
-## 🩺 Troubleshooting
-
-### Common Issues
-
-**"Claude Code not found"**
-```bash
-# Ensure Claude Code is installed
-claude-tdd doctor --check-claude
-
-# Install from: https://claude.ai/code
-```
-
-**"Permission denied on hooks"**
-```bash
-# Fix hook permissions
-chmod +x .claude/hooks/*.sh
-```
-
-**"Tests failing after init"**
-```bash
-# Run diagnosis
-claude-tdd doctor --verbose
-
-# Check test configuration
-claude-tdd status
-```
-
-### Getting Help
-
-```bash
-# General help
-claude-tdd --help
-
-# Command-specific help  
-claude-tdd init --help
-claude-tdd doctor --help
-```
-
-## 🚧 Development
-
-### Building from Source
-
-```bash
-git clone https://github.com/MuziGeek/claude-tdd-cli.git
-cd claude-tdd-cli
+git clone https://github.com/MuziGeek/claude-pdd-cli.git
+cd claude-pdd-cli
 npm install
 npm run build
 npm link
-```
-
-### Running Tests
-
-```bash
-npm test
-npm run test:watch
 ```
 
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-## 🔧 CI/CD & Development
+## 🙏 Acknowledgments
 
-### 🚀 Automated Workflows
-
-This project includes comprehensive CI/CD workflows:
-
-- **🔄 Cross-Platform Testing**: Automated testing on Ubuntu, Windows, and macOS
-- **📦 Multi-Version Support**: Tests on Node.js 18.x, 20.x, and 22.x
-- **🔒 Security Scanning**: CodeQL analysis and dependency vulnerability checks
-- **📊 Code Coverage**: Automatic coverage reporting via Codecov
-- **🚀 Automated Releases**: Smart release notes generation and npm publishing
-
-### 📋 Quality Gates
-
-All pull requests must pass:
-- ✅ Unit tests across all platforms
-- ✅ TypeScript compilation checks
-- ✅ Security vulnerability scans
-- ✅ Code coverage requirements
-- ✅ CLI functionality tests
-
-### 🛠️ Development Setup
-
-```bash
-# Clone and setup
-git clone https://github.com/MuziGeek/claude-tdd-cli.git
-cd claude-tdd-cli
-npm install
-
-# Development workflow
-npm run build    # Build TypeScript
-npm test         # Run tests
-npm run dev      # Watch mode
-```
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for detailed information on:
-- Development environment setup
-- Code standards and conventions  
-- Testing requirements
-- Pull request process
-
-Our automated CI/CD ensures code quality:
-1. **Fork** the repository
-2. **Create** a feature branch
-3. **Make** your changes with tests
-4. **Submit** a pull request
-
-All contributions automatically go through:
-- Multi-platform testing
-- Code quality checks
-- Security scans
-- Automated reviews
-
-## 📖 Documentation
-
-### 📋 Main Documentation
-- **🚀 Quick Start**: Right here in README
-- **🤝 Contributing**: [Contributing Guide](CONTRIBUTING.md)
-- **📝 Usage Guide**: [Usage Examples](docs/USAGE.md)
-- **💼 Examples**: [Example Projects](examples/)
-
-### 📚 Detailed Documentation (GitHub Wiki)
-For comprehensive documentation, visit our [**GitHub Wiki**](https://github.com/MuziGeek/claude-tdd-cli/wiki):
-
-- **🏗️ [System Architecture](https://github.com/MuziGeek/claude-tdd-cli/wiki/Architecture)** - Technical architecture and design principles
-- **🛠️ [Development Guide](https://github.com/MuziGeek/claude-tdd-cli/wiki/Development-Guide)** - Complete development environment setup
-- **🌿 [Branch Management](https://github.com/MuziGeek/claude-tdd-cli/wiki/Branch-Management)** - Git workflow and version control
-- **📦 [Release Process](https://github.com/MuziGeek/claude-tdd-cli/wiki/Release-Process)** - Automated release and publishing
-- **🔧 [Troubleshooting](https://github.com/MuziGeek/claude-tdd-cli/wiki/Troubleshooting)** - Common issues and solutions
-
-## 💬 Support
-
-- **📖 Documentation**: [GitHub Wiki](https://github.com/MuziGeek/claude-tdd-cli/wiki) | [Usage Guide](docs/USAGE.md) | [Examples](examples/)
-- **💬 Issues**: [GitHub Issues](https://github.com/MuziGeek/claude-tdd-cli/issues)
-- **🚀 Discussions**: [GitHub Discussions](https://github.com/MuziGeek/claude-tdd-cli/discussions)  
-- **🔍 CI Status**: [GitHub Actions](https://github.com/MuziGeek/claude-tdd-cli/actions)
-- **🌟 Claude Code**: [Official Site](https://claude.ai/code)
-- **✉️ Email**: mz@easymuzi.cn
+- **CCPM System** - Thanks to [automazeio](https://github.com/automazeio) for the amazing CCPM foundation
+- **Claude Code Team** - For creating the platform that makes this integration possible
+- **TDD Community** - For decades of wisdom on test-driven development practices
 
 ---
 
-**🎉 Start your professional TDD journey today!**
+**Ready to revolutionize your development workflow?**
 
-Transform any project into a TDD powerhouse with `claude-tdd init`
+```bash
+npm install -g claude-pdd-cli
+cpdd init
+```
+
+Transform requirements into tested, production-ready code with full traceability and team coordination. 🚀

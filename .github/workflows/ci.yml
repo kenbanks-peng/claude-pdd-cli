@@ -168,10 +168,10 @@ jobs:
     - name: Test packed package
       shell: bash
       run: |
-        PACKAGE=$(ls claude-tdd-cli-*.tgz)
+        PACKAGE=$(ls claude-pdd-cli-*.tgz)
         npm install -g "./$PACKAGE"
-        claude-tdd --version
-        claude-tdd --help
+        cpdd --version
+        cpdd --help
         
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
@@ -179,4 +179,4 @@ jobs:
         name: dist-package
         path: |
           dist/
-          claude-tdd-cli-*.tgz
+          claude-pdd-cli-*.tgz

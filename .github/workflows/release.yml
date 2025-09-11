@@ -106,7 +106,7 @@ jobs:
         CHORES=$(echo "$COMMIT_LOG" | grep -i "chore\|refactor\|style" || echo "")
         
         cat > RELEASE_NOTES.md << EOF
-        ## 🚀 Claude TDD CLI v${{ env.NEW_VERSION }}
+        ## 🚀 Claude PDD CLI v${{ env.NEW_VERSION }}
         
         $(if [ -n "$FEATURES" ]; then
         echo "### ✨ 新功能"
@@ -136,26 +136,26 @@ jobs:
         
         \`\`\`bash
         # 全局安装
-        npm install -g claude-tdd-cli@${{ env.NEW_VERSION }}
+        npm install -g claude-pdd-cli@${{ env.NEW_VERSION }}
         
         # 或者使用最新版本
-        npm install -g claude-tdd-cli@latest
+        npm install -g claude-pdd-cli@latest
         \`\`\`
         
         ### 🚀 快速开始
         
         \`\`\`bash
         # 查看版本
-        claude-tdd --version
+        cpdd --version
         
-        # 初始化TDD工作流
-        claude-tdd init
+        # 初始化PDD工作流
+        cpdd init
         
         # 诊断环境
-        claude-tdd doctor
+        cpdd doctor
         
         # 查看帮助
-        claude-tdd --help
+        cpdd --help
         \`\`\`
         
         ---
@@ -183,7 +183,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: v${{ env.NEW_VERSION }}
-        release_name: Claude TDD CLI v${{ env.NEW_VERSION }}
+        release_name: Claude PDD CLI v${{ env.NEW_VERSION }}
         body_path: RELEASE_NOTES.md
         draft: false
         prerelease: ${{ contains(env.NEW_VERSION, 'beta') || contains(env.NEW_VERSION, 'alpha') || contains(env.NEW_VERSION, 'rc') }}
@@ -240,10 +240,10 @@ jobs:
         
     - name: Create Success Summary
       run: |
-        echo "🎉 Successfully released Claude TDD CLI!" >> $GITHUB_STEP_SUMMARY
+        echo "🎉 Successfully released Claude PDD CLI!" >> $GITHUB_STEP_SUMMARY
         echo "📦 Package published to NPM" >> $GITHUB_STEP_SUMMARY
         echo "🏷️ GitHub release created" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "**Version**: $(node -p 'require(\"./package.json\").version')" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "**安装方式**: \`npm install -g claude-tdd-cli@latest\`" >> $GITHUB_STEP_SUMMARY
+        echo "**安装方式**: \`npm install -g claude-pdd-cli@latest\`" >> $GITHUB_STEP_SUMMARY

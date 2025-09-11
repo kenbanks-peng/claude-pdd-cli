@@ -6,9 +6,9 @@ import boxen from 'boxen';
  */
 export function printBanner(): void {
   const banner = boxen(
-    chalk.bold.cyan('🎯 Claude TDD CLI') + '\n' +
-    chalk.gray('Professional Test-Driven Development Workflow') + '\n\n' +
-    chalk.yellow('Initialize, configure, and manage TDD projects with ease'),
+    chalk.bold.cyan('🎯 Claude PDD CLI') + '\n' +
+    chalk.gray('Project-Driven Development Platform') + '\n\n' +
+    chalk.yellow('Flexible methodology support: PDD, PM, and TDD'),
     {
       padding: 1,
       margin: 1,

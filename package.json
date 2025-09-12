@@ -1,6 +1,6 @@
 {
   "name": "claude-pdd-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Claude PDD - Project-Driven Development Platform. Supports PDD, PMD, and TDD methodologies with intelligent CCPM integration for Claude Code",
   "type": "module",
   "main": "dist/index.js",

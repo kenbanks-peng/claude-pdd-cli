@@ -32,14 +32,14 @@ build/
 ehthumbs.db
 Thumbs.db
 
-# Claude Code configuration
+# Claude Code configuration (project root only)
 CLAUDE.md
 
 # Testing
 coverage/
 .nyc_output
 .jest/
-.claude/
+/.claude/
 
 # Logs
 logs/

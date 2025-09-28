@@ -55,6 +55,15 @@ fi
 
 ### 1. Create Epic Issue
 
+#### First, detect the GitHub repository:
+```bash
+# Get the current repository from git remote
+remote_url=$(git remote get-url origin 2>/dev/null || echo "")
+REPO=$(echo "$remote_url" | sed 's|.*github.com[:/]||' | sed 's|\.git$||')
+[ -z "$REPO" ] && REPO="user/repo"
+echo "Creating issues in repository: $REPO"
+```
+
 Strip frontmatter and prepare GitHub issue body:
 ```bash
 # Extract content without frontmatter
@@ -70,7 +79,8 @@ awk '
     in_tasks=0
     # When we hit the next section after Tasks Created, add Stats
     if (total_tasks) {
-      print "## Stats\n"
+      print "## Stats"
+      print ""
       print "Total tasks: " total_tasks
       print "Parallel tasks: " parallel_tasks " (can be worked on simultaneously)"
       print "Sequential tasks: " sequential_tasks " (have dependencies)"
@@ -90,7 +100,8 @@ awk '
   END {
     # If we were still in tasks section at EOF, add stats
     if (in_tasks && total_tasks) {
-      print "## Stats\n"
+      print "## Stats"
+      print ""
       print "Total tasks: " total_tasks
       print "Parallel tasks: " parallel_tasks " (can be worked on simultaneously)"
       print "Sequential tasks: " sequential_tasks " (have dependencies)"
@@ -108,6 +119,7 @@ fi
 
 # Create epic issue with labels
 epic_number=$(gh issue create \
+  --repo "$REPO" \
   --title "Epic: $ARGUMENTS" \
   --body-file /tmp/epic-body.md \
   --label "epic,epic:$ARGUMENTS,$epic_type" \
@@ -157,6 +169,7 @@ if [ "$task_count" -lt 5 ]; then
         --json number -q .number)
     else
       task_number=$(gh issue create \
+        --repo "$REPO" \
         --title "$task_name" \
         --body-file /tmp/task-body.md \
         --label "task,epic:$ARGUMENTS" \
@@ -182,7 +195,7 @@ if [ "$task_count" -ge 5 ]; then
   if gh extension list | grep -q "yahsan2/gh-sub-issue"; then
     subissue_cmd="gh sub-issue create --parent $epic_number"
   else
-    subissue_cmd="gh issue create"
+    subissue_cmd="gh issue create --repo \"$REPO\""
   fi
 
   # Batch tasks for parallel processing
@@ -210,8 +223,8 @@ Task:
        - If gh-sub-issue available:
          gh sub-issue create --parent $epic_number --title "$task_name" \
            --body-file /tmp/task-body.md --label "task,epic:$ARGUMENTS"
-       - Otherwise:
-         gh issue create --title "$task_name" --body-file /tmp/task-body.md \
+       - Otherwise: 
+         gh issue create --repo "$REPO" --title "$task_name" --body-file /tmp/task-body.md \
            --label "task,epic:$ARGUMENTS"
     4. Record: task_file:issue_number
 
@@ -287,19 +300,19 @@ If NOT using gh-sub-issue, add task list to epic:
 ```bash
 if [ "$use_subissues" = false ]; then
   # Get current epic body
-  gh issue view {epic_number} --json body -q .body > /tmp/epic-body.md
+  gh issue view ${epic_number} --json body -q .body > /tmp/epic-body.md
 
   # Append task list
   cat >> /tmp/epic-body.md << 'EOF'
 
   ## Tasks
-  - [ ] #{task1_number} {task1_name}
-  - [ ] #{task2_number} {task2_name}
-  - [ ] #{task3_number} {task3_name}
+  - [ ] #${task1_number} ${task1_name}
+  - [ ] #${task2_number} ${task2_name}
+  - [ ] #${task3_number} ${task3_name}
   EOF
 
   # Update epic issue
-  gh issue edit {epic_number} --body-file /tmp/epic-body.md
+  gh issue edit ${epic_number} --body-file /tmp/epic-body.md
 fi
 ```
 

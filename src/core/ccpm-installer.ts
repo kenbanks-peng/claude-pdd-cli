@@ -105,29 +105,97 @@ export class CCPMInstaller {
   }
 
   /**
-   * 在线安装 - 从 CCPM GitHub 仓库下载并执行安装脚本
+   * 在线安装 - 直接克隆CCPM仓库，只复制ccpm目录内容，自动处理路径引用
+   * 优化方案：避免执行安装脚本，直接提取所需文件
    */
   private async installOnline(): Promise<InstallResult> {
     try {
       // 1. 获取最新版本信息
       const version = await this.getLatestCCPMVersion();
-      
-      // 2. 下载并执行安装脚本
+
+      // 2. 直接克隆仓库并提取ccpm目录内容
       const platform = process.platform;
       let installCommand: string;
-      
+
       if (platform === 'win32') {
-        // Windows PowerShell 命令
-        installCommand = `powershell -Command "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process; iwr -useb https://raw.githubusercontent.com/Agentic-Insights/codebase-context-spec/main/install.ps1 | iex"`;
+        // Windows PowerShell：克隆仓库，复制ccpm目录，替换路径，清理
+        installCommand = `powershell -Command "
+          Write-Host 'Cloning CCPM repository...';
+
+          # 克隆CCPM仓库到临时目录
+          git clone https://github.com/automazeio/ccpm.git temp_ccpm;
+
+          if (Test-Path './temp_ccpm/ccpm') {
+            Write-Host 'Installing CCPM files...';
+
+            # 创建.claude目录
+            New-Item -ItemType Directory -Path './.claude' -Force | Out-Null;
+
+            # 复制ccpm目录内容到.claude
+            Copy-Item './temp_ccpm/ccpm/*' -Destination './.claude' -Recurse -Force;
+
+            Write-Host 'Updating path references...';
+
+            # 批量替换ccpm/scripts为.claude/scripts
+            Get-ChildItem './.claude' -Recurse -Filter '*.md' -File | ForEach-Object {
+              $content = Get-Content $_.FullName -Raw;
+              $newContent = $content -replace 'ccpm/scripts', '.claude/scripts';
+              if ($content -ne $newContent) {
+                Set-Content -Path $_.FullName -Value $newContent -NoNewline;
+              }
+            };
+
+            Write-Host 'Cleaning up...';
+
+            # 清理临时文件
+            Remove-Item './temp_ccpm' -Recurse -Force -ErrorAction SilentlyContinue;
+
+            Write-Host 'CCPM installation completed successfully!';
+          } else {
+            Write-Error 'CCPM directory not found in repository';
+            exit 1;
+          }
+        "`;
       } else {
-        // Unix-like bash 命令
-        installCommand = `curl -sSL https://raw.githubusercontent.com/Agentic-Insights/codebase-context-spec/main/install.sh | bash`;
+        // Unix/Linux/macOS：克隆仓库，复制ccpm目录，替换路径，清理
+        installCommand = `
+          echo "Cloning CCPM repository...";
+
+          # 克隆CCPM仓库到临时目录
+          git clone https://github.com/automazeio/ccpm.git temp_ccpm;
+
+          if [ -d ./temp_ccpm/ccpm ]; then
+            echo "Installing CCPM files...";
+
+            # 创建.claude目录
+            mkdir -p .claude;
+
+            # 复制ccpm目录内容到.claude
+            cp -r ./temp_ccpm/ccpm/* ./.claude/;
+
+            echo "Updating path references...";
+
+            # 批量替换ccpm/scripts为.claude/scripts
+            find ./.claude -name '*.md' -type f -exec sed -i 's|ccpm/scripts|.claude/scripts|g' {} \; 2>/dev/null || true;
+
+            echo "Cleaning up...";
+
+            # 清理临时文件
+            rm -rf ./temp_ccpm;
+
+            echo "CCPM installation completed successfully!";
+          else
+            echo "Error: CCPM directory not found in repository" >&2;
+            rm -rf ./temp_ccpm;
+            exit 1;
+          fi
+        `;
       }
 
-      // 执行安装命令
+      // 3. 执行安装命令
       const { stdout, stderr } = await this.execWithTimeout(installCommand, this.timeout);
-      
-      // 验证安装结果
+
+      // 4. 验证安装结果
       const installed = await fs.pathExists(this.targetPath);
       if (!installed) {
         throw new Error('CCPM installation failed - .claude directory not created');
@@ -138,7 +206,7 @@ export class CCPMInstaller {
         version,
         source: 'online'
       };
-      
+
     } catch (error) {
       return {
         success: false,
@@ -305,7 +373,7 @@ The TDD commands integrate seamlessly with CCPM workflow:
   private async getLatestCCPMVersion(): Promise<string> {
     try {
       const response = await axios.get(
-        'https://api.github.com/repos/Agentic-Insights/codebase-context-spec/commits/main',
+        'https://api.github.com/repos/automazeio/ccpm/commits/main',
         { timeout: this.timeout }
       );
       return response.data.sha.substring(0, 7);

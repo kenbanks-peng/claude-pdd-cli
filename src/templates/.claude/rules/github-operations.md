@@ -54,8 +54,11 @@ gh issue view {number} --json state,title,labels,body
 
 ### Create Issue
 ```bash
-# ALWAYS check remote origin first!
-gh issue create --title "{title}" --body-file {file} --label "{labels}"
+# Always specify repo to avoid defaulting to wrong repository
+remote_url=$(git remote get-url origin 2>/dev/null || echo "")
+REPO=$(echo "$remote_url" | sed 's|.*github.com[:/]||' | sed 's|\.git$||')
+[ -z "$REPO" ] && REPO="user/repo"
+gh issue create --repo "$REPO" --title "{title}" --body-file {file} --label "{labels}"
 ```
 
 ### Update Issue

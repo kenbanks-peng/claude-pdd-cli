@@ -46,9 +46,29 @@ git status -sb
 ### 2. Run Tests (Optional but Recommended)
 
 ```bash
-# Look for test commands
+# Look for test commands based on project type
 if [ -f package.json ]; then
   npm test || echo "⚠️ Tests failed. Continue anyway? (yes/no)"
+elif [ -f pom.xml ]; then
+  mvn test || echo "⚠️ Tests failed. Continue anyway? (yes/no)"
+elif [ -f build.gradle ] || [ -f build.gradle.kts ]; then
+  ./gradlew test || echo "⚠️ Tests failed. Continue anyway? (yes/no)"
+elif [ -f composer.json ]; then
+  ./vendor/bin/phpunit || echo "⚠️ Tests failed. Continue anyway? (yes/no)"
+elif [ -f *.sln ] || [ -f *.csproj ]; then
+  dotnet test || echo "⚠️ Tests failed. Continue anyway? (yes/no)"
+elif [ -f Cargo.toml ]; then
+  cargo test || echo "⚠️ Tests failed. Continue anyway? (yes/no)"
+elif [ -f go.mod ]; then
+  go test ./... || echo "⚠️ Tests failed. Continue anyway? (yes/no)"
+elif [ -f Gemfile ]; then
+  bundle exec rspec || bundle exec rake test || echo "⚠️ Tests failed. Continue anyway? (yes/no)"
+elif [ -f pubspec.yaml ]; then
+  flutter test || echo "⚠️ Tests failed. Continue anyway? (yes/no)"
+elif [ -f Package.swift ]; then
+  swift test || echo "⚠️ Tests failed. Continue anyway? (yes/no)"
+elif [ -f CMakeLists.txt ]; then
+  cd build && ctest || echo "⚠️ Tests failed. Continue anyway? (yes/no)"
 elif [ -f Makefile ]; then
   make test || echo "⚠️ Tests failed. Continue anyway? (yes/no)"
 fi
@@ -78,11 +98,28 @@ echo "Merging epic/$ARGUMENTS to main..."
 git merge epic/$ARGUMENTS --no-ff -m "Merge epic: $ARGUMENTS
 
 Completed features:
-$(cd .claude/epics/$ARGUMENTS && ls *.md | grep -E '^[0-9]+' | while read f; do
-  echo "- $(grep '^name:' $f | cut -d: -f2)"
-done)
+# Generate feature list
+feature_list=""
+if [ -d ".claude/epics/$ARGUMENTS" ]; then
+  cd .claude/epics/$ARGUMENTS
+  for task_file in [0-9]*.md; do
+    [ -f "$task_file" ] || continue
+    task_name=$(grep '^name:' "$task_file" | cut -d: -f2 | sed 's/^ *//')
+    feature_list="$feature_list\n- $task_name"
+  done
+  cd - > /dev/null
+fi
 
-Closes epic #$(grep 'github:' .claude/epics/$ARGUMENTS/epic.md | grep -oE '#[0-9]+')"
+echo "$feature_list"
+
+# Extract epic issue number
+epic_github_line=$(grep 'github:' .claude/epics/$ARGUMENTS/epic.md 2>/dev/null || true)
+if [ -n "$epic_github_line" ]; then
+  epic_issue=$(echo "$epic_github_line" | grep -oE '[0-9]+' || true)
+  if [ -n "$epic_issue" ]; then
+    echo "\nCloses epic #$epic_issue"
+  fi
+fi"
 ```
 
 ### 5. Handle Merge Conflicts
@@ -141,14 +178,27 @@ echo "✅ Epic archived: .claude/epics/archived/$ARGUMENTS"
 Close related issues:
 ```bash
 # Get issue numbers from epic
-epic_issue=$(grep 'github:' .claude/epics/archived/$ARGUMENTS/epic.md | grep -oE '[0-9]+$')
+# Extract epic issue number
+epic_github_line=$(grep 'github:' .claude/epics/archived/$ARGUMENTS/epic.md 2>/dev/null || true)
+if [ -n "$epic_github_line" ]; then
+  epic_issue=$(echo "$epic_github_line" | grep -oE '[0-9]+$' || true)
+else
+  epic_issue=""
+fi
 
 # Close epic issue
 gh issue close $epic_issue -c "Epic completed and merged to main"
 
 # Close task issues
 for task_file in .claude/epics/archived/$ARGUMENTS/[0-9]*.md; do
-  issue_num=$(grep 'github:' $task_file | grep -oE '[0-9]+$')
+  [ -f "$task_file" ] || continue
+  # Extract task issue number
+  task_github_line=$(grep 'github:' "$task_file" 2>/dev/null || true)
+  if [ -n "$task_github_line" ]; then
+    issue_num=$(echo "$task_github_line" | grep -oE '[0-9]+$' || true)
+  else
+    issue_num=""
+  fi
   if [ ! -z "$issue_num" ]; then
     gh issue close $issue_num -c "Completed in epic merge"
   fi

@@ -1,83 +1,83 @@
-# 🤝 贡献指南
+# 🤝 Contributing Guide
 
-感谢您对 Claude PDD CLI 项目的兴趣！我们欢迎各种形式的贡献。
+Thank you for your interest in the Claude PDD CLI project! We welcome contributions of all kinds.
 
-## 🌟 如何贡献
+## 🌟 How to Contribute
 
-### 报告问题
+### Reporting Issues
 
-如果您发现了 bug 或有功能建议：
+If you've found a bug or have a feature suggestion:
 
-1. **搜索已有 Issues**：确保问题未被重复报告
-2. **使用 Issue 模板**：提供尽可能详细的信息
-3. **包含环境信息**：
-   - Node.js 版本
-   - 操作系统
-   - claude-pdd-cli 版本
-   - 错误堆栈信息
+1. **Search Existing Issues**: Make sure the issue hasn't been reported already
+2. **Use Issue Templates**: Provide as much detail as possible
+3. **Include Environment Information**:
+   - Node.js version
+   - Operating system
+   - claude-pdd-cli version
+   - Error stack trace
 
-### 提交代码
+### Submitting Code
 
-#### 开发环境搭建
+#### Development Environment Setup
 
 ```bash
-# 1. Fork 项目并克隆
-git clone https://github.com/你的用户名/claude-pdd-cli.git
+# 1. Fork the project and clone
+git clone https://github.com/your-username/claude-pdd-cli.git
 cd claude-pdd-cli
 
-# 2. 安装依赖
+# 2. Install dependencies
 npm install
 
-# 3. 构建项目
+# 3. Build the project
 npm run build
 
-# 5. 链接到本地（用于测试）
+# 5. Link locally (for testing)
 npm link
 ```
 
-#### 开发工作流
+#### Development Workflow
 
-1. **创建功能分支**
+1. **Create a Feature Branch**
    ```bash
    git checkout develop
    git pull origin develop
    git checkout -b feature/your-feature-name
    ```
 
-2. **遵循提交规范**
+2. **Follow Commit Conventions**
    ```bash
-   # 格式：<type>(<scope>): <subject>
-   git commit -m "feat(init): 添加 Rust 框架支持"
-   git commit -m "fix(doctor): 修复环境检测问题"
-   git commit -m "docs: 更新 API 文档"
+   # Format: <type>(<scope>): <subject>
+   git commit -m "feat(init): add Rust framework support"
+   git commit -m "fix(doctor): fix environment detection issue"
+   git commit -m "docs: update API documentation"
    ```
 
-3. **确保代码质量**
+3. **Ensure Code Quality**
    ```bash
-   # 代码检查和格式化
+   # Code checking and formatting
    npm run lint
-   
-   # 构建验证
+
+   # Build verification
    npm run build
    ```
 
-4. **提交 Pull Request**
-   - 基于 `develop` 分支创建 PR
-   - 使用清晰的 PR 标题和描述
-   - 关联相关的 Issues
-   - 确保 CI 检查通过
+4. **Submit Pull Request**
+   - Create PR based on `develop` branch
+   - Use clear PR title and description
+   - Link related Issues
+   - Ensure CI checks pass
 
-## 📋 代码规范
+## 📋 Code Standards
 
-### TypeScript 规范
+### TypeScript Standards
 
-- 使用 TypeScript 严格模式
-- 为公共 API 提供完整类型注解
-- 使用接口定义数据结构
-- 优先使用 `const` 断言
+- Use TypeScript strict mode
+- Provide complete type annotations for public APIs
+- Use interfaces to define data structures
+- Prefer `const` assertions
 
 ```typescript
-// ✅ 好的做法
+// ✅ Good practice
 interface FrameworkConfig {
   name: string;
   testCommand: string;
@@ -89,55 +89,55 @@ const frameworks: readonly FrameworkConfig[] = [
   { name: 'python', testCommand: 'pytest' }
 ] as const;
 
-// ❌ 避免的做法
+// ❌ Avoid this
 const frameworks = [
   { name: 'nodejs', testCommand: 'npm test' },
   { name: 'python', testCommand: 'pytest' }
 ];
 ```
 
-### 命名规范
+### Naming Conventions
 
-- **文件名**：kebab-case (`framework-detector.ts`)
-- **类名**：PascalCase (`FrameworkDetector`)
-- **函数名**：camelCase (`detectFramework`)
-- **常量**：SCREAMING_SNAKE_CASE (`DEFAULT_CONFIG`)
+- **File names**: kebab-case (`framework-detector.ts`)
+- **Class names**: PascalCase (`FrameworkDetector`)
+- **Function names**: camelCase (`detectFramework`)
+- **Constants**: SCREAMING_SNAKE_CASE (`DEFAULT_CONFIG`)
 
-### 错误处理
+### Error Handling
 
-- 使用具体的错误类型
-- 提供有意义的错误信息
-- 包含错误恢复建议
+- Use specific error types
+- Provide meaningful error messages
+- Include error recovery suggestions
 
 ```typescript
-// ✅ 好的错误处理
+// ✅ Good error handling
 class FrameworkNotFoundError extends Error {
   constructor(projectPath: string) {
     super(
-      `无法检测到支持的框架在路径: ${projectPath}\n` +
-      `建议：确保项目包含 package.json、pom.xml 或其他框架配置文件`
+      `Unable to detect supported framework in path: ${projectPath}\n` +
+      `Suggestion: Ensure the project contains package.json, pom.xml, or other framework configuration files`
     );
     this.name = 'FrameworkNotFoundError';
   }
 }
 ```
 
-### 测试规范
+### Testing Standards
 
-- 为每个公共函数编写测试
-- 使用描述性的测试名称
-- 遵循 AAA 模式（Arrange, Act, Assert）
+- Write tests for every public function
+- Use descriptive test names
+- Follow the AAA pattern (Arrange, Act, Assert)
 
 ```typescript
 describe('FrameworkDetector', () => {
   describe('detectFramework', () => {
-    it('应该检测到 Node.js 项目当 package.json 存在时', () => {
+    it('should detect Node.js project when package.json exists', () => {
       // Arrange
       const detector = new FrameworkDetector();
-      
+
       // Act
       const result = detector.detectFramework('/path/to/nodejs/project');
-      
+
       // Assert
       expect(result.name).toBe('nodejs');
     });
@@ -145,167 +145,167 @@ describe('FrameworkDetector', () => {
 });
 ```
 
-## 🔄 分支策略
+## 🔄 Branching Strategy
 
-我们使用 Git Flow 工作流：
+We use Git Flow workflow:
 
-- `main`：生产就绪代码
-- `develop`：开发分支
-- `feature/*`：新功能开发
-- `hotfix/*`：紧急修复
-- `release/*`：版本发布准备
+- `main`: Production-ready code
+- `develop`: Development branch
+- `feature/*`: New feature development
+- `hotfix/*`: Emergency fixes
+- `release/*`: Release preparation
 
-详细的分支管理策略请参考 [Wiki - 分支管理](https://github.com/MuziGeek/claude-pdd-cli/wiki/Branch-Management)。
+For detailed branch management strategy, please refer to [Wiki - Branch Management](https://github.com/MuziGeek/claude-pdd-cli/wiki/Branch-Management).
 
-## 📝 提交信息规范
+## 📝 Commit Message Convention
 
-我们遵循 [Conventional Commits](https://www.conventionalcommits.org/) 规范：
+We follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
 
-### 类型
+### Types
 
-- `feat`: 新功能
-- `fix`: Bug 修复
-- `docs`: 文档更新
-- `style`: 代码格式化
-- `refactor`: 重构
-- `test`: 测试相关
-- `chore`: 构建工具或辅助工具变更
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation update
+- `style`: Code formatting
+- `refactor`: Refactoring
+- `test`: Test-related
+- `chore`: Build tools or auxiliary tool changes
 
-### 作用域
+### Scopes
 
-- `init`: 项目初始化
-- `doctor`: 环境诊断
-- `config`: 配置管理
-- `template`: 模板系统
-- `ui`: 用户界面
-- `cli`: 命令行接口
+- `init`: Project initialization
+- `doctor`: Environment diagnostics
+- `config`: Configuration management
+- `template`: Template system
+- `ui`: User interface
+- `cli`: Command line interface
 
-### 示例
+### Examples
 
 ```bash
-feat(init): 添加 Go 框架支持
-fix(doctor): 修复 Windows 路径检测问题
-docs(readme): 更新安装说明
-refactor(template): 重构模板加载机制
-test(detector): 添加框架检测单元测试
+feat(init): add Go framework support
+fix(doctor): fix Windows path detection issue
+docs(readme): update installation instructions
+refactor(template): refactor template loading mechanism
+test(detector): add framework detection unit tests
 ```
 
-## ✅ Pull Request 检查清单
+## ✅ Pull Request Checklist
 
-在提交 PR 前，请确认：
+Before submitting a PR, please confirm:
 
-### 代码质量
-- [ ] 代码检查通过 (`npm run lint`)
-- [ ] 构建成功 (`npm run build`)
-- [ ] 功能实现完整
+### Code Quality
+- [ ] Code checks pass (`npm run lint`)
+- [ ] Build succeeds (`npm run build`)
+- [ ] Feature implementation is complete
 
-### 功能完整性
-- [ ] 新功能文档完整
-- [ ] 更新了相关文档
-- [ ] 命令行帮助信息正确
-- [ ] 错误处理适当
+### Feature Completeness
+- [ ] New feature documentation is complete
+- [ ] Updated relevant documentation
+- [ ] Command line help information is correct
+- [ ] Error handling is appropriate
 
-### 兼容性
-- [ ] 跨平台兼容 (Windows, macOS, Linux)
-- [ ] Node.js 多版本兼容 (18.x, 20.x, 22.x)
-- [ ] 向后兼容现有 API
+### Compatibility
+- [ ] Cross-platform compatible (Windows, macOS, Linux)
+- [ ] Node.js multi-version compatible (18.x, 20.x, 22.x)
+- [ ] Backward compatible with existing APIs
 
-### 文档
-- [ ] README 更新（如有必要）
-- [ ] API 文档更新
-- [ ] CHANGELOG 条目添加
-- [ ] 示例代码有效
+### Documentation
+- [ ] README updated (if necessary)
+- [ ] API documentation updated
+- [ ] CHANGELOG entry added
+- [ ] Example code is valid
 
-## 🎯 开发重点
+## 🎯 Development Focus
 
-### 当前优先级
+### Current Priorities
 
-1. **框架支持扩展**
-   - 添加新的编程语言支持
-   - 改进框架检测准确性
+1. **Framework Support Expansion**
+   - Add new programming language support
+   - Improve framework detection accuracy
 
-2. **用户体验改进**
-   - 更好的错误信息
-   - 交互式配置向导
-   - 进度指示器
+2. **User Experience Improvements**
+   - Better error messages
+   - Interactive configuration wizard
+   - Progress indicators
 
-3. **性能优化**
-   - 减少启动时间
-   - 缓存机制
-   - 并行处理
+3. **Performance Optimization**
+   - Reduce startup time
+   - Caching mechanisms
+   - Parallel processing
 
-4. **测试覆盖**
-   - 增加边界条件测试
-   - 集成测试
-   - 性能测试
+4. **Test Coverage**
+   - Add boundary condition tests
+   - Integration tests
+   - Performance tests
 
-### 技术债务
+### Technical Debt
 
-- 重构老旧的模块
-- 改进错误处理
-- 统一配置格式
-- 优化依赖管理
+- Refactor outdated modules
+- Improve error handling
+- Unify configuration format
+- Optimize dependency management
 
-## 🛡️ 安全考虑
+## 🛡️ Security Considerations
 
-- **不要提交敏感信息**：API 密钥、密码、令牌
-- **验证用户输入**：防止路径遍历、注入攻击
-- **安全的文件操作**：使用安全的文件路径处理
-- **依赖安全**：定期检查依赖漏洞
+- **Don't commit sensitive information**: API keys, passwords, tokens
+- **Validate user input**: Prevent path traversal, injection attacks
+- **Secure file operations**: Use secure file path handling
+- **Dependency security**: Regularly check for dependency vulnerabilities
 
-## 📚 学习资源
+## 📚 Learning Resources
 
-### 项目相关
-- [Claude Code 文档](https://claude.ai/code)
-- [TDD 最佳实践](https://martinfowler.com/bliki/TestDrivenDevelopment.html)
-- [CLI 设计指南](https://clig.dev/)
+### Project-Related
+- [Claude Code Documentation](https://claude.ai/code)
+- [TDD Best Practices](https://martinfowler.com/bliki/TestDrivenDevelopment.html)
+- [CLI Design Guidelines](https://clig.dev/)
 
-### 技术栈
-- [TypeScript 手册](https://www.typescriptlang.org/docs/)
-- [Node.js API 文档](https://nodejs.org/api/)
-- [Jest 测试框架](https://jestjs.io/docs/getting-started)
+### Technology Stack
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+- [Node.js API Documentation](https://nodejs.org/api/)
+- [Jest Testing Framework](https://jestjs.io/docs/getting-started)
 
-## 💬 获得帮助
+## 💬 Getting Help
 
-- **GitHub Issues**：报告问题或功能请求
-- **GitHub Discussions**：讨论想法和获得帮助
-- **Wiki**：查看详细文档
-- **Email**：紧急问题可发邮件至 mz@easymuzi.cn
+- **GitHub Issues**: Report issues or feature requests
+- **GitHub Discussions**: Discuss ideas and get help
+- **Wiki**: View detailed documentation
+- **Email**: For urgent issues, email mz@easymuzi.cn
 
-## 🎉 贡献者
+## 🎉 Contributors
 
-感谢所有为项目做出贡献的人！
+Thanks to all the people who have contributed to the project!
 
-<!-- 这里将自动显示贡献者头像 -->
+<!-- Contributor avatars will be displayed here automatically -->
 <a href="https://github.com/MuziGeek/claude-pdd-cli/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=MuziGeek/claude-pdd-cli" />
 </a>
 
-## 📄 行为准则
+## 📄 Code of Conduct
 
-我们致力于营造一个开放、友好的社区环境。参与本项目即表示您同意遵守我们的行为准则：
+We are committed to creating an open and friendly community environment. By participating in this project, you agree to abide by our code of conduct:
 
-### 我们的承诺
+### Our Pledge
 
-- **包容**：欢迎不同背景和观点的人
-- **尊重**：尊重不同意见和经历
-- **协作**：以建设性方式解决分歧
-- **学习**：互相学习，共同成长
+- **Inclusiveness**: Welcome people from different backgrounds and perspectives
+- **Respect**: Respect different opinions and experiences
+- **Collaboration**: Resolve disagreements constructively
+- **Learning**: Learn from each other and grow together
 
-### 不当行为
+### Unacceptable Behavior
 
-以下行为不被接受：
+The following behaviors are not acceptable:
 
-- 使用性化的言语或图像
-- 人身攻击或侮辱
-- 骚扰行为
-- 发布他人隐私信息
-- 其他不专业行为
+- Using sexualized language or imagery
+- Personal attacks or insults
+- Harassment
+- Publishing others' private information
+- Other unprofessional conduct
 
-### 执行
+### Enforcement
 
-项目维护者有权删除、编辑或拒绝违反行为准则的评论、提交、代码、问题等。
+Project maintainers have the right to remove, edit, or reject comments, commits, code, issues, etc. that violate the code of conduct.
 
 ---
 
-再次感谢您的贡献！每个贡献都让 Claude PDD CLI 变得更好。🚀
+Thank you again for your contribution! Every contribution makes Claude PDD CLI better. 🚀

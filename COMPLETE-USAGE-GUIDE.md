@@ -1,591 +1,591 @@
-# Claude PDD CLI 完整使用指南
+# Claude PDD CLI Complete Usage Guide
 
-> **项目驱动开发 (Project-Driven Development) 平台完整功能说明**
+> **Project-Driven Development (PDD) Platform Complete Feature Documentation**
 
 [![npm version](https://badge.fury.io/js/claude-pdd-cli.svg)](https://badge.fury.io/js/claude-pdd-cli)
 
-## 📖 目录
+## 📖 Table of Contents
 
-- [Part 1: 快速上手指南](#part-1-快速上手指南)
-- [Part 2: 安装模式详解](#part-2-安装模式详解)
-- [Part 3: 完整命令参考](#part-3-完整命令参考)
-- [Part 4: 工作流程模式](#part-4-工作流程模式)
-- [Part 5: 高级功能](#part-5-高级功能)
-- [Part 6: 故障排除和FAQ](#part-6-故障排除和faq)
+- [Part 1: Quick Start Guide](#part-1-quick-start-guide)
+- [Part 2: Installation Modes Explained](#part-2-installation-modes-explained)
+- [Part 3: Complete Command Reference](#part-3-complete-command-reference)
+- [Part 4: Workflow Patterns](#part-4-workflow-patterns)
+- [Part 5: Advanced Features](#part-5-advanced-features)
+- [Part 6: Troubleshooting and FAQ](#part-6-troubleshooting-and-faq)
 
 ---
 
-## Part 1: 快速上手指南
+## Part 1: Quick Start Guide
 
-### 🚀 5分钟快速开始
+### 🚀 Get Started in 5 Minutes
 
-#### 1. 安装
+#### 1. Installation
 ```bash
 npm install -g claude-pdd-cli
 ```
 
-#### 2. 初始化项目
+#### 2. Initialize Project
 ```bash
-# 进入你的项目目录
+# Navigate to your project directory
 cd my-project
 
-# 完整安装（推荐）- 获取最新CCPM + TDD工具
+# Full installation (recommended) - Get the latest CCPM + TDD tools
 cpdd init
 
-# 或指定模式
-cpdd init --mode=pdd    # 完整项目驱动开发
-cpdd init --mode=pm     # 纯项目管理
-cpdd init --mode=tdd    # 纯测试驱动开发
+# Or specify mode
+cpdd init --mode=pdd    # Full project-driven development
+cpdd init --mode=pm     # Pure project management
+cpdd init --mode=tdd    # Pure test-driven development
 ```
 
-#### 3. 验证安装
+#### 3. Verify Installation
 ```bash
 cpdd status
 ```
 
-#### 4. 开始第一个功能开发
+#### 4. Start Your First Feature Development
 ```bash
-# 在Claude Code中运行:
-/pm:prd-new user-login    # 创建需求文档
-/pm:prd-parse user-login  # 生成Epic和任务
-/pm:issue-start 123       # 开始具体任务
-/tdd:spec-to-test         # 转换为测试用例
-/tdd:cycle                # 完整TDD开发循环
+# Run in Claude Code:
+/pm:prd-new user-login    # Create requirements document
+/pm:prd-parse user-login  # Generate Epic and tasks
+/pm:issue-start 123       # Start specific task
+/tdd:spec-to-test         # Convert to test cases
+/tdd:cycle                # Complete TDD development cycle
 ```
 
-### 🏗️ 生成的项目结构
+### 🏗️ Generated Project Structure
 
 ```
 .claude/
-├── CLAUDE.md              # 统一规则和命令参考
-├── config.json            # 系统配置
-├── agents/                # AI代理 (8个)
-│   ├── tdd-architect.md   # TDD架构师
-│   ├── test-generator.md  # 测试生成专家
-│   ├── parallel-worker.md # 并行协调器
+├── CLAUDE.md              # Unified rules and command reference
+├── config.json            # System configuration
+├── agents/                # AI agents (8 total)
+│   ├── tdd-architect.md   # TDD architect
+│   ├── test-generator.md  # Test generation expert
+│   ├── parallel-worker.md # Parallel coordinator
 │   └── ...
-├── commands/              # 可用命令
-│   ├── pm/               # 项目管理命令 (39个)
-│   │   ├── prd-new.md    # 创建PRD
-│   │   ├── epic-start.md # 启动Epic
+├── commands/              # Available commands
+│   ├── pm/               # Project management commands (39 total)
+│   │   ├── prd-new.md    # Create PRD
+│   │   ├── epic-start.md # Start Epic
 │   │   └── ...
-│   └── tdd/              # TDD命令 (5个)
-│       ├── cycle.md      # 完整TDD循环
-│       ├── red.md        # 红灯阶段
+│   └── tdd/              # TDD commands (5 total)
+│       ├── cycle.md      # Complete TDD cycle
+│       ├── red.md        # Red phase
 │       └── ...
-├── workflows/            # 完整工作流
-├── rules/                # 开发规则
-├── epics/                # Epic存储
-└── prds/                 # PRD存储
+├── workflows/            # Complete workflows
+├── rules/                # Development rules
+├── epics/                # Epic storage
+└── prds/                 # PRD storage
 ```
 
 ---
 
-## Part 2: 安装模式详解
+## Part 2: Installation Modes Explained
 
-### 🎯 PDD模式 - Project-Driven Development (推荐)
+### 🎯 PDD Mode - Project-Driven Development (Recommended)
 
 ```bash
 cpdd init --mode=pdd
 ```
 
-**包含功能:**
-- ✅ 完整CCPM系统 (39个项目管理命令)
-- ✅ TDD开发工具 (5个TDD命令)
-- ✅ GitHub Issues集成
-- ✅ 8个专业AI代理
-- ✅ 并行开发支持 (Git Worktree)
-- ✅ PRD/Epic/任务完整生命周期
+**Included Features:**
+- ✅ Complete CCPM system (39 project management commands)
+- ✅ TDD development tools (5 TDD commands)
+- ✅ GitHub Issues integration
+- ✅ 8 professional AI agents
+- ✅ Parallel development support (Git Worktree)
+- ✅ Complete PRD/Epic/task lifecycle
 
-**适用场景:**
-- 团队协作开发
-- 需要完整需求追溯
-- 项目管理要求严格
-- 质量要求高的商业项目
+**Use Cases:**
+- Team collaborative development
+- Projects requiring complete requirements traceability
+- Projects with strict project management requirements
+- Commercial projects with high quality requirements
 
-**工作流程:**
+**Workflow:**
 ```
-需求(PRD) → Epic分解 → Issue任务 → TDD开发 → 并行协作 → 质量保证 → 部署
+Requirements(PRD) → Epic Decomposition → Issue Tasks → TDD Development → Parallel Collaboration → Quality Assurance → Deployment
 ```
 
-### 📋 PM模式 - Project Management Driven
+### 📋 PM Mode - Project Management Driven
 
 ```bash
 cpdd init --mode=pm
 ```
 
-**包含功能:**
-- ✅ CCPM项目管理功能 (39个PM命令)
-- ✅ PRD和Epic管理
-- ✅ GitHub Issues集成
-- ✅ 团队协作工作流
-- ❌ TDD开发工具
+**Included Features:**
+- ✅ CCPM project management features (39 PM commands)
+- ✅ PRD and Epic management
+- ✅ GitHub Issues integration
+- ✅ Team collaboration workflows
+- ❌ TDD development tools
 
-**适用场景:**
-- 项目经理主导
-- 需求管理重点项目
-- 大型团队协调
-- 非技术团队成员参与
+**Use Cases:**
+- Project manager-led projects
+- Projects focused on requirements management
+- Large team coordination
+- Non-technical team member participation
 
-### 🧪 TDD模式 - Test-Driven Development
+### 🧪 TDD Mode - Test-Driven Development
 
 ```bash
 cpdd init --mode=tdd
 ```
 
-**包含功能:**
-- ✅ TDD开发命令 (5个TDD命令)
-- ✅ 智能测试生成工具
-- ✅ Red-Green-Refactor循环
-- ✅ 代码质量保证
-- ❌ 项目管理功能
+**Included Features:**
+- ✅ TDD development commands (5 TDD commands)
+- ✅ Intelligent test generation tools
+- ✅ Red-Green-Refactor cycle
+- ✅ Code quality assurance
+- ❌ Project management features
 
-**适用场景:**
-- 专注代码质量
-- 个人开发项目
-- 技术导向团队
-- 重构现有代码
+**Use Cases:**
+- Focus on code quality
+- Individual development projects
+- Technology-oriented teams
+- Refactoring existing code
 
-### 🌐 在线/离线安装模式
+### 🌐 Online/Offline Installation Modes
 
-#### 在线模式（推荐）
+#### Online Mode (Recommended)
 ```bash
 cpdd init --online
 ```
-- 从GitHub获取最新CCPM
-- 自动集成TDD增强功能
-- 始终保持最新特性
-- 完整的39个PM命令
+- Fetch latest CCPM from GitHub
+- Automatically integrate TDD enhancement features
+- Always keep up with latest features
+- Complete 39 PM commands
 
-#### 离线模式
+#### Offline Mode
 ```bash
 cpdd init --offline
 ```
-- 使用内置模板
-- 无需网络连接
-- 快速安装
-- 基础功能完整
+- Use built-in templates
+- No network connection required
+- Quick installation
+- Complete basic features
 
-#### 智能模式（默认）
+#### Smart Mode (Default)
 ```bash
 cpdd init
 ```
-- 自动检测网络状态
-- 在线失败时自动降级到离线
-- 最佳用户体验
+- Automatically detect network status
+- Automatically fallback to offline when online fails
+- Best user experience
 
 ---
 
-## Part 3: 完整命令参考
+## Part 3: Complete Command Reference
 
-### 📋 项目管理命令 (39个)
+### 📋 Project Management Commands (39 total)
 
-#### PRD管理命令 (5个)
+#### PRD Management Commands (5 total)
 
-| 命令 | 描述 | 使用示例 |
+| Command | Description | Usage Example |
 |------|------|----------|
-| `/pm:prd-new <名称>` | 创建新PRD | `/pm:prd-new user-authentication` |
-| `/pm:prd-list` | 列出所有PRD | `/pm:prd-list` |
-| `/pm:prd-edit <名称>` | 编辑PRD | `/pm:prd-edit user-authentication` |
-| `/pm:prd-parse <名称>` | 解析PRD生成Epic | `/pm:prd-parse user-authentication` |
-| `/pm:prd-status <名称>` | 查看PRD状态 | `/pm:prd-status user-authentication` |
+| `/pm:prd-new <name>` | Create new PRD | `/pm:prd-new user-authentication` |
+| `/pm:prd-list` | List all PRDs | `/pm:prd-list` |
+| `/pm:prd-edit <name>` | Edit PRD | `/pm:prd-edit user-authentication` |
+| `/pm:prd-parse <name>` | Parse PRD to generate Epic | `/pm:prd-parse user-authentication` |
+| `/pm:prd-status <name>` | View PRD status | `/pm:prd-status user-authentication` |
 
-**使用流程:**
+**Usage Flow:**
 ```bash
-# 1. 创建需求文档
+# 1. Create requirements document
 /pm:prd-new payment-system
 
-# 2. 编辑完善需求
+# 2. Edit and refine requirements
 /pm:prd-edit payment-system
 
-# 3. 解析生成Epic和任务
+# 3. Parse to generate Epic and tasks
 /pm:prd-parse payment-system
 
-# 4. 查看状态
+# 4. Check status
 /pm:prd-status payment-system
 ```
 
-#### Epic管理命令 (12个)
+#### Epic Management Commands (12 total)
 
-| 命令 | 描述 | 使用示例 |
+| Command | Description | Usage Example |
 |------|------|----------|
-| `/pm:epic-list` | 列出所有Epic | `/pm:epic-list` |
-| `/pm:epic-show <名称>` | 显示Epic详情 | `/pm:epic-show payment-v2` |
-| `/pm:epic-edit <名称>` | 编辑Epic | `/pm:epic-edit payment-v2` |
-| `/pm:epic-start <名称>` | 启动Epic开发 | `/pm:epic-start payment-v2` |
-| `/pm:epic-start-worktree <名称>` | 并行Epic开发 | `/pm:epic-start-worktree payment-v2` |
-| `/pm:epic-status <名称>` | Epic状态查看 | `/pm:epic-status payment-v2` |
-| `/pm:epic-sync <名称>` | 同步到GitHub | `/pm:epic-sync payment-v2` |
-| `/pm:epic-decompose <名称>` | 任务分解 | `/pm:epic-decompose payment-v2` |
-| `/pm:epic-refresh <名称>` | 刷新Epic | `/pm:epic-refresh payment-v2` |
-| `/pm:epic-merge <名称>` | 合并Epic分支 | `/pm:epic-merge payment-v2` |
-| `/pm:epic-close <名称>` | 关闭Epic | `/pm:epic-close payment-v2` |
-| `/pm:epic-oneshot <名称>` | 一键完成Epic | `/pm:epic-oneshot payment-v2` |
+| `/pm:epic-list` | List all Epics | `/pm:epic-list` |
+| `/pm:epic-show <name>` | Show Epic details | `/pm:epic-show payment-v2` |
+| `/pm:epic-edit <name>` | Edit Epic | `/pm:epic-edit payment-v2` |
+| `/pm:epic-start <name>` | Start Epic development | `/pm:epic-start payment-v2` |
+| `/pm:epic-start-worktree <name>` | Parallel Epic development | `/pm:epic-start-worktree payment-v2` |
+| `/pm:epic-status <name>` | View Epic status | `/pm:epic-status payment-v2` |
+| `/pm:epic-sync <name>` | Sync to GitHub | `/pm:epic-sync payment-v2` |
+| `/pm:epic-decompose <name>` | Task decomposition | `/pm:epic-decompose payment-v2` |
+| `/pm:epic-refresh <name>` | Refresh Epic | `/pm:epic-refresh payment-v2` |
+| `/pm:epic-merge <name>` | Merge Epic branch | `/pm:epic-merge payment-v2` |
+| `/pm:epic-close <name>` | Close Epic | `/pm:epic-close payment-v2` |
+| `/pm:epic-oneshot <name>` | Complete Epic in one shot | `/pm:epic-oneshot payment-v2` |
 
-**Epic生命周期:**
+**Epic Lifecycle:**
 ```bash
-# 1. 从PRD创建Epic
+# 1. Create Epic from PRD
 /pm:prd-parse payment-system
 
-# 2. 查看生成的Epic
+# 2. View generated Epic
 /pm:epic-show payment-system
 
-# 3. 同步到GitHub
+# 3. Sync to GitHub
 /pm:epic-sync payment-system
 
-# 4. 启动并行开发
+# 4. Start parallel development
 /pm:epic-start-worktree payment-system
 
-# 5. 监控进度
+# 5. Monitor progress
 /pm:epic-status payment-system
 
-# 6. 合并完成
+# 6. Merge when complete
 /pm:epic-merge payment-system
 ```
 
-#### Issue管理命令 (8个)
+#### Issue Management Commands (8 total)
 
-| 命令 | 描述 | 使用示例 |
+| Command | Description | Usage Example |
 |------|------|----------|
-| `/pm:issue-start <编号>` | 开始Issue开发 | `/pm:issue-start 123` |
-| `/pm:issue-show <编号>` | 显示Issue详情 | `/pm:issue-show 123` |
-| `/pm:issue-edit <编号>` | 编辑Issue | `/pm:issue-edit 123` |
-| `/pm:issue-analyze <编号>` | 分析Issue | `/pm:issue-analyze 123` |
-| `/pm:issue-status <编号>` | Issue状态查看 | `/pm:issue-status 123` |
-| `/pm:issue-sync <编号>` | 同步Issue状态 | `/pm:issue-sync 123` |
-| `/pm:issue-close <编号>` | 关闭Issue | `/pm:issue-close 123` |
-| `/pm:issue-reopen <编号>` | 重新打开Issue | `/pm:issue-reopen 123` |
+| `/pm:issue-start <number>` | Start Issue development | `/pm:issue-start 123` |
+| `/pm:issue-show <number>` | Show Issue details | `/pm:issue-show 123` |
+| `/pm:issue-edit <number>` | Edit Issue | `/pm:issue-edit 123` |
+| `/pm:issue-analyze <number>` | Analyze Issue | `/pm:issue-analyze 123` |
+| `/pm:issue-status <number>` | View Issue status | `/pm:issue-status 123` |
+| `/pm:issue-sync <number>` | Sync Issue status | `/pm:issue-sync 123` |
+| `/pm:issue-close <number>` | Close Issue | `/pm:issue-close 123` |
+| `/pm:issue-reopen <number>` | Reopen Issue | `/pm:issue-reopen 123` |
 
-**Issue开发流程:**
+**Issue Development Flow:**
 ```bash
-# 1. 从Epic选择任务
+# 1. Select task from Epic
 /pm:next
 
-# 2. 开始特定Issue
+# 2. Start specific Issue
 /pm:issue-start 123
 
-# 3. 分析任务复杂度
+# 3. Analyze task complexity
 /pm:issue-analyze 123
 
-# 4. TDD开发
+# 4. TDD development
 /tdd:spec-to-test
 /tdd:cycle
 
-# 5. 完成任务
+# 5. Complete task
 /pm:issue-close 123
 ```
 
-#### 工作流命令 (14个)
+#### Workflow Commands (14 total)
 
-| 命令 | 描述 | 使用示例 |
+| Command | Description | Usage Example |
 |------|------|----------|
-| `/pm:status` | 项目整体状态 | `/pm:status` |
-| `/pm:next` | 推荐下一个任务 | `/pm:next` |
-| `/pm:sync` | 同步所有数据 | `/pm:sync` |
-| `/pm:validate` | 验证项目完整性 | `/pm:validate` |
-| `/pm:search <关键词>` | 搜索项目内容 | `/pm:search "用户认证"` |
-| `/pm:standup` | 生成站会报告 | `/pm:standup` |
-| `/pm:in-progress` | 进行中的任务 | `/pm:in-progress` |
-| `/pm:blocked` | 被阻塞的任务 | `/pm:blocked` |
-| `/pm:clean` | 清理无效数据 | `/pm:clean` |
-| `/pm:import <文件>` | 导入外部数据 | `/pm:import tasks.json` |
-| `/pm:init` | 初始化项目结构 | `/pm:init` |
-| `/pm:help` | 显示帮助信息 | `/pm:help` |
-| `/pm:test-reference-update` | 更新测试引用 | `/pm:test-reference-update` |
+| `/pm:status` | Overall project status | `/pm:status` |
+| `/pm:next` | Recommend next task | `/pm:next` |
+| `/pm:sync` | Sync all data | `/pm:sync` |
+| `/pm:validate` | Validate project integrity | `/pm:validate` |
+| `/pm:search <keyword>` | Search project content | `/pm:search "user authentication"` |
+| `/pm:standup` | Generate standup report | `/pm:standup` |
+| `/pm:in-progress` | Tasks in progress | `/pm:in-progress` |
+| `/pm:blocked` | Blocked tasks | `/pm:blocked` |
+| `/pm:clean` | Clean invalid data | `/pm:clean` |
+| `/pm:import <file>` | Import external data | `/pm:import tasks.json` |
+| `/pm:init` | Initialize project structure | `/pm:init` |
+| `/pm:help` | Show help information | `/pm:help` |
+| `/pm:test-reference-update` | Update test references | `/pm:test-reference-update` |
 
-### 🧪 TDD开发命令 (5个)
+### 🧪 TDD Development Commands (5 total)
 
-| 命令 | 描述 | 使用场景 |
+| Command | Description | Use Case |
 |------|------|----------|
-| `/tdd:cycle` | 完整TDD循环 | 新功能开发 |
-| `/tdd:red` | 红灯阶段 | 编写失败测试 |
-| `/tdd:green` | 绿灯阶段 | 最小实现 |
-| `/tdd:refactor` | 重构阶段 | 质量提升 |
-| `/tdd:spec-to-test` | 需求转测试 | 从规格开始 |
+| `/tdd:cycle` | Complete TDD cycle | New feature development |
+| `/tdd:red` | Red phase | Write failing tests |
+| `/tdd:green` | Green phase | Minimal implementation |
+| `/tdd:refactor` | Refactor phase | Quality improvement |
+| `/tdd:spec-to-test` | Spec to test | Start from specification |
 
-**TDD工作流程:**
+**TDD Workflow:**
 ```bash
-# 完整循环
+# Complete cycle
 /tdd:cycle
 
-# 或分步执行
-/tdd:red      # 1. 编写失败测试
-/tdd:green    # 2. 最小实现
-/tdd:refactor # 3. 重构优化
+# Or step-by-step execution
+/tdd:red      # 1. Write failing test
+/tdd:green    # 2. Minimal implementation
+/tdd:refactor # 3. Refactor optimization
 
-# 从需求开始
-/tdd:spec-to-test  # 将需求转换为测试用例
+# Start from requirements
+/tdd:spec-to-test  # Convert requirements to test cases
 ```
 
 ---
 
-## Part 4: 工作流程模式
+## Part 4: Workflow Patterns
 
-### 🎯 完整功能开发流程 (PDD模式)
+### 🎯 Complete Feature Development Flow (PDD Mode)
 
-#### 阶段1: 需求定义
+#### Phase 1: Requirements Definition
 ```bash
-# 1. 创建PRD
+# 1. Create PRD
 /pm:prd-new user-dashboard
 
-# 2. 完善需求文档
-# （在Claude Code中通过交互式会话完成）
+# 2. Refine requirements document
+# (Complete through interactive session in Claude Code)
 
-# 3. 验证PRD
+# 3. Validate PRD
 /pm:prd-status user-dashboard
 ```
 
-#### 阶段2: Epic规划
+#### Phase 2: Epic Planning
 ```bash
-# 1. 解析PRD生成Epic
+# 1. Parse PRD to generate Epic
 /pm:prd-parse user-dashboard
 
-# 2. 查看生成的Epic结构
+# 2. View generated Epic structure
 /pm:epic-show user-dashboard
 
-# 3. 同步到GitHub
+# 3. Sync to GitHub
 /pm:epic-sync user-dashboard
 
-# 4. 验证任务分解
+# 4. Validate task decomposition
 /pm:validate
 ```
 
-#### 阶段3: 并行开发
+#### Phase 3: Parallel Development
 ```bash
-# 1. 启动并行开发
+# 1. Start parallel development
 /pm:epic-start-worktree user-dashboard
 
-# 2. 监控开发进度
+# 2. Monitor development progress
 /pm:epic-status user-dashboard
 
-# 3. 查看团队状态
+# 3. Check team status
 /pm:standup
 ```
 
-#### 阶段4: 任务执行
+#### Phase 4: Task Execution
 ```bash
-# 1. 获取下一个任务
+# 1. Get next task
 /pm:next
 
-# 2. 开始具体任务
+# 2. Start specific task
 /pm:issue-start 234
 
-# 3. TDD开发
+# 3. TDD development
 /tdd:spec-to-test
 /tdd:cycle
 
-# 4. 完成任务
+# 4. Complete task
 /pm:issue-close 234
 ```
 
-#### 阶段5: Epic完成
+#### Phase 5: Epic Completion
 ```bash
-# 1. 检查Epic状态
+# 1. Check Epic status
 /pm:epic-status user-dashboard
 
-# 2. 合并代码
+# 2. Merge code
 /pm:epic-merge user-dashboard
 
-# 3. 关闭Epic
+# 3. Close Epic
 /pm:epic-close user-dashboard
 ```
 
-### 🐛 Bug修复流程
+### 🐛 Bug Fix Flow
 
 ```bash
-# 1. 创建Issue（通过GitHub或手动）
+# 1. Create Issue (via GitHub or manually)
 /pm:issue-start 456
 
-# 2. 分析问题
+# 2. Analyze problem
 /pm:issue-analyze 456
 
-# 3. 编写重现测试
+# 3. Write reproduction test
 /tdd:red
 
-# 4. 修复Bug
+# 4. Fix bug
 /tdd:green
 
-# 5. 重构优化
+# 5. Refactor optimization
 /tdd:refactor
 
-# 6. 关闭Issue
+# 6. Close Issue
 /pm:issue-close 456
 ```
 
-### 🔄 重构现有代码流程
+### 🔄 Refactoring Existing Code Flow
 
 ```bash
-# 1. 创建重构PRD
+# 1. Create refactoring PRD
 /pm:prd-new code-refactor-auth
 
-# 2. 分解为任务
+# 2. Decompose into tasks
 /pm:prd-parse code-refactor-auth
 
-# 3. 开始重构任务
+# 3. Start refactoring task
 /pm:issue-start 789
 
-# 4. 编写保护性测试
+# 4. Write protective tests
 /tdd:spec-to-test
 
-# 5. 重构循环
+# 5. Refactoring cycle
 /tdd:refactor
 
-# 6. 验证完成
+# 6. Verify completion
 /pm:issue-close 789
 ```
 
-### 👥 团队协作流程
+### 👥 Team Collaboration Flow
 
-#### 项目经理视角
+#### Project Manager Perspective
 ```bash
-# 每日站会准备
+# Daily standup preparation
 /pm:standup
 
-# 检查整体进度
+# Check overall progress
 /pm:status
 
-# 处理阻塞问题
+# Handle blocked issues
 /pm:blocked
 
-# 同步GitHub状态
+# Sync GitHub status
 /pm:sync
 ```
 
-#### 开发者视角
+#### Developer Perspective
 ```bash
-# 获取任务
+# Get task
 /pm:next
 
-# 开始开发
+# Start development
 /pm:issue-start 123
 /tdd:cycle
 
-# 提交进度
+# Submit progress
 /pm:issue-status 123
 
-# 完成任务
+# Complete task
 /pm:issue-close 123
 ```
 
 ---
 
-## Part 5: 高级功能
+## Part 5: Advanced Features
 
-### 🌳 Git Worktree 并行开发
+### 🌳 Git Worktree Parallel Development
 
-#### 什么是Git Worktree？
-Git Worktree允许在同一个仓库中创建多个工作目录，支持真正的并行开发。
+#### What is Git Worktree?
+Git Worktree allows creating multiple working directories in the same repository, supporting true parallel development.
 
-#### Worktree操作命令
+#### Worktree Operation Commands
 ```bash
-# 创建Worktree
+# Create Worktree
 git worktree add ../epic-payment -b epic/payment
 
-# 列出所有Worktree
+# List all Worktrees
 git worktree list
 
-# 删除Worktree
+# Remove Worktree
 git worktree remove ../epic-payment
 ```
 
-#### 并行开发流程
+#### Parallel Development Flow
 ```bash
-# 1. 启动Epic并行开发
+# 1. Start Epic parallel development
 /pm:epic-start-worktree payment-system
 
-# 系统自动：
-# - 创建 ../epic-payment-system worktree
-# - 创建 epic/payment-system 分支
-# - 分析任务依赖关系
-# - 启动多个AI代理并行工作
+# System automatically:
+# - Creates ../epic-payment-system worktree
+# - Creates epic/payment-system branch
+# - Analyzes task dependencies
+# - Starts multiple AI agents working in parallel
 ```
 
-#### 并行协调机制
+#### Parallel Coordination Mechanism
 ```
 Epic: payment-system
 ├── Issue #101: Database Schema
 │   ├── Stream A: User table → Agent-1
 │   └── Stream B: Payment table → Agent-2
-├── Issue #102: API Endpoints  
-│   ├── Stream A: User API → Agent-3 (等待 #101-A)
-│   └── Stream B: Payment API → Agent-4 (等待 #101-B)
+├── Issue #102: API Endpoints
+│   ├── Stream A: User API → Agent-3 (waiting for #101-A)
+│   └── Stream B: Payment API → Agent-4 (waiting for #101-B)
 └── Issue #103: Frontend
-    └── Stream A: UI Components → Agent-5 (等待 #102)
+    └── Stream A: UI Components → Agent-5 (waiting for #102)
 ```
 
-#### 冲突解决策略
+#### Conflict Resolution Strategy
 ```bash
-# 文件级别隔离
+# File-level isolation
 Agent-1: src/models/user.js
 Agent-2: src/models/payment.js
 Agent-3: src/api/user.js
 Agent-4: src/api/payment.js
 
-# 如果冲突发生
-# 1. 暂停相关代理
-# 2. 人工解决冲突
-# 3. 恢复执行
+# If conflicts occur
+# 1. Pause related agents
+# 2. Manually resolve conflicts
+# 3. Resume execution
 ```
 
-### 🤖 多代理协调系统
+### 🤖 Multi-Agent Coordination System
 
-#### 代理类型和职责
+#### Agent Types and Responsibilities
 
-1. **TDD架构师** (`tdd-architect.md`)
-   - 设计测试策略
-   - 制定TDD计划
-   - 质量把关
+1. **TDD Architect** (`tdd-architect.md`)
+   - Design test strategy
+   - Develop TDD plan
+   - Quality gatekeeper
 
-2. **测试生成专家** (`test-generator.md`)
-   - 生成测试用例
-   - 覆盖率分析
-   - 测试数据准备
+2. **Test Generation Expert** (`test-generator.md`)
+   - Generate test cases
+   - Coverage analysis
+   - Test data preparation
 
-3. **并行协调器** (`parallel-worker.md`)
-   - 管理多代理执行
-   - 依赖关系处理
-   - 冲突协调
+3. **Parallel Coordinator** (`parallel-worker.md`)
+   - Manage multi-agent execution
+   - Dependency handling
+   - Conflict coordination
 
-4. **产品经理代理** (`product-manager.md`)
-   - 需求分析
-   - 任务优先级
-   - 项目协调
+4. **Product Manager Agent** (`product-manager.md`)
+   - Requirements analysis
+   - Task prioritization
+   - Project coordination
 
-#### 代理启动示例
+#### Agent Startup Example
 ```bash
-# 自动启动（通过epic-start-worktree）
+# Automatic startup (via epic-start-worktree)
 /pm:epic-start-worktree user-auth
 
-# 手动启动特定代理
-# 通过Task工具在命令中指定subagent_type
+# Manual startup of specific agent
+# Specify subagent_type in command via Task tool
 ```
 
-### 🔗 GitHub集成
+### 🔗 GitHub Integration
 
-#### 自动同步功能
+#### Auto-Sync Features
 ```bash
-# Epic同步到GitHub Project
+# Epic sync to GitHub Project
 /pm:epic-sync user-auth
 
-# 自动创建：
-# - GitHub Issues (每个任务一个)
+# Automatically creates:
+# - GitHub Issues (one per task)
 # - Project Board
 # - Milestones
-# - Labels (epic:user-auth, status:pending等)
+# - Labels (epic:user-auth, status:pending, etc.)
 ```
 
-#### Issue状态同步
+#### Issue Status Sync
 ```
-Claude Code状态 → GitHub状态
-pending         → open
-in-progress     → open + in-progress label
-blocked         → open + blocked label  
-completed       → closed
+Claude Code Status → GitHub Status
+pending            → open
+in-progress        → open + in-progress label
+blocked            → open + blocked label
+completed          → closed
 ```
 
-#### 提交消息集成
+#### Commit Message Integration
 ```bash
-# 代理自动生成提交消息格式
+# Agent auto-generates commit message format
 git commit -m "Issue #123: Add user authentication schema
 
 - Created User model with validation
@@ -596,223 +596,223 @@ git commit -m "Issue #123: Add user authentication schema
 Co-authored-by: Claude <noreply@anthropic.com>"
 ```
 
-### 📊 项目监控和报告
+### 📊 Project Monitoring and Reporting
 
-#### 实时状态监控
+#### Real-time Status Monitoring
 ```bash
-# 整体项目状态
+# Overall project status
 /pm:status
 
-# 显示：
-# - Epic进度 (3/5 completed)
-# - Issue分布 (12 open, 8 in-progress, 25 closed)
-# - 测试覆盖率 (87%)
-# - 代理活动状态
+# Displays:
+# - Epic progress (3/5 completed)
+# - Issue distribution (12 open, 8 in-progress, 25 closed)
+# - Test coverage (87%)
+# - Agent activity status
 ```
 
-#### 团队协作报告
+#### Team Collaboration Reports
 ```bash
-# 生成站会报告
+# Generate standup report
 /pm:standup
 
-# 输出：
-# 昨天完成：
-# - Issue #123: 用户认证API (Agent-1)
-# - Issue #124: 数据库迁移 (Agent-2)
-# 
-# 今天计划：
-# - Issue #125: 用户界面 (Agent-3)
-# - Issue #126: 集成测试 (Agent-1)
+# Output:
+# Completed yesterday:
+# - Issue #123: User authentication API (Agent-1)
+# - Issue #124: Database migration (Agent-2)
 #
-# 阻塞问题：
-# - Issue #127: 等待第三方API文档
+# Planned for today:
+# - Issue #125: User interface (Agent-3)
+# - Issue #126: Integration tests (Agent-1)
+#
+# Blocked issues:
+# - Issue #127: Waiting for third-party API documentation
 ```
 
 ---
 
-## Part 6: 故障排除和FAQ
+## Part 6: Troubleshooting and FAQ
 
-### 🔧 常见问题解决
+### 🔧 Common Problem Solutions
 
-#### 安装问题
+#### Installation Issues
 
-**Q: 安装失败，提示网络错误**
+**Q: Installation fails with network error**
 ```bash
-# 解决方案：使用离线模式
+# Solution: Use offline mode
 cpdd init --offline --force
 
-# 或检查网络后重试
+# Or retry after checking network
 cpdd init --online --force
 ```
 
-**Q: 权限错误**
+**Q: Permission error**
 ```bash
-# Linux/Mac: 使用sudo
+# Linux/Mac: Use sudo
 sudo npm install -g claude-pdd-cli
 
-# Windows: 以管理员身份运行
-# 或配置npm全局路径
+# Windows: Run as administrator
+# Or configure npm global path
 ```
 
-#### 项目初始化问题
+#### Project Initialization Issues
 
-**Q: `.claude` 目录已存在**
+**Q: `.claude` directory already exists**
 ```bash
-# 强制覆盖
+# Force overwrite
 cpdd init --force
 
-# 或手动清理
+# Or manually clean
 rm -rf .claude
 cpdd init
 ```
 
-**Q: GitHub集成失败**
+**Q: GitHub integration failed**
 ```bash
-# 重新配置GitHub集成
+# Reconfigure GitHub integration
 cpdd init --github=owner/repo --force
 
-# 检查GitHub token配置
-# 确保在Claude Code设置中配置了正确的token
+# Check GitHub token configuration
+# Ensure correct token is configured in Claude Code settings
 ```
 
-#### 命令执行问题
+#### Command Execution Issues
 
-**Q: `/pm:prd-new` 命令无效**
+**Q: `/pm:prd-new` command not working**
 ```bash
-# 确认是在Claude Code中执行，不是终端
-# 确认已经运行过 cpdd init
-# 检查 .claude/commands/pm/ 目录是否存在
+# Confirm executing in Claude Code, not terminal
+# Confirm cpdd init has been run
+# Check if .claude/commands/pm/ directory exists
 ```
 
-**Q: Epic创建失败**
+**Q: Epic creation failed**
 ```bash
-# 检查PRD是否存在
+# Check if PRD exists
 ls -la .claude/prds/
 
-# 验证PRD格式
+# Validate PRD format
 /pm:prd-status <prd-name>
 
-# 重新解析PRD
+# Re-parse PRD
 /pm:prd-parse <prd-name>
 ```
 
-#### Git Worktree问题
+#### Git Worktree Issues
 
-**Q: Worktree创建失败**
+**Q: Worktree creation failed**
 ```bash
-# 检查现有worktree
+# Check existing worktrees
 git worktree list
 
-# 清理无效worktree
+# Clean invalid worktrees
 git worktree prune
 
-# 确保主分支干净
+# Ensure main branch is clean
 git checkout main
 git pull origin main
 ```
 
-**Q: 代理冲突**
+**Q: Agent conflicts**
 ```bash
-# 查看冲突状态
+# View conflict status
 cd ../epic-<name>
 git status
 
-# 停止所有代理
+# Stop all agents
 /pm:epic-stop <epic-name>
 
-# 手动解决冲突后重启
+# Restart after manually resolving conflicts
 /pm:epic-start-worktree <epic-name>
 ```
 
-### 📋 最佳实践
+### 📋 Best Practices
 
-#### 1. 项目启动最佳实践
+#### 1. Project Startup Best Practices
 ```bash
-# 推荐的完整启动流程
+# Recommended complete startup flow
 cd my-project
 cpdd init --mode=pdd --online --github=owner/repo
 cpdd status
-/pm:init  # 如果需要额外配置
+/pm:init  # If additional configuration needed
 ```
 
-#### 2. 团队协作最佳实践
-- **每日同步**: 使用 `/pm:sync` 保持状态同步
-- **清晰命名**: PRD和Epic使用描述性名称
-- **依赖管理**: 明确标识任务间依赖关系
-- **定期清理**: 使用 `/pm:clean` 清理无效数据
+#### 2. Team Collaboration Best Practices
+- **Daily sync**: Use `/pm:sync` to keep status synchronized
+- **Clear naming**: Use descriptive names for PRDs and Epics
+- **Dependency management**: Clearly identify dependencies between tasks
+- **Regular cleanup**: Use `/pm:clean` to clean invalid data
 
-#### 3. 代码质量最佳实践
-- **测试先行**: 总是使用 `/tdd:spec-to-test` 开始
-- **小步迭代**: 使用 `/tdd:cycle` 进行小步改进
-- **持续重构**: 定期运行 `/tdd:refactor`
-- **覆盖率监控**: 关注测试覆盖率报告
+#### 3. Code Quality Best Practices
+- **Test first**: Always start with `/tdd:spec-to-test`
+- **Small iterations**: Use `/tdd:cycle` for incremental improvements
+- **Continuous refactoring**: Regularly run `/tdd:refactor`
+- **Coverage monitoring**: Pay attention to test coverage reports
 
-#### 4. 项目管理最佳实践
-- **需求追溯**: 每个Issue都应能追溯到PRD
-- **状态更新**: 及时更新Issue状态
-- **文档维护**: 保持PRD和Epic文档的更新
-- **定期审查**: 使用 `/pm:validate` 验证项目完整性
+#### 4. Project Management Best Practices
+- **Requirements traceability**: Every Issue should trace back to PRD
+- **Status updates**: Update Issue status promptly
+- **Documentation maintenance**: Keep PRD and Epic documentation updated
+- **Regular reviews**: Use `/pm:validate` to verify project integrity
 
-### 📞 获取帮助
+### 📞 Getting Help
 
-#### 命令行帮助
+#### Command Line Help
 ```bash
 cpdd --help
 cpdd init --help
 cpdd status --help
 ```
 
-#### 项目内帮助
+#### In-Project Help
 ```bash
-# 在Claude Code中
+# In Claude Code
 /pm:help
 ```
 
-#### 在线资源
-- **GitHub Issues**: [问题反馈](https://github.com/MuziGeek/claude-pdd-cli/issues)
-- **项目文档**: [README](https://github.com/MuziGeek/claude-pdd-cli#readme)
-- **使用指南**: [USAGE.md](docs/USAGE.md)
+#### Online Resources
+- **GitHub Issues**: [Issue Reporting](https://github.com/MuziGeek/claude-pdd-cli/issues)
+- **Project Documentation**: [README](https://github.com/MuziGeek/claude-pdd-cli#readme)
+- **Usage Guide**: [USAGE.md](docs/USAGE.md)
 
-#### 诊断信息收集
+#### Diagnostic Information Collection
 ```bash
-# 收集诊断信息
+# Collect diagnostic information
 cpdd status --verbose
 cat .claude/config.json
 git worktree list
 ls -la .claude/commands/
 ```
 
-### 🎯 性能优化建议
+### 🎯 Performance Optimization Recommendations
 
-#### 1. 大型项目优化
-- 使用 `--quick` 参数快速安装
-- 定期使用 `/pm:clean` 清理
-- 合理控制并行代理数量（建议不超过5个）
+#### 1. Large Project Optimization
+- Use `--quick` parameter for fast installation
+- Regularly use `/pm:clean` to clean up
+- Reasonably control parallel agent count (recommend no more than 5)
 
-#### 2. 网络优化
-- 优先使用 `--online` 获取最新功能
-- 网络不稳定时使用 `--offline` 备选
-- 配置GitHub token以避免API限制
+#### 2. Network Optimization
+- Prefer `--online` to get latest features
+- Use `--offline` fallback when network is unstable
+- Configure GitHub token to avoid API limits
 
-#### 3. 存储优化
-- 定期清理无效的Epic和PRD
-- 使用 `.gitignore` 排除临时文件
-- 合理管理worktree数量
+#### 3. Storage Optimization
+- Regularly clean invalid Epics and PRDs
+- Use `.gitignore` to exclude temporary files
+- Reasonably manage worktree count
 
 ---
 
-## 🎉 结语
+## 🎉 Conclusion
 
-Claude PDD CLI 是一个强大的项目驱动开发平台，集成了先进的项目管理、测试驱动开发和团队协作功能。通过本指南，你应该能够：
+Claude PDD CLI is a powerful project-driven development platform that integrates advanced project management, test-driven development, and team collaboration features. Through this guide, you should be able to:
 
-✅ 理解所有三种安装模式的特点和适用场景  
-✅ 掌握39个项目管理命令的使用方法  
-✅ 熟练运用5个TDD命令进行开发  
-✅ 利用Git Worktree进行高效并行开发  
-✅ 配置和使用GitHub集成功能  
-✅ 解决常见问题和优化性能  
+✅ Understand the characteristics and applicable scenarios of all three installation modes
+✅ Master the usage of 39 project management commands
+✅ Proficiently use 5 TDD commands for development
+✅ Utilize Git Worktree for efficient parallel development
+✅ Configure and use GitHub integration features
+✅ Solve common problems and optimize performance
 
-**立即开始你的高效开发之旅：**
+**Start your efficient development journey now:**
 
 ```bash
 npm install -g claude-pdd-cli
@@ -820,8 +820,8 @@ cpdd init --mode=pdd --online
 /pm:prd-new my-awesome-feature
 ```
 
-体验从需求到测试、从开发到部署的完整自动化工作流程！🚀
+Experience the complete automated workflow from requirements to testing, from development to deployment! 🚀
 
 ---
 
-*本文档持续更新中，如有问题或建议，欢迎提交Issue或PR。*
+*This document is continuously updated. If you have questions or suggestions, please submit an Issue or PR.*

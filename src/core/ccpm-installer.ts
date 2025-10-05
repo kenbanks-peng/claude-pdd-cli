@@ -25,7 +25,7 @@ export interface InstallResult {
 }
 
 /**
- * CCPM 在线安装器 - 动态获取最新 CCPM 并集成 TDD 功能
+ * CCPM Online Installer - Dynamically fetches latest CCPM and integrates TDD features
  */
 export class CCPMInstaller {
   private targetPath: string;
@@ -45,44 +45,44 @@ export class CCPMInstaller {
   }
 
   /**
-   * 执行完整的 CCPM + TDD 安装
+   * Execute complete CCPM + TDD installation
    */
   async install(options: CCPMInstallOptions = {}): Promise<InstallResult> {
     const spinner = ora('Installing CCPM + TDD system...').start();
 
     try {
-      // 1. 检测安装模式
+      // 1. Detect installation mode
       const shouldTryOnline = options.online !== false && await this.checkNetworkConnection();
-      
+
       let result: InstallResult;
-      
+
       if (shouldTryOnline) {
-        // 尝试在线安装
+        // Try online installation
         spinner.text = 'Installing CCPM from remote (online mode)...';
         result = await this.installOnline();
       } else {
-        // 离线安装
+        // Offline installation
         spinner.text = 'Installing CCPM from local templates (offline mode)...';
         result = await this.installOffline();
       }
 
       if (result.success) {
-        // 2. 添加 TDD 增强层
+        // 2. Add TDD enhancement layer
         spinner.text = 'Adding TDD enhancements...';
         await this.addTDDEnhancements();
-        
-        // 3. 配置集成
+
+        // 3. Configure integration
         spinner.text = 'Configuring integration...';
         await this.configureIntegration();
 
         spinner.succeed(`CCPM + TDD system installed successfully! (${result.source} mode)`);
         return result;
       } else {
-        // 如果在线失败，尝试离线降级
+        // If online fails, try offline fallback
         if (shouldTryOnline && result.source === 'online') {
           spinner.text = 'Online install failed, falling back to offline mode...';
           const fallbackResult = await this.installOffline();
-          
+
           if (fallbackResult.success) {
             await this.addTDDEnhancements();
             await this.configureIntegration();
@@ -90,7 +90,7 @@ export class CCPMInstaller {
             return { ...fallbackResult, source: 'offline' };
           }
         }
-        
+
         spinner.fail(`Installation failed: ${result.error}`);
         return result;
       }
@@ -105,38 +105,38 @@ export class CCPMInstaller {
   }
 
   /**
-   * 在线安装 - 直接克隆CCPM仓库，只复制ccpm目录内容，自动处理路径引用
-   * 优化方案：避免执行安装脚本，直接提取所需文件
+   * Online installation - Clone CCPM repository, copy ccpm directory contents, auto-process path references
+   * Optimized approach: Avoid running install scripts, extract needed files directly
    */
   private async installOnline(): Promise<InstallResult> {
     try {
-      // 1. 获取最新版本信息
+      // 1. Get latest version info
       const version = await this.getLatestCCPMVersion();
 
-      // 2. 直接克隆仓库并提取ccpm目录内容
+      // 2. Clone repository and extract ccpm directory contents
       const platform = process.platform;
       let installCommand: string;
 
       if (platform === 'win32') {
-        // Windows PowerShell：克隆仓库，复制ccpm目录，替换路径，清理
+        // Windows PowerShell: Clone repo, copy ccpm directory, replace paths, cleanup
         installCommand = `powershell -Command "
           Write-Host 'Cloning CCPM repository...';
 
-          # 克隆CCPM仓库到临时目录
+          # Clone CCPM repository to temp directory
           git clone https://github.com/automazeio/ccpm.git temp_ccpm;
 
           if (Test-Path './temp_ccpm/ccpm') {
             Write-Host 'Installing CCPM files...';
 
-            # 创建.claude目录
+            # Create .claude directory
             New-Item -ItemType Directory -Path './.claude' -Force | Out-Null;
 
-            # 复制ccpm目录内容到.claude
+            # Copy ccpm directory contents to .claude
             Copy-Item './temp_ccpm/ccpm/*' -Destination './.claude' -Recurse -Force;
 
             Write-Host 'Updating path references...';
 
-            # 批量替换ccpm/scripts为.claude/scripts
+            # Batch replace ccpm/scripts with .claude/scripts
             Get-ChildItem './.claude' -Recurse -Filter '*.md' -File | ForEach-Object {
               $content = Get-Content $_.FullName -Raw;
               $newContent = $content -replace 'ccpm/scripts', '.claude/scripts';
@@ -147,7 +147,7 @@ export class CCPMInstaller {
 
             Write-Host 'Cleaning up...';
 
-            # 清理临时文件
+            # Clean up temp files
             Remove-Item './temp_ccpm' -Recurse -Force -ErrorAction SilentlyContinue;
 
             Write-Host 'CCPM installation completed successfully!';
@@ -157,30 +157,30 @@ export class CCPMInstaller {
           }
         "`;
       } else {
-        // Unix/Linux/macOS：克隆仓库，复制ccpm目录，替换路径，清理
+        // Unix/Linux/macOS: Clone repo, copy ccpm directory, replace paths, cleanup
         installCommand = `
           echo "Cloning CCPM repository...";
 
-          # 克隆CCPM仓库到临时目录
+          # Clone CCPM repository to temp directory
           git clone https://github.com/automazeio/ccpm.git temp_ccpm;
 
           if [ -d ./temp_ccpm/ccpm ]; then
             echo "Installing CCPM files...";
 
-            # 创建.claude目录
+            # Create .claude directory
             mkdir -p .claude;
 
-            # 复制ccpm目录内容到.claude
+            # Copy ccpm directory contents to .claude
             cp -r ./temp_ccpm/ccpm/* ./.claude/;
 
             echo "Updating path references...";
 
-            # 批量替换ccpm/scripts为.claude/scripts
+            # Batch replace ccpm/scripts with .claude/scripts
             find ./.claude -name '*.md' -type f -exec sed -i 's|ccpm/scripts|.claude/scripts|g' {} \; 2>/dev/null || true;
 
             echo "Cleaning up...";
 
-            # 清理临时文件
+            # Clean up temp files
             rm -rf ./temp_ccpm;
 
             echo "CCPM installation completed successfully!";
@@ -192,10 +192,10 @@ export class CCPMInstaller {
         `;
       }
 
-      // 3. 执行安装命令
+      // 3. Execute installation command
       const { stdout, stderr } = await this.execWithTimeout(installCommand, this.timeout);
 
-      // 4. 验证安装结果
+      // 4. Verify installation result
       const installed = await fs.pathExists(this.targetPath);
       if (!installed) {
         throw new Error('CCPM installation failed - .claude directory not created');
@@ -217,16 +217,16 @@ export class CCPMInstaller {
   }
 
   /**
-   * 离线安装 - 使用内置模板
+   * Offline installation - Use built-in templates
    */
   private async installOffline(): Promise<InstallResult> {
     try {
-      // 使用现有的模板安装逻辑
+      // Use existing template installation logic
       const { TemplateInstaller } = await import('./template-installer.js');
       const templateInstaller = new TemplateInstaller();
-      
+
       await templateInstaller.install({ mode: 'pm', force: true });
-      
+
       return {
         success: true,
         version: 'builtin',
@@ -242,7 +242,7 @@ export class CCPMInstaller {
   }
 
   /**
-   * 添加 TDD 增强层
+   * Add TDD enhancement layer
    */
   private async addTDDEnhancements(): Promise<void> {
     const tddComponents = {
@@ -263,40 +263,40 @@ export class CCPMInstaller {
       ]
     };
 
-    // 复制 TDD 增强文件
+    // Copy TDD enhancement files
     for (const [category, files] of Object.entries(tddComponents)) {
       const categoryPath = path.join(this.targetPath, category);
       await fs.ensureDir(categoryPath);
-      
+
       for (const file of files) {
         const sourcePath = path.join(this.tddEnhancementsPath, category, file);
         const targetPath = path.join(categoryPath, file);
-        
-        // 确保子目录存在
+
+        // Ensure subdirectory exists
         await fs.ensureDir(path.dirname(targetPath));
-        
+
         if (await fs.pathExists(sourcePath)) {
           await fs.copy(sourcePath, targetPath);
         }
       }
     }
 
-    // 更新 CLAUDE.md 添加 TDD 命令说明
+    // Update CLAUDE.md to add TDD command descriptions
     await this.updateClaudeMD();
   }
 
   /**
-   * 配置集成设置
+   * Configure integration settings
    */
   private async configureIntegration(): Promise<void> {
     const configPath = path.join(this.targetPath, 'config.json');
-    
+
     let config: any = {};
     if (await fs.pathExists(configPath)) {
       config = await fs.readJSON(configPath);
     }
 
-    // 启用 TDD 功能
+    // Enable TDD features
     config.tdd = {
       enabled: true,
       autoGenerateTests: true,
@@ -309,7 +309,7 @@ export class CCPMInstaller {
       ...config.tdd
     };
 
-    // 添加安装信息
+    // Add installation info
     config.installation = {
       ...config.installation,
       ccpm_integration: true,
@@ -322,18 +322,18 @@ export class CCPMInstaller {
   }
 
   /**
-   * 更新 CLAUDE.md 添加 TDD 命令说明
+   * Update CLAUDE.md to add TDD command descriptions
    */
   private async updateClaudeMD(): Promise<void> {
     const claudePath = path.join(this.targetPath, 'CLAUDE.md');
-    
+
     if (!await fs.pathExists(claudePath)) {
       return;
     }
 
     let content = await fs.readFile(claudePath, 'utf-8');
-    
-    // 添加 TDD 命令部分
+
+    // Add TDD command section
     const tddSection = `
 
 ## TDD Development Commands
@@ -360,7 +360,7 @@ The TDD commands integrate seamlessly with CCPM workflow:
 - **Traceability**: Link tests to specifications
 `;
 
-    // 检查是否已经包含 TDD 部分
+    // Check if TDD section already exists
     if (!content.includes('TDD Development Commands')) {
       content += tddSection;
       await fs.writeFile(claudePath, content);
@@ -368,7 +368,7 @@ The TDD commands integrate seamlessly with CCPM workflow:
   }
 
   /**
-   * 获取最新 CCPM 版本
+   * Get latest CCPM version
    */
   private async getLatestCCPMVersion(): Promise<string> {
     try {
@@ -383,7 +383,7 @@ The TDD commands integrate seamlessly with CCPM workflow:
   }
 
   /**
-   * 检查网络连接
+   * Check network connection
    */
   private async checkNetworkConnection(): Promise<boolean> {
     try {
@@ -395,7 +395,7 @@ The TDD commands integrate seamlessly with CCPM workflow:
   }
 
   /**
-   * 带超时的命令执行
+   * Execute command with timeout
    */
   private async execWithTimeout(command: string, timeout: number): Promise<{ stdout: string; stderr: string }> {
     const controller = new AbortController();
@@ -415,7 +415,7 @@ The TDD commands integrate seamlessly with CCPM workflow:
   }
 
   /**
-   * 获取安装状态
+   * Get installation status
    */
   async getInstallationStatus(): Promise<{
     installed: boolean;
@@ -425,13 +425,13 @@ The TDD commands integrate seamlessly with CCPM workflow:
   }> {
     try {
       const configPath = path.join(this.targetPath, 'config.json');
-      
+
       if (!await fs.pathExists(this.targetPath) || !await fs.pathExists(configPath)) {
         return { installed: false, tdd_enhanced: false };
       }
 
       const config = await fs.readJSON(configPath);
-      
+
       return {
         installed: true,
         ccpm_version: config.installation?.ccpm_version,

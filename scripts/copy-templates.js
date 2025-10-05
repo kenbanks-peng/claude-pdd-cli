@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * 跨平台模板复制脚本
- * 替代 PowerShell 命令，确保在所有平台上都能正常工作
+ * Cross-platform template copying script
+ * Replaces PowerShell commands to ensure compatibility on all platforms
  */
 
 import fs from 'fs-extra';
@@ -20,37 +20,37 @@ async function copyTemplates() {
   const targetTddDir = path.join(__dirname, '..', 'dist', 'tdd-enhancements');
 
   try {
-    // 复制主模板
+    // Copy main templates
     if (await fs.pathExists(sourceDir)) {
       console.log('📁 Copying templates from', sourceDir, 'to', targetDir);
-      
-      // 确保目标目录存在
+
+      // Ensure target directory exists
       await fs.ensureDir(targetDir);
-      
-      // 复制文件
+
+      // Copy files
       await fs.copy(sourceDir, targetDir, {
         overwrite: true,
         errorOnExist: false
       });
-      
+
       console.log('✅ Templates copied successfully');
     } else {
       console.log('⚠️  Templates directory not found, skipping...');
     }
-    
-    // 复制 TDD 增强文件
+
+    // Copy TDD enhancement files
     if (await fs.pathExists(sourceTddDir)) {
       console.log('📁 Copying TDD enhancements from', sourceTddDir, 'to', targetTddDir);
-      
-      // 确保目标目录存在
+
+      // Ensure target directory exists
       await fs.ensureDir(targetTddDir);
-      
-      // 复制文件
+
+      // Copy files
       await fs.copy(sourceTddDir, targetTddDir, {
         overwrite: true,
         errorOnExist: false
       });
-      
+
       console.log('✅ TDD enhancements copied successfully');
     } else {
       console.log('⚠️  TDD enhancements directory not found, skipping...');
@@ -61,7 +61,7 @@ async function copyTemplates() {
   }
 }
 
-// 如果直接运行此脚本
+// Run this script if executed directly
 if (import.meta.url === `file://${process.argv[1]}`) {
   copyTemplates();
 }

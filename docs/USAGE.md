@@ -1,258 +1,258 @@
-# Claude PDD CLI 使用指南
+# Claude PDD CLI Usage Guide
 
-## 🚀 快速上手
+## 🚀 Quick Start
 
-### 安装
+### Installation
 ```bash
 npm install -g claude-pdd-cli
 ```
 
-### 初始化新项目
+### Initialize New Project
 ```bash
-# 进入你的项目目录
+# Enter your project directory
 cd my-project
 
-# 完整安装（推荐）- 动态获取最新CCPM
+# Full installation (recommended) - Dynamically fetch latest CCPM
 cpdd init
 
-# 快速安装
+# Quick installation
 cpdd init --quick
 
-# 离线安装
+# Offline installation
 cpdd init --offline
 ```
 
-## 📋 可用命令
+## 📋 Available Commands
 
-### 核心命令
+### Core Commands
 
-| 命令 | 描述 | 示例 |
+| Command | Description | Example |
 |------|------|------|
-| `cpdd init` | 初始化CCPM + TDD系统 | `cpdd init --online` |
-| `cpdd status` | 显示安装状态 | `cpdd status` |
-| `cpdd update` | 更新现有安装 | `cpdd update --force` |
+| `cpdd init` | Initialize CCPM + TDD system | `cpdd init --online` |
+| `cpdd status` | Show installation status | `cpdd status` |
+| `cpdd update` | Update existing installation | `cpdd update --force` |
 
-### init 命令选项
+### init Command Options
 
 ```bash
 cpdd init [options]
 ```
 
-**可用选项**：
-- `--mode <mode>` - 安装模式 (full/ccpm/tdd)
-- `--online` - 强制在线模式（从GitHub获取最新CCPM）
-- `--offline` - 强制离线模式（使用内置模板）
-- `--quick` - 快速安装，使用检测到的默认设置
-- `--force` - 覆盖现有安装
-- `--github <repo>` - GitHub仓库集成 (owner/repo格式)
-- `--framework <type>` - 指定框架类型
+**Available Options**:
+- `--mode <mode>` - Installation mode (full/ccpm/tdd)
+- `--online` - Force online mode (fetch latest CCPM from GitHub)
+- `--offline` - Force offline mode (use built-in templates)
+- `--quick` - Quick installation, use detected default settings
+- `--force` - Overwrite existing installation
+- `--github <repo>` - GitHub repository integration (owner/repo format)
+- `--framework <type>` - Specify framework type
 
-## 🎯 安装模式
+## 🎯 Installation Modes
 
-### PDD模式 - 项目驱动开发 (推荐)
+### PDD Mode - Project-Driven Development (Recommended)
 ```bash
 cpdd init --mode=pdd
 ```
-**方法论**: Project-Driven Development - 项目需求优先，灵活集成多种开发方法
-- ✅ 完整CCPM系统 (39个项目管理命令)
-- ✅ TDD开发工具 (5个TDD命令)
-- ✅ GitHub Issues集成
-- ✅ 8个专业AI代理
-- ✅ 支持PDD/BDD/TDD混合开发
+**Methodology**: Project-Driven Development - Project requirements first, flexible integration of multiple development methods
+- ✅ Complete CCPM system (39 project management commands)
+- ✅ TDD development tools (5 TDD commands)
+- ✅ GitHub Issues integration
+- ✅ 8 professional AI agents
+- ✅ Supports PDD/BDD/TDD hybrid development
 
-### PM模式 - 项目管理驱动
+### PM Mode - Project Management Driven
 ```bash
 cpdd init --mode=pm
 ```
-**方法论**: Project Management Driven - 专注项目管理和团队协作
-- ✅ CCPM项目管理功能 (39个PM命令)
-- ✅ PRD和Epic管理
-- ✅ GitHub Issues集成
-- ✅ 团队协作工作流
-- ❌ TDD开发工具
+**Methodology**: Project Management Driven - Focus on project management and team collaboration
+- ✅ CCPM project management features (39 PM commands)
+- ✅ PRD and Epic management
+- ✅ GitHub Issues integration
+- ✅ Team collaboration workflows
+- ❌ TDD development tools
 
-### TDD模式 - 测试驱动开发
+### TDD Mode - Test-Driven Development
 ```bash
 cpdd init --mode=tdd
 ```
-**方法论**: Test-Driven Development - 传统TDD红绿重构循环
-- ✅ TDD开发命令 (5个TDD命令)
-- ✅ 智能测试生成工具
-- ✅ Red-Green-Refactor循环
-- ✅ 代码质量保证
-- ❌ 项目管理功能
+**Methodology**: Test-Driven Development - Traditional TDD red-green-refactor cycle
+- ✅ TDD development commands (5 TDD commands)
+- ✅ Intelligent test generation tools
+- ✅ Red-Green-Refactor cycle
+- ✅ Code quality assurance
+- ❌ Project management features
 
-## 🌐 在线/离线安装
+## 🌐 Online/Offline Installation
 
-### 在线模式（推荐）
+### Online Mode (Recommended)
 ```bash
 cpdd init --online
 ```
-- 从GitHub获取最新CCPM
-- 自动集成TDD增强功能
-- 始终保持最新特性
+- Fetch latest CCPM from GitHub
+- Automatically integrate TDD enhancements
+- Always stay up-to-date with latest features
 
-### 离线模式
+### Offline Mode
 ```bash
 cpdd init --offline
 ```
-- 使用内置CCPM模板
-- 无需网络连接
-- 快速安装
+- Use built-in CCPM templates
+- No network connection required
+- Fast installation
 
-### 智能模式（默认）
+### Smart Mode (Default)
 ```bash
 cpdd init
 ```
-- 自动检测网络状态
-- 在线失败时自动降级到离线
-- 最佳用户体验
+- Automatically detect network status
+- Automatically fallback to offline when online fails
+- Best user experience
 
-## 🛠️ 使用场景示例
+## 🛠️ Usage Scenarios
 
-### 1. 新团队项目
+### 1. New Team Project
 ```bash
-# 完整安装带GitHub集成
+# Full installation with GitHub integration
 cpdd init --mode=pdd --github=myorg/project
 
-# 查看安装状态
+# Check installation status
 cpdd status
 ```
 
-### 2. 个人开发项目
+### 2. Personal Development Project
 ```bash
-# 快速TDD开发环境
+# Quick TDD development environment
 cpdd init --mode=tdd --quick
 
-# 查看生成的结构
+# View generated structure
 cpdd status
 ```
 
-### 3. 现有项目添加功能
+### 3. Add Features to Existing Project
 ```bash
-# 强制覆盖现有配置
+# Force overwrite existing configuration
 cpdd init --force --online
 
-# 更新到最新版本
+# Update to latest version
 cpdd update --force
 ```
 
-## 🎯 生成的项目结构
+## 🎯 Generated Project Structure
 
-运行 `cpdd init` 后，会在你的项目中创建：
+After running `cpdd init`, the following will be created in your project:
 
 ```
 .claude/
-├── CLAUDE.md              # 统一规则和命令参考
-├── config.json            # 系统配置
-├── agents/                # AI代理 (根据模式而定)
-├── commands/              # 可用命令
-│   ├── pm/               # 项目管理命令 (39个，ccpm/full模式)
-│   └── tdd/              # TDD命令 (5个，tdd/full模式)
-├── workflows/            # 完整工作流
-├── rules/                # 开发规则和最佳实践
-├── epics/                # Epic模板和存储
-└── prds/                 # PRD模板和存储
+├── CLAUDE.md              # Unified rules and command reference
+├── config.json            # System configuration
+├── agents/                # AI agents (depends on mode)
+├── commands/              # Available commands
+│   ├── pm/               # Project management commands (39 commands, ccpm/full mode)
+│   └── tdd/              # TDD commands (5 commands, tdd/full mode)
+├── workflows/            # Complete workflows
+├── rules/                # Development rules and best practices
+├── epics/                # Epic templates and storage
+└── prds/                 # PRD templates and storage
 ```
 
-## 📊 工作流程
+## 📊 Workflows
 
-### 完整开发流程（full模式）
+### Full Development Workflow (full mode)
 ```bash
-# 1. 初始化
+# 1. Initialize
 cpdd init --mode=pdd --github=owner/repo
 
-# 2. 在Claude Code中使用项目管理命令
+# 2. Use project management commands in Claude Code
 /pm:prd-new feature-name
 /pm:prd-parse feature-name
 /pm:issue-start 123
 
-# 3. 使用TDD开发命令
+# 3. Use TDD development commands
 /tdd:spec-to-test
 /tdd:cycle
 
-# 4. 完成开发
+# 4. Complete development
 /pm:issue-close 123
 /pm:next
 ```
 
-### 纯TDD开发流程（tdd模式）
+### Pure TDD Development Workflow (tdd mode)
 ```bash
-# 1. 初始化
+# 1. Initialize
 cpdd init --mode=tdd
 
-# 2. 在Claude Code中使用TDD命令
-/tdd:red          # 编写失败测试
-/tdd:green        # 最小实现
-/tdd:refactor     # 重构优化
-/tdd:cycle        # 完整循环
+# 2. Use TDD commands in Claude Code
+/tdd:red          # Write failing test
+/tdd:green        # Minimal implementation
+/tdd:refactor     # Refactor optimization
+/tdd:cycle        # Complete cycle
 ```
 
-## 📚 命令参考
+## 📚 Command Reference
 
-安装完成后，所有功能都通过Claude Code中的命令访问：
+After installation, all features are accessed through commands in Claude Code:
 
-### 项目管理命令（ccpm/full模式）
-- `/pm:prd-*` - PRD管理 (5个命令)
-- `/pm:epic-*` - Epic处理 (12个命令)
-- `/pm:issue-*` - Issue管理 (8个命令)
-- `/pm:*` - 工作流和协调 (14个命令)
+### Project Management Commands (ccpm/full mode)
+- `/pm:prd-*` - PRD management (5 commands)
+- `/pm:epic-*` - Epic processing (12 commands)
+- `/pm:issue-*` - Issue management (8 commands)
+- `/pm:*` - Workflows and coordination (14 commands)
 
-### TDD开发命令（tdd/full模式）
-- `/tdd:cycle` - 完整TDD循环
-- `/tdd:red` - 红灯阶段（失败测试）
-- `/tdd:green` - 绿灯阶段（最小实现）
-- `/tdd:refactor` - 重构阶段（质量提升）
-- `/tdd:spec-to-test` - 需求转测试用例
+### TDD Development Commands (tdd/full mode)
+- `/tdd:cycle` - Complete TDD cycle
+- `/tdd:red` - Red phase (failing test)
+- `/tdd:green` - Green phase (minimal implementation)
+- `/tdd:refactor` - Refactor phase (quality improvement)
+- `/tdd:spec-to-test` - Requirements to test cases
 
-完整命令列表请查看生成的 `.claude/CLAUDE.md` 文件。
+See the generated `.claude/CLAUDE.md` file for the complete command list.
 
-## 🔧 故障排除
+## 🔧 Troubleshooting
 
-### 安装失败
+### Installation Failed
 ```bash
-# 检查安装状态
+# Check installation status
 cpdd status
 
-# 强制重新安装
+# Force reinstall
 cpdd init --force --offline
 
-# 更新到最新版本
+# Update to latest version
 cpdd update --force
 ```
 
-### GitHub集成问题
+### GitHub Integration Issues
 ```bash
-# 重新配置GitHub集成
+# Reconfigure GitHub integration
 cpdd init --github=owner/repo --force
 ```
 
-### 在线安装失败
+### Online Installation Failed
 ```bash
-# 使用离线模式作为备选
+# Use offline mode as fallback
 cpdd init --offline --force
 ```
 
-## 📞 获取帮助
+## 📞 Getting Help
 
-- **命令帮助**: `cpdd --help` 或 `cpdd init --help`
-- **GitHub Issues**: [提交问题](https://github.com/MuziGeek/claude-pdd-cli/issues)
-- **文档**: [项目文档](https://github.com/MuziGeek/claude-pdd-cli#readme)
+- **Command Help**: `cpdd --help` or `cpdd init --help`
+- **GitHub Issues**: [Submit an issue](https://github.com/MuziGeek/claude-pdd-cli/issues)
+- **Documentation**: [Project documentation](https://github.com/MuziGeek/claude-pdd-cli#readme)
 
-## 💡 最佳实践
+## 💡 Best Practices
 
-1. **推荐使用完整模式**: `cpdd init --mode=pdd` 获得最佳体验
-2. **启用GitHub集成**: 便于团队协作和进度跟踪
-3. **定期更新**: 使用 `cpdd update` 保持最新功能
-4. **在线优先**: 让系统自动获取最新CCPM功能
+1. **Recommended to use full mode**: `cpdd init --mode=pdd` for the best experience
+2. **Enable GitHub integration**: Facilitates team collaboration and progress tracking
+3. **Regular updates**: Use `cpdd update` to stay current with latest features
+4. **Online first**: Let the system automatically fetch latest CCPM features
 
 ---
 
-**开始你的高效开发之旅！**
+**Start your efficient development journey!**
 
 ```bash
 npm install -g claude-pdd-cli
 cpdd init --mode=pdd --online
 ```
 
-体验从需求到测试、从开发到部署的完整工作流程。🚀
+Experience the complete workflow from requirements to testing, from development to deployment. 🚀

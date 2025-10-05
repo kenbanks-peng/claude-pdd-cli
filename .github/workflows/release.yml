@@ -24,7 +24,7 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'published'
     
     permissions:
-      contents: read   # 读取代码
+      contents: read   # Read code
     
     steps:
     - name: Checkout code
@@ -57,7 +57,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     
     permissions:
-      contents: write  # 允许写入内容（创建标签、推送代码）
+      contents: write  # Allow writing content (create tags, push code)
     
     steps:
     - name: Checkout code
@@ -90,17 +90,17 @@ jobs:
         
     - name: Generate Release Notes
       run: |
-        # 获取上一个版本标签
+        # Get previous version tag
         PREVIOUS_TAG=$(git describe --tags --abbrev=0 --exclude="v${{ env.NEW_VERSION }}" 2>/dev/null || echo "")
-        
-        # 生成提交日志
+
+        # Generate commit log
         if [ -n "$PREVIOUS_TAG" ]; then
           COMMIT_LOG=$(git log --oneline --pretty=format:"- %s" "$PREVIOUS_TAG"..HEAD)
         else
           COMMIT_LOG=$(git log --oneline --pretty=format:"- %s" -10)
         fi
-        
-        # 提取不同类型的变更
+
+        # Extract different types of changes
         FEATURES=$(echo "$COMMIT_LOG" | grep -i "feat\|feature" || echo "")
         FIXES=$(echo "$COMMIT_LOG" | grep -i "fix\|bugfix" || echo "")
         DOCS=$(echo "$COMMIT_LOG" | grep -i "docs\|documentation" || echo "")
@@ -108,66 +108,66 @@ jobs:
         
         cat > RELEASE_NOTES.md << EOF
         ## 🚀 Claude PDD CLI v${{ env.NEW_VERSION }}
-        
+
         $(if [ -n "$FEATURES" ]; then
-        echo "### ✨ 新功能"
+        echo "### ✨ New Features"
         echo "$FEATURES"
         echo ""
         fi)
-        
+
         $(if [ -n "$FIXES" ]; then
-        echo "### 🐛 问题修复"
+        echo "### 🐛 Bug Fixes"
         echo "$FIXES"
         echo ""
         fi)
-        
+
         $(if [ -n "$DOCS" ]; then
-        echo "### 📚 文档更新"
+        echo "### 📚 Documentation Updates"
         echo "$DOCS"
         echo ""
         fi)
-        
+
         $(if [ -n "$CHORES" ]; then
-        echo "### 🔧 其他改进"
+        echo "### 🔧 Other Improvements"
         echo "$CHORES"
         echo ""
         fi)
-        
-        ### 📦 安装方式
-        
+
+        ### 📦 Installation
+
         \`\`\`bash
-        # 全局安装
+        # Global installation
         npm install -g claude-pdd-cli@${{ env.NEW_VERSION }}
-        
-        # 或者使用最新版本
+
+        # Or use the latest version
         npm install -g claude-pdd-cli@latest
         \`\`\`
-        
-        ### 🚀 快速开始
-        
+
+        ### 🚀 Quick Start
+
         \`\`\`bash
-        # 查看版本
+        # Check version
         cpdd --version
-        
-        # 初始化PDD工作流
+
+        # Initialize PDD workflow
         cpdd init
-        
-        # 诊断环境
+
+        # Diagnose environment
         cpdd doctor
-        
-        # 查看帮助
+
+        # View help
         cpdd --help
         \`\`\`
-        
+
         ---
-        
+
         $(if [ -n "$PREVIOUS_TAG" ]; then
-        echo "**完整更新日志**: https://github.com/MuziGeek/claude-pdd-cli/compare/$PREVIOUS_TAG...v${{ env.NEW_VERSION }}"
+        echo "**Full Changelog**: https://github.com/MuziGeek/claude-pdd-cli/compare/$PREVIOUS_TAG...v${{ env.NEW_VERSION }}"
         else
-        echo "**项目主页**: https://github.com/MuziGeek/claude-pdd-cli"
+        echo "**Project Homepage**: https://github.com/MuziGeek/claude-pdd-cli"
         fi)
-        
-        **文档**: [使用说明](https://github.com/MuziGeek/claude-pdd-cli#readme)
+
+        **Documentation**: [User Guide](https://github.com/MuziGeek/claude-pdd-cli#readme)
         EOF
         
     - name: Create Tag and Push
@@ -196,7 +196,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && success()
     
     permissions:
-      contents: read   # 读取代码
+      contents: read   # Read code
     
     steps:
     - name: Checkout code
@@ -247,4 +247,4 @@ jobs:
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "**Version**: $(node -p 'require(\"./package.json\").version')" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "**安装方式**: \`npm install -g claude-pdd-cli@latest\`" >> $GITHUB_STEP_SUMMARY
+        echo "**Installation**: \`npm install -g claude-pdd-cli@latest\`" >> $GITHUB_STEP_SUMMARY

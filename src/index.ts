@@ -11,7 +11,7 @@ import { printBanner } from './ui/output.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// 从 package.json 读取版本号
+// Read version from package.json
 function getVersion(): string {
   try {
     const packageJsonPath = join(__dirname, '../package.json');
@@ -19,7 +19,7 @@ function getVersion(): string {
     return packageJson.version;
   } catch (error) {
     console.warn('Warning: Could not read version from package.json');
-    return '1.0.0'; // 降级到默认版本
+    return '1.0.0'; // Fallback to default version
   }
 }
 

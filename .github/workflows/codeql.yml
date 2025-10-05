@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ main ]
   schedule:
-    - cron: '30 5 * * 1'  # 每周一早上5:30运行
+    - cron: '30 5 * * 1'  # Run every Monday at 5:30 AM
 
 jobs:
   analyze:
@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         language: [ 'javascript' ]
-        # 支持的语言: 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby'
+        # Supported languages: 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby'
 
     steps:
     - name: Checkout repository
@@ -31,16 +31,16 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         languages: ${{ matrix.language }}
-        # 如果你想控制查询哪些文件，可以取消下面的注释并根据需要修改路径
+        # If you want to control which files are queried, uncomment the line below and modify the path as needed
         # queries: security-extended,security-and-quality
 
-    # 自动构建尝试使用默认构建方法来构建编译语言(C/C++, C#, Go, 或 Java)
-    # 如果这个步骤失败，则应删除它并运行构建步骤（如下所示）
+    # Autobuild attempts to build compiled languages (C/C++, C#, Go, or Java) using default build methods
+    # If this step fails, remove it and run the build steps manually (as shown below)
     - name: Autobuild
       uses: github/codeql-action/autobuild@v2
 
-    # ℹ️ 使用以下三个步骤中的任意一个来替换上面的自动构建步骤
-    # 如果您的项目使用了其他依赖管理工具，例如apt-get, yum, npm/yarn等
+    # ℹ️ Use any of the following steps to replace the autobuild step above
+    # If your project uses other dependency management tools, such as apt-get, yum, npm/yarn, etc.
     
     # - name: Install dependencies
     #   run: |

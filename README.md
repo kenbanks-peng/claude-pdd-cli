@@ -74,13 +74,13 @@ cpdd status
 ## 📖 Documentation
 
 ### 📋 Complete Usage Guide
-**👉 [查看完整使用指南 (COMPLETE-USAGE-GUIDE.md)](COMPLETE-USAGE-GUIDE.md)**
+**👉 [View Complete Usage Guide (COMPLETE-USAGE-GUIDE.md)](COMPLETE-USAGE-GUIDE.md)**
 
-包含：
-- 🎯 **39个项目管理命令详解** - PRD、Epic、Issue完整生命周期
-- 🧪 **5个TDD命令工作流** - Red-Green-Refactor完整循环
-- 🌳 **Git Worktree并行开发** - 多代理协同工作模式
-- 📊 **最佳实践和故障排除** - 团队协作优化指南
+Includes:
+- 🎯 **39 Project Management Commands Explained** - Complete PRD, Epic, Issue lifecycle
+- 🧪 **5 TDD Command Workflows** - Complete Red-Green-Refactor cycle
+- 🌳 **Git Worktree Parallel Development** - Multi-agent collaboration mode
+- 📊 **Best Practices and Troubleshooting** - Team collaboration optimization guide
 
 ### Quick Usage
 

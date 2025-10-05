@@ -1,112 +1,112 @@
-# 变更日志
+# Changelog
 
-此项目的所有显著更改都将在此文件中记录。
+All notable changes to this project will be documented in this file.
 
-格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
-版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/).
 
-## [未发布]
+## [Unreleased]
 
-### 💫 敬请期待下个版本的精彩更新...
+### 💫 Stay tuned for exciting updates in the next release...
 
-## [1.0.0] - 2025-09-11 🎉 Claude PDD CLI 首个正式版本
+## [1.0.0] - 2025-09-11 🎉 Claude PDD CLI First Official Release
 
-### 🎯 全新的项目驱动开发平台
-- **项目理念**: Project-Driven Development (PDD) - 项目需求优先，灵活集成多种开发方法论
-- **核心命令**: `cpdd` - 简洁易记的CLI工具
-- **多方法论支持**: 灵活支持PDD、PMD、TDD等多种开发方式
+### 🎯 A New Project-Driven Development Platform
+- **Project Philosophy**: Project-Driven Development (PDD) - Project requirements first, flexible integration of multiple development methodologies
+- **Core Command**: `cpdd` - Simple and memorable CLI tool
+- **Multi-Methodology Support**: Flexible support for PDD, PMD, TDD, and other development approaches
 
-### ✨ 三种灵活的开发模式
-- **PDD模式** - Project-Driven Development: 完整项目驱动开发，灵活支持多种方法论
-- **PM模式** - Project Management Driven: 专注项目管理和团队协作  
-- **TDD模式** - Test-Driven Development: 传统测试驱动开发
+### ✨ Three Flexible Development Modes
+- **PDD Mode** - Project-Driven Development: Complete project-driven development, flexible support for multiple methodologies
+- **PM Mode** - Project Management Driven: Focus on project management and team collaboration
+- **TDD Mode** - Test-Driven Development: Traditional test-driven development
 
-### 📋 安装模式重新定义
+### 📋 Installation Modes Redefined
 
-#### PDD模式 (推荐) 
+#### PDD Mode (Recommended)
 ```bash
 cpdd init --mode=pdd
 ```
-- **方法论**: Project-Driven Development - 项目需求优先，灵活集成多种开发方法
-- **包含**: CCPM完整系统(39个PM命令) + TDD工具(5个命令) + 支持PDD/BDD/TDD混合开发
-- **适用**: 完整项目开发流程，从需求到交付
+- **Methodology**: Project-Driven Development - Project requirements first, flexible integration of multiple development methods
+- **Includes**: Complete CCPM system (39 PM commands) + TDD tools (5 commands) + Support for hybrid PDD/BDD/TDD development
+- **Suitable for**: Complete project development process, from requirements to delivery
 
-#### PM模式
+#### PM Mode
 ```bash
 cpdd init --mode=pm
 ```
-- **方法论**: Project Management Driven - 专注项目管理和团队协作
-- **包含**: CCPM项目管理功能(39个PM命令) + GitHub集成 + 团队协作工作流
-- **适用**: 项目经理、团队协作、需求管理
+- **Methodology**: Project Management Driven - Focus on project management and team collaboration
+- **Includes**: CCPM project management features (39 PM commands) + GitHub integration + Team collaboration workflows
+- **Suitable for**: Project managers, team collaboration, requirements management
 
-#### TDD模式
+#### TDD Mode
 ```bash
 cpdd init --mode=tdd
 ```
-- **方法论**: Test-Driven Development - 传统TDD红绿重构循环
-- **包含**: TDD开发命令(5个) + 智能测试生成 + Red-Green-Refactor循环
-- **适用**: 技术驱动开发，单元测试优先
+- **Methodology**: Test-Driven Development - Traditional TDD red-green-refactor cycle
+- **Includes**: TDD development commands (5) + Intelligent test generation + Red-Green-Refactor cycle
+- **Suitable for**: Technology-driven development, unit testing first
 
-### 🔄 完全创新的用户体验
-- **核心理念**: "先有规划，再写代码" (Plan First, Code Later)
-- **方法论无关**: 支持PDD、PMD、TDD等多种开发方法论
-- **目标驱动**: "方法论灵活，目标驱动" (Methodology Agnostic, Goal Driven)
+### 🔄 Completely Innovative User Experience
+- **Core Philosophy**: "Plan First, Code Later"
+- **Methodology Agnostic**: Supports PDD, PMD, TDD, and other development methodologies
+- **Goal Driven**: "Methodology Agnostic, Goal Driven"
 
-### 📚 文档全面齐备
-- **README完整**: 突出PDD理念和三种模式的方法论说明
-- **USAGE文档**: 详细的命令和模式说明
-- **API文档**: 完整的类型定义和接口
-- **贡献指南**: 开发流程和规范
+### 📚 Comprehensive Documentation
+- **Complete README**: Highlights PDD philosophy and methodology descriptions for all three modes
+- **USAGE Documentation**: Detailed command and mode descriptions
+- **API Documentation**: Complete type definitions and interfaces
+- **Contribution Guide**: Development workflow and standards
 
-### 🛠️ 技术特性
-- **类型系统**: 完整TypeScript类型定义
-- **配置逻辑**: 智能模式判断和处理逻辑
-- **交互式安装**: 友好的选项文本和用户引导
-- **错误处理**: 完善的错误消息和帮助信息
+### 🛠️ Technical Features
+- **Type System**: Complete TypeScript type definitions
+- **Configuration Logic**: Intelligent mode detection and processing logic
+- **Interactive Installation**: Friendly option text and user guidance
+- **Error Handling**: Comprehensive error messages and help information
 
-### 🧹 架构设计
-- **分层架构**: 完全分离templates（CCPM备份）和tdd-enhancements（TDD增强层）
-- **动态集成**: 智能在线/离线模式都通过叠加tdd-enhancements实现完整功能
-- **模块化设计**: 各组件独立演进
+### 🧹 Architecture Design
+- **Layered Architecture**: Complete separation of templates (CCPM backup) and tdd-enhancements (TDD enhancement layer)
+- **Dynamic Integration**: Intelligent online/offline modes both achieve full functionality through tdd-enhancements overlay
+- **Modular Design**: Components evolve independently
 
-### 🚀 快速开始
+### 🚀 Quick Start
 ```bash
-# 安装 Claude PDD CLI
+# Install Claude PDD CLI
 npm install -g claude-pdd-cli
 
-# 初始化项目（推荐PDD模式）
+# Initialize project (PDD mode recommended)
 cpdd init --mode=pdd
 
-# 其他模式选择
-cpdd init --mode=pm   # 项目管理模式
-cpdd init --mode=tdd  # 传统TDD模式
+# Other mode options
+cpdd init --mode=pm   # Project management mode
+cpdd init --mode=tdd  # Traditional TDD mode
 ```
 
 ---
 
-## 版本规范说明
+## Version Specification
 
-### 版本号格式
-遵循语义化版本规范 `MAJOR.MINOR.PATCH`：
+### Version Number Format
+Follows Semantic Versioning `MAJOR.MINOR.PATCH`:
 
-- **MAJOR** (主版本号): 不兼容的 API 变更
-- **MINOR** (次版本号): 向后兼容的功能新增
-- **PATCH** (修订号): 向后兼容的问题修复
+- **MAJOR** (Major version): Incompatible API changes
+- **MINOR** (Minor version): Backwards-compatible new features
+- **PATCH** (Patch version): Backwards-compatible bug fixes
 
-### 变更类型
-- **新增** - 新功能和特性
-- **改进** - 对现有功能的增强
-- **修复** - 问题修复和错误解决
-- **移除** - 移除的功能 (breaking changes)
-- **安全** - 安全相关的修复
+### Change Types
+- **Added** - New features and capabilities
+- **Improved** - Enhancements to existing functionality
+- **Fixed** - Bug fixes and issue resolutions
+- **Removed** - Removed features (breaking changes)
+- **Security** - Security-related fixes
 
-### 发布节奏
-- **主版本**: 重大架构变更或不兼容更新
-- **次版本**: 定期功能更新 (通常每月)
-- **修订版本**: 紧急修复和小改进 (按需发布)
+### Release Cadence
+- **Major versions**: Significant architectural changes or incompatible updates
+- **Minor versions**: Regular feature updates (typically monthly)
+- **Patch versions**: Emergency fixes and minor improvements (as needed)
 
 ---
 
-**安装最新版本**: `npm install -g claude-pdd-cli@latest`
+**Install latest version**: `npm install -g claude-pdd-cli@latest`
 
-**项目主页**: https://github.com/MuziGeek/claude-pdd-cli
+**Project homepage**: https://github.com/MuziGeek/claude-pdd-cli

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-import { Command } from 'commander';
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import chalk from 'chalk';
-import { readFileSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { Command } from 'commander';
 import { initCommand } from './commands/init.js';
 import { printBanner } from './ui/output.js';
 
@@ -18,7 +18,7 @@ function getVersion(): string {
     const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
     return packageJson.version;
   } catch (error) {
-    console.warn('Warning: Could not read version from package.json');
+    console.warn('Warning: Could not read version from package.json', error);
     return '1.0.0'; // Fallback to default version
   }
 }
@@ -95,7 +95,7 @@ async function main() {
 }
 
 // Error handling
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason) => {
   console.error(chalk.red('❌ Unhandled error:'), reason);
   process.exit(1);
 });

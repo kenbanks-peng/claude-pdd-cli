@@ -1,12 +1,11 @@
-import path from 'path';
-import fs from 'fs-extra';
-import chalk from 'chalk';
-import ora from 'ora';
-import { exec } from 'child_process';
-import { promisify } from 'util';
+
+import { exec } from 'node:child_process';
+import path, { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { promisify } from 'node:util';
 import axios from 'axios';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import fs from 'fs-extra';
+import ora from 'ora';
 
 const execAsync = promisify(exec);
 
